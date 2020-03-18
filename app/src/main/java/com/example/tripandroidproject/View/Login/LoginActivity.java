@@ -1,4 +1,4 @@
-package com.example.tripandroidproject.View;
+package com.example.tripandroidproject.View.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
