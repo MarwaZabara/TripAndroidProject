@@ -16,4 +16,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/datePicker"
+        android:layout_width="74dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="116dp"
+        android:onClick="showDatePicker"
+        android:text="date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/openTimeBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
