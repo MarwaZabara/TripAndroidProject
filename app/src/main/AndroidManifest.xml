@@ -11,16 +11,16 @@
         android:theme="@style/AppTheme">
         <activity android:name=".View.Reminder.ReminderActivity"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar">
-
-        </activity>
-        <activity android:name=".View.UnderTest.TestReminder">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".View.SignUp.SignupActivity" /> <!-- <activity android:name=".View.LoginActivity"></activity> -->
+        <activity android:name=".View.UnderTest.TestReminder">
+
+        </activity>
+        <activity android:name=".View.SignUp.SignupActivity"> </activity>
         <activity android:name=".View.Login.LoginActivity">
 
             <!-- <intent-filter> -->
