@@ -78,7 +78,6 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-
         ReminderPresenter reminderPresenter = new ReminderPresenter(this);
         reminderPresenter.startReminderService(calendar);
     }
