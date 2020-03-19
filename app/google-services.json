@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "911953036674",
+    "firebase_url": "https://trip-reminder-8e02c.firebaseio.com",
+    "project_id": "trip-reminder-8e02c",
+    "storage_bucket": "trip-reminder-8e02c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:911953036674:android:63b85bae44cd9baca4bb9b",
+        "android_client_info": {
+          "package_name": "com.example.tripandroidproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "911953036674-k66efgkid3g8029odgbiuq47a8b8e3um.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCULsth90CdDc8FPSMVkfCdMvs1mYoMKw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "911953036674-k66efgkid3g8029odgbiuq47a8b8e3um.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
