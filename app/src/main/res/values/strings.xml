@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TripAndroidProject</string>
+    <string name="Create_your_account">Create your account</string>
+    <string name="Name">Name</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="ConfirmPassword">ConfirmPassword</string>
+    <string name="ChooseImage">ChooseImage</string>
+    <string name="Create">Create</string>
+    <string name="Image">Image</string>
+    <string name="SignUp">SignUp</string>
+    <string name="Login">LogIn</string>
 </resources>
