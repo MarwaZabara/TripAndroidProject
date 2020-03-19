@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -90,5 +91,12 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 
     public void showDatePicker(View view) {
         showDateDialog();
+//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
+//
+//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                Uri.parse("google.navigation:q=1+Mahmoud+Salamah"));
+//        startActivity(intent);
+
     }
 }
