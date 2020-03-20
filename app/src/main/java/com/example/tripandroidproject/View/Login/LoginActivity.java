@@ -1,12 +1,9 @@
 package com.example.tripandroidproject.View.Login;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,10 +11,9 @@ import android.widget.Toast;
 import com.example.tripandroidproject.Contract.Login.LoginContract;
 import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
 import com.example.tripandroidproject.R;
-import com.example.tripandroidproject.View.NavigationDrawer.NavDrawer;
+import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.NavDrawer;
 import com.example.tripandroidproject.View.SaveUserLogIn;
 import com.example.tripandroidproject.View.SignUp.SignupActivity;
-import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.example.tripandroidproject.View.UserDetails;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

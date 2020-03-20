@@ -1,22 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/profile"
-        android:title="Profile"/>
+    <item android:title="Personal">
+        <menu>
+            <item
+                android:id="@+id/profile"
+                android:icon="@drawable/ic_person_black_24dp"
+                android:title="Profile" />
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/upComingTrip"
-        android:title="UpComingTrip"/>
+    <item android:title="Application">
+        <menu>
+            <item
+                android:id="@+id/upComingTrip"
+                android:icon="@drawable/ic_play_arrow_black_24dp"
+                android:title="UpComingTrip" />
 
-    <item
-        android:id="@+id/history"
-        android:title="History"/>
+            <item
+                android:id="@+id/history"
+                android:icon="@drawable/ic_history_black_24dp"
+                android:title="History" />
 
-    <item
-        android:id="@+id/synch"
-        android:title="Synch"/>
+            <item
+                android:id="@+id/synch"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="Synch" />
+        </menu>
+    </item>
 
-    <item
-        android:id="@+id/logout"
-        android:title="Logout"/>
+    <item android:title="End">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_arrow_back_black_24dp"
+                android:title="Logout" />
+        </menu>
+    </item>
+
 </menu>
