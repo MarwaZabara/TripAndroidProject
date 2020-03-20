@@ -26,6 +26,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     private double startLatitude;
     private double endLongitude;
     private double endLatitude;
+    private int isSync; // to know if trip stored in firebase or not
 
     public Trip() {
     }

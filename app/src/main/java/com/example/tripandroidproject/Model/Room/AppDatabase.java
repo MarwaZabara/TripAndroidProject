@@ -10,4 +10,6 @@ import com.example.tripandroidproject.POJOs.Trip;
 @Database(entities = {Trip.class, Person.class, Note.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TripDAO getTripDAO();
+    public abstract NoteDAO getNoteDAO();
+    public abstract PersonDAO getPersonDAO();
 }
