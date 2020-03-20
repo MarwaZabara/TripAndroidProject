@@ -1,7 +1,14 @@
 package com.example.tripandroidproject.POJOs;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Person {
     private String userName;
+    @PrimaryKey
+    @NonNull
     private String email;
     private String password;
     private String photoPath;

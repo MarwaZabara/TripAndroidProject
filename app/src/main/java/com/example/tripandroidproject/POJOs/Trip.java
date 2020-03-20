@@ -1,6 +1,13 @@
 package com.example.tripandroidproject.POJOs;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Trip { // any attribute not need set it NULL (Capital letters)
+    @PrimaryKey
+    @NonNull
     private String id;
     private String name;
     private int isFinished; // instead of boolean for firebase 1 or 0 performance better than true and false
@@ -21,6 +28,10 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     private double endLatitude;
 
     public Trip() {
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
     public String getId() {

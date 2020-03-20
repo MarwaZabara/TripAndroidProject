@@ -2,6 +2,7 @@ package com.example.tripandroidproject.View.UnderTest;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.room.Room;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -15,22 +16,37 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.tripandroidproject.Broadcast.ReminderService.ReminderReceiver;
 import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
+import com.example.tripandroidproject.Model.Room.AppDatabase;
+import com.example.tripandroidproject.Model.Room.TripDAO;
+import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class TestReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     int hourOfDay = 0; int minute = 0;int year = 0; int month = 0; int dayOfMonth = 0;
+    TextView testLbl;
+    TextView testTxt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_reminder);
+        testLbl = findViewById(R.id.testLbl);
+        testTxt = findViewById(R.id.testTxt);
+        AppDatabase database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
+                .allowMainThreadQueries()   //Allows room to do operation on main thread
+                .build();
+        TripDAO tripDAO = database.getTripDAO();
+        List<Trip> trip1 = tripDAO.getTrips();
+        testLbl.setText(trip1.get(0).getId());
     }
 
     @Override
@@ -81,6 +97,13 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         calendar.set(Calendar.SECOND, 0);
         ReminderPresenter reminderPresenter = new ReminderPresenter(this);
         reminderPresenter.startReminderService(calendar);
+
+        Trip trip = new Trip();
+        trip.setId(testTxt.getText().toString());
+//        tripDAO.insert(trip);
+//        List<Trip> trip1 = tripDAO.getTrips();
+//        testLbl.setText(trip1.get(0).getId());
+
     }
 
 
