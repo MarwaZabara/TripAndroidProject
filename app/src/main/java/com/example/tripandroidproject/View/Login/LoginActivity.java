@@ -17,6 +17,7 @@ import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.NavigationDrawer.NavDrawer;
 import com.example.tripandroidproject.View.SaveUserLogIn;
 import com.example.tripandroidproject.View.SignUp.SignupActivity;
+import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.example.tripandroidproject.View.UserDetails;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -95,6 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     }
 
     @Override
+
     public void showMessage(Boolean result) {
         if (result){
             Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
@@ -103,6 +105,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
 //            loginIntent.putExtra("Name",userDetails.getName());
             startActivity(loginIntent);
         }else{
+
             Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();
         }
     }

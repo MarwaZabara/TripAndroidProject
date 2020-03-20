@@ -2,6 +2,7 @@ package com.example.tripandroidproject.View.UnderTest;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.room.Room;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -9,29 +10,72 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Broadcast.ReminderService.ReminderReceiver;
 import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
+import com.example.tripandroidproject.Model.Room.AppDatabase;
+import com.example.tripandroidproject.Model.Room.TripDAO;
+import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
+import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
 import com.example.tripandroidproject.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class TestReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     int hourOfDay = 0; int minute = 0;int year = 0; int month = 0; int dayOfMonth = 0;
+    static int count = 1; // To be removed later
+    TextView testLbl;
+    TextView testTxt;
+    AppDatabase database;
+    TripDAO tripDAO;
+    private NetworkChangeBroadcastReceiver networkChangeBroadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_reminder);
+        testLbl = findViewById(R.id.testLbl);
+        testTxt = findViewById(R.id.testTxt);
+        database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
+                .allowMainThreadQueries()   //Allows room to do operation on main thread
+                .build();
+        tripDAO = database.getTripDAO();
+        List<Trip> trip1 = tripDAO.getTrips();
+        testLbl.setText(trip1.get(0).getId());
+        registerBroadcast();
+//        openSenderBroadcast();
     }
-
+    private void registerBroadcast() {
+        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        networkChangeBroadcastReceiver = new NetworkChangeBroadcastReceiver();
+        registerReceiver(networkChangeBroadcastReceiver,intentFilter);
+    }
+//    private void openSenderBroadcast() {
+//        Intent intent = new Intent();
+//        intent.setAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+//        intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
+//        intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+////        Uri contentUri = Uri.fromFile(new File(fileUri));
+////        intent.setData(contentUri);
+//        sendBroadcast(intent);
+//    }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 //        Calendar calendar = Calendar.getInstance();
@@ -80,6 +124,25 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         calendar.set(Calendar.SECOND, 0);
         ReminderPresenter reminderPresenter = new ReminderPresenter(this);
         reminderPresenter.startReminderService(calendar);
+
+        Trip trip = new Trip();
+        trip.setId(testTxt.getText().toString());
+        trip.setName("Trip" + String.valueOf(count));
+        trip.setDescription("Description" + String.valueOf(count));
+        trip.setIsRound(0);
+        String date = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + "-" + String.valueOf(calendar.get(Calendar.YEAR));
+        trip.setDate(date);
+        String time = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendar.get(Calendar.MINUTE));
+        trip.setTime(time);
+        trip.setRequestCodeHome(count++);
+
+        SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
+        saveTripPresenter.saveTrip(trip);
+
+//        tripDAO.insert(trip);
+//        List<Trip> trip1 = tripDAO.getTrips();
+//        testLbl.setText(trip1.get(0).getId());
+
     }
 
 
@@ -90,5 +153,12 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 
     public void showDatePicker(View view) {
         showDateDialog();
+//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
+//
+//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                Uri.parse("google.navigation:q=1+Mahmoud+Salamah"));
+//        startActivity(intent);
+
     }
 }
