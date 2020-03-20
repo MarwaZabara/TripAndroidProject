@@ -33,6 +33,7 @@
 
         <receiver android:name=".Broadcast.ReminderService.ReminderReceiver" />
         <service android:name=".Service.SnoozeNotification.SnoozeNotificationForegroundService" />
+        <service android:name=".Service.FloatIcon.FloatingIconService" />
 
 
     </application>
