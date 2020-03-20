@@ -10,7 +10,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     @NonNull
     private String id;
     private String name;
-    private int isFinished; // instead of boolean for firebase 1 or 0 performance better than true and false
+//    private int isFinished; // instead of boolean for firebase 1 or 0 performance better than true and false
     private String description;
     private String status; // cancel , finished , upcoming , repeated , repeated_Cancelled -- > repeat issue
     private int isRound;
@@ -31,6 +31,14 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     public Trip() {
     }
 
+    public int getIsSync() {
+        return isSync;
+    }
+
+    public void setIsSync(int isSync) {
+        this.isSync = isSync;
+    }
+
     public void setId(@NonNull String id) {
         this.id = id;
     }
@@ -47,13 +55,13 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
         this.name = name;
     }
 
-    public int getIsFinished() {
-        return isFinished;
-    }
-
-    public void setIsFinished(int isFinished) {
-        this.isFinished = isFinished;
-    }
+//    public int getIsFinished() {
+//        return isFinished;
+//    }
+//
+//    public void setIsFinished(int isFinished) {
+//        this.isFinished = isFinished;
+//    }
 
     public String getDescription() {
         return description;

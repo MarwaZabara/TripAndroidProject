@@ -8,15 +8,15 @@ import android.content.Intent;
 
 import com.example.tripandroidproject.Broadcast.ReminderService.ReminderReceiver;
 import com.example.tripandroidproject.Contract.Reminder.Reminder;
-import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
+
 
 import java.util.Calendar;
 
 public class ReminderModel implements Reminder.IReminderModel {
     Context context;
 //    int requestCode;
-    ReminderPresenter reminderPresenter;
-    public ReminderModel(ReminderPresenter reminderPresenter, Context context) {
+    Reminder.IReminderPresenter reminderPresenter;
+    public ReminderModel(Reminder.IReminderPresenter reminderPresenter, Context context) {
         this.context = context;
         this.reminderPresenter = reminderPresenter;
 //        this.requestCode = requestCode;

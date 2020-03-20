@@ -25,6 +25,7 @@ import com.example.tripandroidproject.Model.Room.AppDatabase;
 import com.example.tripandroidproject.Model.Room.TripDAO;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
+import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
 import com.example.tripandroidproject.R;
 
 import java.text.SimpleDateFormat;
@@ -33,20 +34,23 @@ import java.util.List;
 
 public class TestReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     int hourOfDay = 0; int minute = 0;int year = 0; int month = 0; int dayOfMonth = 0;
+    static int count = 1; // To be removed later
     TextView testLbl;
     TextView testTxt;
+    AppDatabase database;
+    TripDAO tripDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_reminder);
         testLbl = findViewById(R.id.testLbl);
         testTxt = findViewById(R.id.testTxt);
-        AppDatabase database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
-                .allowMainThreadQueries()   //Allows room to do operation on main thread
-                .build();
-        TripDAO tripDAO = database.getTripDAO();
-        List<Trip> trip1 = tripDAO.getTrips();
-        testLbl.setText(trip1.get(0).getId());
+//        database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
+//                .allowMainThreadQueries()   //Allows room to do operation on main thread
+//                .build();
+//        tripDAO = database.getTripDAO();
+//        List<Trip> trip1 = tripDAO.getTrips();
+//        testLbl.setText(trip1.get(0).getId());
     }
 
     @Override
@@ -100,6 +104,18 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 
         Trip trip = new Trip();
         trip.setId(testTxt.getText().toString());
+        trip.setName("Trip" + String.valueOf(count));
+        trip.setDescription("Description" + String.valueOf(count));
+        trip.setIsRound(0);
+        String date = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + "-" + String.valueOf(calendar.get(Calendar.YEAR));
+        trip.setDate(date);
+        String time = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendar.get(Calendar.MINUTE));
+        trip.setTime(time);
+        trip.setRequestCodeHome(count++);
+
+        SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
+        saveTripPresenter.saveTrip(trip);
+
 //        tripDAO.insert(trip);
 //        List<Trip> trip1 = tripDAO.getTrips();
 //        testLbl.setText(trip1.get(0).getId());
