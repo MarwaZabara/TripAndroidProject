@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 import com.example.tripandroidproject.Contract.Trip.SaveTripContract;
 import com.example.tripandroidproject.Model.Firebase.FirebaseTripModel;
+import com.example.tripandroidproject.Model.InternetConnection.Internetonnection;
 import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Trip;
 
@@ -18,10 +19,12 @@ public class SaveTripPresenter implements SaveTripContract.ISaveTripPresenter {
     @Override
     public void saveTrip(Trip trip) {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
-        if(isNetworkAvailable())
+        FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
+
+        if(Internetonnection.isNetworkAvailable(context))
         {
             trip.setIsSync(1);
-            FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
+            trip.setId(firebaseTripModel.generateKey());
             firebaseTripModel.saveTrip(trip);
             roomTripModel.saveTrip(trip);
         }
@@ -40,12 +43,6 @@ public class SaveTripPresenter implements SaveTripContract.ISaveTripPresenter {
     public void onFail() {
 
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
-    }
 
 }

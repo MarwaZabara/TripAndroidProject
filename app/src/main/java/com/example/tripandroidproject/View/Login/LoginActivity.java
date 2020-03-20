@@ -15,6 +15,7 @@ import com.example.tripandroidproject.Contract.Login.LoginContract;
 import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.SignUp.SignupActivity;
+import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.example.tripandroidproject.View.UserDetails;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -184,6 +185,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     public void onRecieveData(Boolean data) {
         if (data){
             Toast.makeText(this, "signIn Successfully", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, TestReminder.class);
+            startActivity(intent);
         }else {
             Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();
         }

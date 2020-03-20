@@ -22,6 +22,8 @@ public interface TripDAO {
     public void delete(Trip trip);
     @Query("SELECT * FROM Trip")
     public List<Trip> getTrips();
+    @Query("SELECT * FROM Trip WHERE isSync = 0")
+    public List<Trip> getOfflineTrips();
 
 
 }

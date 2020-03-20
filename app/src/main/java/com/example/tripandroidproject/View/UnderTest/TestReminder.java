@@ -10,7 +10,10 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Broadcast.ReminderService.ReminderReceiver;
 import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
 import com.example.tripandroidproject.Model.Room.AppDatabase;
@@ -39,20 +43,39 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
     TextView testTxt;
     AppDatabase database;
     TripDAO tripDAO;
+    private NetworkChangeBroadcastReceiver networkChangeBroadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_reminder);
         testLbl = findViewById(R.id.testLbl);
         testTxt = findViewById(R.id.testTxt);
-//        database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
-//                .allowMainThreadQueries()   //Allows room to do operation on main thread
-//                .build();
-//        tripDAO = database.getTripDAO();
-//        List<Trip> trip1 = tripDAO.getTrips();
-//        testLbl.setText(trip1.get(0).getId());
+        database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
+                .allowMainThreadQueries()   //Allows room to do operation on main thread
+                .build();
+        tripDAO = database.getTripDAO();
+        List<Trip> trip1 = tripDAO.getTrips();
+        testLbl.setText(trip1.get(0).getId());
+        registerBroadcast();
+//        openSenderBroadcast();
     }
-
+    private void registerBroadcast() {
+        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        networkChangeBroadcastReceiver = new NetworkChangeBroadcastReceiver();
+        registerReceiver(networkChangeBroadcastReceiver,intentFilter);
+    }
+//    private void openSenderBroadcast() {
+//        Intent intent = new Intent();
+//        intent.setAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+//        intent.setAction(ConnectivityManager.CONNECTIVITY_ACTION);
+//        intent.setFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+////        Uri contentUri = Uri.fromFile(new File(fileUri));
+////        intent.setData(contentUri);
+//        sendBroadcast(intent);
+//    }
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 //        Calendar calendar = Calendar.getInstance();
