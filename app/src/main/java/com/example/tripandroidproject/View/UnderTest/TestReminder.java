@@ -56,7 +56,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
                 .build();
         tripDAO = database.getTripDAO();
         List<Trip> trip1 = tripDAO.getTrips();
-        testLbl.setText(trip1.get(0).getId());
+//        testLbl.setText(trip1.get(0).getId());
         registerBroadcast();
 //        openSenderBroadcast();
     }
