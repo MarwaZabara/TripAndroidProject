@@ -10,4 +10,6 @@
     <string name="Image">Image</string>
     <string name="SignUp">SignUp</string>
     <string name="Login">LogIn</string>
+    <string name="drawerOpen">drawerOpen</string>
+    <string name="drawerClose">drawerClose</string>
 </resources>
