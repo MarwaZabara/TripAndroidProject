@@ -22,8 +22,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.tripandroidproject.Contract.SignUp.SignUpContract;
+import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
+import com.example.tripandroidproject.Presenter.SignUp.SignUpPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.Login.LoginActivity;
+import com.example.tripandroidproject.View.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,10 +38,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements SignUpContract.ISignUpView {
 
-    private static final String TAG = "State" ;
-    private FirebaseAuth mAuth;
+    private UserDetails userDetails;
+    private SignUpPresenter presenter;
     private EditText usrName,usrEmail,usrPass,usrConfirmPass;
     private ImageView usrImg;
     private static final Pattern PASSWORD_PATTERN =
@@ -58,7 +62,8 @@ public class SignupActivity extends AppCompatActivity {
         usrConfirmPass = findViewById(R.id.userConfirmPass);
         usrImg = findViewById(R.id.userImage);
 
-        mAuth = FirebaseAuth.getInstance();
+        userDetails = new UserDetails();
+        presenter = new SignUpPresenter(this,this);
     }
 
     public void ChooseImg(View view) {
@@ -67,7 +72,10 @@ public class SignupActivity extends AppCompatActivity {
 
     public void CreateAccount(View view) {
         if (ValidateName() & ValidatePassword() & ValidateConfirmePass() & ValidateEmail()){
-            createAccount(usrEmail.getText().toString(), usrPass.getText().toString());
+            userDetails.setEmail(usrEmail.getText().toString());
+            userDetails.setPassword(usrPass.getText().toString());
+            userDetails.setName(usrName.getText().toString());
+            presenter.onSendData(userDetails);
         }
     }
     private void selectImage(Context context) {
@@ -186,25 +194,15 @@ public class SignupActivity extends AppCompatActivity {
         return result;
     }
 //////////////////////////////////////////////////////////////////////////////////////////////
-private void createAccount(String email, String password) {
-    Log.d(TAG, "createAccount:" + email);
-    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-        @Override
-        public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful()) {
-                // Sign in success, update UI with the signed-in user's information
-                Log.d(TAG, "createUserWithEmail:success");
-                FirebaseUser user = mAuth.getCurrentUser();
-                Toast.makeText(SignupActivity.this, "Create Account Successfully", Toast.LENGTH_SHORT).show();
-            } else {
-                // If sign in fails, display a message to the user.
-                Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                Toast.makeText(SignupActivity.this, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show();
-            }
 
-            // ...
+    @Override
+    public void showMessage(Boolean result) {
+        if (result){
+            Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show();
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
+        }else{
+            Toast.makeText(this, "Register Failed", Toast.LENGTH_SHORT).show();
         }
-    });
-}
+    }
 }

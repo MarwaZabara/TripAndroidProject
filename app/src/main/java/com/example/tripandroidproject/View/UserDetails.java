@@ -1,15 +1,30 @@
 package com.example.tripandroidproject.View;
 
 public class UserDetails {
-    String email,password;
+    String email;
+    String password;
+    String name;
 
     public UserDetails(){
-
     }
 
     public UserDetails(String email,String password){
         this.email = email;
         this.password = password;
+    }
+
+    public UserDetails(String email, String password, String name) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -27,4 +42,5 @@ public class UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
