@@ -20,7 +20,7 @@ public class BootBroadcastReeiver extends BroadcastReceiver {
             public void run() {
                 GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(context);
                 List<Trip> trips = getOfflineTripPresenter.getTrips();
-                
+
             }
         });
         th.start();
