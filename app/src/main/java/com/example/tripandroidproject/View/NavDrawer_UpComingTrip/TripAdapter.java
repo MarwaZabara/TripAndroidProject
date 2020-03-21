@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Reminder.StartTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.Service.FloatIcon.FloatingIconService;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
@@ -85,31 +86,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
             startTrip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    StartTrip();
+                    StartTripPresenter startTripPresenter = new StartTripPresenter(context);
+                    startTripPresenter.startTrip();
                 }
             });
         }
-        private void StartTrip() {
-            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                    Uri.parse("google.navigation:q=1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية"));
-            context.startActivity(intent);
-            startFloatIcon();
-        }
-
-        private void startFloatIcon() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
-                //If the draw over permission is not available open the settings screen
-                //to grant the permission.
-                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + context.getPackageName()));
-//                startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
-            } else {
-                initializeView();
-            }
-        }
-        private void initializeView() {
-            context.startService(new Intent(context, FloatingIconService.class));
-        }
-
     }
 }
