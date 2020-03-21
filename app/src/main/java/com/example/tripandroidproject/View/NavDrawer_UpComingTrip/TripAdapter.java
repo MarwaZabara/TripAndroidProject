@@ -86,7 +86,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
                 @Override
                 public void onClick(View v) {
                     StartTrip();
-
                 }
             });
         }
