@@ -14,9 +14,9 @@ public class StartTripPresenter implements Reminder.IStartTripPresenter {
     }
 
     @Override
-    public void startTrip() {
+    public void startTrip(String destinationPlaceName, String tripID,int requestCode) {
 
-        reminderModel.startTrip();
+        reminderModel.startTrip(destinationPlaceName,tripID,requestCode);
     }
 
     @Override

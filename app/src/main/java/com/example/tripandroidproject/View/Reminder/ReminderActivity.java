@@ -45,12 +45,17 @@ public class ReminderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        int requestCodeFromNotification = intent.getIntExtra("requestCodeFromNotification", 0);
+        if(requestCodeFromNotification > 0){
+            tripRequestCode =requestCodeFromNotification;
+            stopService(new Intent(ReminderActivity.this, SnoozeNotificationForegroundService.class));
+        }
         getTripInfoUsingRequestCode();
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         isServiceRunning = sharedPref.getBoolean("isServiceRunning",false);
-        if (isServiceRunning == true) {
-                stopService(new Intent(ReminderActivity.this, SnoozeNotificationForegroundService.class));
-        }
+        //if (isServiceRunning == true) {
+
 
         setContentView(R.layout.activity_reminder);
         final MediaPlayer mp = MediaPlayer.create(this, com.example.tripandroidproject.R.raw.remind);
@@ -100,16 +105,19 @@ public class ReminderActivity extends AppCompatActivity {
     }
 
     private void getTripInfoUsingRequestCode() {
-        Intent intent = getIntent();
-        tripRequestCode = intent.getIntExtra("requestCode",0);
+        if(tripRequestCode == 0) {
+            Intent intent = getIntent();
+            tripRequestCode = intent.getIntExtra("requestCode", 0);
+        }
         GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(this);
         trip = getOfflineTripPresenter.getTripInfo(tripRequestCode);
 
     }
 
     private void StartTrip() {
+        String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
         startTripPresenter = new StartTripPresenter(this);
-        startTripPresenter.startTrip();
+        startTripPresenter.startTrip(destination,trip.getId(),tripRequestCode);
     }
 
     @Override
@@ -131,7 +139,12 @@ public class ReminderActivity extends AppCompatActivity {
         }
     }
     private void snooze() {
-        startService(new Intent(ReminderActivity.this, SnoozeNotificationForegroundService.class));
+        Intent intent = new Intent(ReminderActivity.this, SnoozeNotificationForegroundService.class);
+        intent.putExtra("requestCode",tripRequestCode);
+        intent.putExtra("tripName",trip.getName());
+        intent.putExtra("tripDescription",trip.getDescription());
+
+        startService(intent);
         isServiceRunning = true;
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();

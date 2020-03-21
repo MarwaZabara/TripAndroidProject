@@ -61,8 +61,8 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_reminder);
-        checkRequestCode();
         requestCodePresenter = new RequestCodePresenter(this); // i want to change it single tone
+        checkRequestCode();
         testLbl = findViewById(R.id.testLbl);
         testTxt = findViewById(R.id.testTxt);
         database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
@@ -143,8 +143,8 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 
         Trip trip = new Trip();
         trip.setId(testTxt.getText().toString());
-        trip.setName("Trip" + String.valueOf(count));
-        trip.setDescription("Description" + String.valueOf(count));
+        trip.setName("Trip" + String.valueOf(requestCode));
+        trip.setDescription("Description" + String.valueOf(requestCode));
         trip.setIsRound(0);
         String date = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + "-" + String.valueOf(calendar.get(Calendar.YEAR));
         trip.setDate(date);

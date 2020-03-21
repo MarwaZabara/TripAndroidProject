@@ -21,19 +21,23 @@ public class SnoozeNotificationForegroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        int requestCode = intent.getIntExtra("requestCode",0);
+        String name = intent.getStringExtra("tripName");
+        String description = intent.getStringExtra("tripDescription");
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, ReminderActivity.class);
+        notificationIntent.putExtra("requestCodeFromNotification",requestCode);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+                requestCode, notificationIntent, 0);
 
         //Build a notification
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Forground Service")
+                .setContentTitle(name)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentIntent(pendingIntent)
                 .build();
         //A notifcation HAS to be passed for the foreground service to be started.
-        startForeground(1, notification);;
+        startForeground(requestCode, notification);;
 
         return START_NOT_STICKY;
     }
