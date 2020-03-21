@@ -9,6 +9,7 @@ import com.example.tripandroidproject.Model.Firebase.FirebaseTripModel;
 import com.example.tripandroidproject.Model.InternetConnection.Internetonnection;
 import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Note.SaveNotePresenter;
 
 public class SaveTripPresenter implements SaveTripContract.ISaveTripPresenter {
     Context context;
@@ -27,10 +28,18 @@ public class SaveTripPresenter implements SaveTripContract.ISaveTripPresenter {
             trip.setId(firebaseTripModel.generateKey());
             firebaseTripModel.saveTrip(trip);
             roomTripModel.saveTrip(trip);
+
         }
         else {
             trip.setIsSync(0);
+            trip.setId(firebaseTripModel.generateKey());
             roomTripModel.saveTrip(trip);
+
+        }
+        if (trip.getNotes().size() > 0)
+        {
+            SaveNotePresenter saveNotePresenter = new SaveNotePresenter(context);
+            saveNotePresenter.saveNote(trip.getNotes(),trip.getId());
         }
     }
 

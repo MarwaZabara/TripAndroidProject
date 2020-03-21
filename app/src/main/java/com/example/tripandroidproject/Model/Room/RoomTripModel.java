@@ -33,4 +33,8 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
     public List<Trip> getOfflineTrip() {
         return tripDAO.getOfflineTrips();
     }
+    @Override
+    public Trip getTripForSpecificCode(int requsetCode) {
+        return tripDAO.getTripForSpecificCode(requsetCode);
+    }
 }

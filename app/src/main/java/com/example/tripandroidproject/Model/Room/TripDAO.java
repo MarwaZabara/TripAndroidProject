@@ -24,6 +24,7 @@ public interface TripDAO {
     public List<Trip> getTrips();
     @Query("SELECT * FROM Trip WHERE isSync = 0")
     public List<Trip> getOfflineTrips();
-
+    @Query("SELECT * FROM Trip WHERE requestCodeHome = :requestCode || requestCodeAway = :requestCode")
+    public Trip getTripForSpecificCode(int requestCode);
 
 }
