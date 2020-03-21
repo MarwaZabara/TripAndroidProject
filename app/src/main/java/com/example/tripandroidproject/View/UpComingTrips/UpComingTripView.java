@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.Contract.UpComingTrip.UpComingTripContract;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.UpComingTrip.UpComingTripPresenter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,9 +17,11 @@ public class UpComingTripView implements UpComingTripContract.IUpComingTripView 
     private RecyclerView.LayoutManager layoutManager;
     private List<Trip> input;
     private Context context;
+    private UpComingTripPresenter presenter;
 
     public UpComingTripView(Context context){
         this.context = context;
+        presenter = new UpComingTripPresenter(context,this,"");
     }
 
     public List<Trip> getData(){
