@@ -8,12 +8,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +22,8 @@ import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.Login.LoginActivity;
 import com.example.tripandroidproject.View.SaveUserLogIn;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
+import com.example.tripandroidproject.View.UpComingTrips.TripAdapter;
+import com.example.tripandroidproject.View.UpComingTrips.UpComingTripView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -33,9 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.squareup.picasso.Picasso;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -98,7 +94,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
         ///////////////////////////////////////////////////////////////
         RecyclerView recyclerView = findViewById(R.id.recycleView);
         recyclerView.setHasFixedSize(true);
@@ -106,12 +101,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        input = Arrays.asList(
-                new Trip("1","FirstTrip","Alexandria","UpComing","22/5/2020","09:00AM"),
-                new Trip("2","SecondTrip","Cairo","UpComing","20/5/2020","11:00AM"),
-                new Trip("3","ThirdTrip","Luxor","UpComing","19/5/2020","08:00pM"),
-                new Trip("4","ForthTrip","Aswan","UpComing","2/5/2020","10:00AM"));
-
+        UpComingTripView upComingTripView = new UpComingTripView(this);
+        input = upComingTripView.getData();
         myAdapter = new TripAdapter(this,input);
         recyclerView.setAdapter(myAdapter);
     }
