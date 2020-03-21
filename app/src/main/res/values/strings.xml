@@ -12,4 +12,6 @@
     <string name="Login">LogIn</string>
     <string name="drawerOpen">drawerOpen</string>
     <string name="drawerClose">drawerClose</string>
+    <string name="Start">Start</string>
+    <string name="UpComingTrip">UpComingTrip</string>
 </resources>

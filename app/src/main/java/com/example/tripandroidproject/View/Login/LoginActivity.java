@@ -61,11 +61,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
 
         saveUserLogIn = new SaveUserLogIn(this);
         if (saveUserLogIn.getLoggedInUser() == null) {
-
+            Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
         }else {
             userDetails = saveUserLogIn.getLoggedInUser();
-            loginEmail.setText(userDetails.getEmail());
-            loginPassword.setText(userDetails.getPassword());
+            String em = userDetails.getEmail();
+            String na = userDetails.getName();
+            Intent intent = new Intent(this,NavDrawer.class);
+            intent.putExtra("Email",userDetails.getEmail());
+            intent.putExtra("Name",userDetails.getName());
+            startActivity(intent);
         }
     }
 
@@ -96,10 +100,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     public void showMessage(Boolean result) {
         if (result){
             Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
-            Intent loginIntent = new Intent(this, NavDrawer.class);
-            loginIntent.putExtra("Email",userDetails.getEmail());
+//            Intent loginIntent = new Intent(this, NavDrawer.class);
+//            loginIntent.putExtra("Email",userDetails.getEmail());
 //            loginIntent.putExtra("Name",userDetails.getName());
-            startActivity(loginIntent);
+//            startActivity(loginIntent);
+            userDetails = saveUserLogIn.getLoggedInUser();
+            String em = userDetails.getEmail();
+            String na = userDetails.getName();
+            Intent intent = new Intent(this,NavDrawer.class);
+            intent.putExtra("Email",userDetails.getEmail());
+            intent.putExtra("Name",userDetails.getName());
+            startActivity(intent);
         }else{
 
             Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();

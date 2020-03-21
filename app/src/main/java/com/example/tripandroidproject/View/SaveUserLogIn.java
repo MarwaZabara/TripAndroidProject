@@ -15,7 +15,8 @@ public class SaveUserLogIn {
     public void storeUserData(UserDetails userDetails) {
         SharedPreferences.Editor editor = localDB.edit();
         editor.putString("email", userDetails.email);
-        editor.putString("password", userDetails.password);
+        editor.putString("name" , userDetails.name);
+        editor.putString("imgUri" ,userDetails.imgUri);
         editor.commit();
     }
 
@@ -37,9 +38,12 @@ public class SaveUserLogIn {
         }
 
         String email = localDB.getString("email", "");
-        String password = localDB.getString("password", "");
-
-        UserDetails userDetails = new UserDetails(email, password);
+        String name = localDB.getString("name","");
+        String imgUri = localDB.getString("imgUri","");
+        UserDetails userDetails = new UserDetails();
+        userDetails.setName(name);
+        userDetails.setEmail(email);
+        userDetails.setImgUri(imgUri);
         return userDetails;
     }
 }

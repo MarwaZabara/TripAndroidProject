@@ -12,6 +12,16 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     private String name;
 //    private int isFinished; // instead of boolean for firebase 1 or 0 performance better than true and false
     private String description;
+
+    public Trip(@NonNull String id, String name, String description, String status, String date, String time) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.date = date;
+        this.time = time;
+    }
+
     private String status; // cancel , finished , upcoming , repeated , repeated_Cancelled -- > repeat issue
     private int isRound;
     private String date; // updated if repeated

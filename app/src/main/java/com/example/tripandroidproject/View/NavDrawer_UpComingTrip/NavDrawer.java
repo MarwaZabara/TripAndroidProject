@@ -5,12 +5,19 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +32,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -45,10 +54,31 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     private List<Trip> input;
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu_filter) {
+        getMenuInflater().inflate(R.menu.menu_filter,menu_filter);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.repeated:
+                Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.unrepeated:
+                Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
+
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
-
         mAuth = FirebaseAuth.getInstance();
         saveUserLogIn = new SaveUserLogIn(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -57,25 +87,32 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        name  = findViewById(R.id.navName);
-        email = findViewById(R.id.navEmail);
-        Intent intent = getIntent();
-        String e = intent.getStringExtra("Email");
-        Toast.makeText(this, e, Toast.LENGTH_SHORT).show();
-//        name.setText(intent.getStringExtra("Name"));
-//        email.setText(intent.getStringExtra("Email"));
-
         drawerLayout = findViewById(R.id.drawer);
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.navigationView);
+        setPersonInfo();
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        ///////////////////////////////////////////////////////////////
+        RecyclerView recyclerView = findViewById(R.id.recycleView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        input = Arrays.asList(
+                new Trip("1","FirstTrip","Alexandria","UpComing","22/5/2020","09:00AM"),
+                new Trip("2","SecondTrip","Cairo","UpComing","20/5/2020","11:00AM"),
+                new Trip("3","ThirdTrip","Luxor","UpComing","19/5/2020","08:00pM"),
+                new Trip("4","ForthTrip","Aswan","UpComing","2/5/2020","10:00AM"));
+
+        myAdapter = new TripAdapter(this,input);
+        recyclerView.setAdapter(myAdapter);
     }
 
     @Override
@@ -114,4 +151,19 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         }
         return false;
     }
+
+    public void setPersonInfo(){
+        View hView =  navigationView.getHeaderView(0);
+        email = (TextView)hView.findViewById(R.id.navEmail);
+        name  = (TextView) hView.findViewById(R.id.navName);
+        ImageView imageView = (ImageView) hView.findViewById(R.id.profilePic);
+
+        Intent intent = getIntent();
+        email.setText(intent.getStringExtra("Email"));
+        name.setText(intent.getStringExtra("Name"));
+        String imageUri = intent.getStringExtra("imgUri");
+        Picasso.get().load(imageUri).resize(120, 120).
+                centerCrop().into(imageView);
+    }
+
 }
