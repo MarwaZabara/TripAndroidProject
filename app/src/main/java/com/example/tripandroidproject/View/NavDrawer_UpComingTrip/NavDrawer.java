@@ -25,6 +25,7 @@ import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.Login.LoginActivity;
 import com.example.tripandroidproject.View.SaveUserLogIn;
+import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -129,7 +130,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.synch:
-                Toast.makeText(NavDrawer.this, "Synch us Selected", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, TestReminder.class);
+                startActivity(intent);
                 break;
             case R.id.logout:
                 Toast.makeText(NavDrawer.this, "Logout Selected", Toast.LENGTH_SHORT).show();
@@ -143,8 +145,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                         });
                 saveUserLogIn.clearUserData();
                 saveUserLogIn.setUserLoggedIn(false);
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                Intent intentLoginActivity = new Intent(this, LoginActivity.class);
+                startActivity(intentLoginActivity);
                 break;
             default:
                 break;

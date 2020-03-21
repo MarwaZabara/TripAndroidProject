@@ -2,7 +2,12 @@ package com.example.tripandroidproject.POJOs;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.google.firebase.database.Exclude;
+
+import java.util.List;
 
 @Entity
 public class Trip { // any attribute not need set it NULL (Capital letters)
@@ -37,8 +42,18 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     private double endLongitude;
     private double endLatitude;
     private int isSync; // to know if trip stored in firebase or not
-
+    @Ignore
+    @Exclude
+    private List<Note> notes;
     public Trip() {
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 
     public int getIsSync() {
