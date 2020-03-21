@@ -34,11 +34,10 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
     }
 
     @Override
-    public List<Trip> getTripInfo(int requestCode) {
+    public Trip getTripInfo(int requestCode) {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
-        List<Trip> trips = roomTripModel.getOfflineTrip();
-
-        return null;
+        Trip trip = roomTripModel.getTripForSpecificCode(requestCode);
+        return trip;
     }
 
     @Override
