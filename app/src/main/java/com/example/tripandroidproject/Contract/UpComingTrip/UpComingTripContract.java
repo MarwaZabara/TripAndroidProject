@@ -9,7 +9,6 @@ import java.util.List;
 
 public class UpComingTripContract {
     public interface IUpComingTripView{
-        void getTripList (List<Trip> tripList);
     }
     public interface IUpComingTripPresenter extends IBase {
         List<Trip> getTripList ();
