@@ -14,4 +14,6 @@
     <string name="drawerClose">drawerClose</string>
     <string name="Start">Start</string>
     <string name="UpComingTrip">UpComingTrip</string>
+    <string name="TripName">Trip Name</string>
+    <string name="Add">Add</string>
 </resources>

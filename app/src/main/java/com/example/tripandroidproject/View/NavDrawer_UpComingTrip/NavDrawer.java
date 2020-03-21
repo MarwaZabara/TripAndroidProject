@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripandroidproject.AddTrip.AddTripActivity;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.Login.LoginActivity;
@@ -167,4 +168,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 //        Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
     }
 
+    public void GoToAddTrip(View view) {
+        Intent intent = new Intent(NavDrawer.this, AddTripActivity.class);
+        startActivity(intent);
+    }
 }
