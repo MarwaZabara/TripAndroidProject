@@ -43,15 +43,15 @@ public class ReminderModel implements Reminder.IReminderModel {
     }
 
     @Override
-    public void startTrip() {
+    public void startTrip(String destinationPlaceName, String tripID,int requestCode) {
         Intent intent1 = new Intent(context, TestReminder.class);
         context.startActivity(intent1);
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                Uri.parse("google.navigation:q=1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية"));
+                Uri.parse("google.navigation:q=" + destinationPlaceName));
         context.startActivity(intent);
-        startFloatIcon();
+        startFloatIcon(tripID,requestCode);
     }
-    private void startFloatIcon() {
+    private void startFloatIcon(String tripID,int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
 
 
@@ -59,6 +59,7 @@ public class ReminderModel implements Reminder.IReminderModel {
             //to grant the permission.
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + context.getPackageName()));
+            intent.putExtra("tripID",requestCode);
             ((Activity) context).startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
 
         } else {

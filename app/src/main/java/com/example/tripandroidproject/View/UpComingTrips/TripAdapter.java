@@ -81,7 +81,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
                 @Override
                 public void onClick(View v) {
                     StartTripPresenter startTripPresenter = new StartTripPresenter(context);
-                    startTripPresenter.startTrip();
+                    String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
+                    startTripPresenter.startTrip(destination,"trip1",1);
                 }
             });
         }
