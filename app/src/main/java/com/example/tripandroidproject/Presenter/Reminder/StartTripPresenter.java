@@ -5,29 +5,31 @@ import android.content.Context;
 import com.example.tripandroidproject.Contract.Reminder.Reminder;
 import com.example.tripandroidproject.Model.ReminderModel.ReminderModel;
 
-import java.util.Calendar;
-
-public class ReminderPresenter implements Reminder.IReminderPresenter {
+public class StartTripPresenter implements Reminder.IStartTripPresenter {
     Context context;
-    public ReminderPresenter(Context context) {
+    ReminderModel reminderModel;
+    public StartTripPresenter(Context context) {
         this.context = context;
-
+        reminderModel = new ReminderModel(this,context);
     }
 
     @Override
-    public void startReminderService(Calendar calendar, int requestCode) {
-        ReminderModel reminderModel = new ReminderModel(this,context);
-        reminderModel.startAlarmService(calendar,requestCode);
+    public void startTrip() {
+
+        reminderModel.startTrip();
     }
 
     @Override
     public void onSucess() {
-        // show message that saved success
 
     }
 
     @Override
     public void onFail() {
 
+    }
+
+    public void initializeView() {
+        reminderModel.initializeView();
     }
 }

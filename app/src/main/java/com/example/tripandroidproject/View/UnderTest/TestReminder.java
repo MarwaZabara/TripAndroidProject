@@ -42,6 +42,7 @@ import com.example.tripandroidproject.View.Reminder.ReminderActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_reminder);
         checkRequestCode();
-
+        requestCodePresenter = new RequestCodePresenter(this); // i want to change it single tone
         testLbl = findViewById(R.id.testLbl);
         testTxt = findViewById(R.id.testTxt);
         database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
@@ -138,8 +139,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        ReminderPresenter reminderPresenter = new ReminderPresenter(this);
-        reminderPresenter.startReminderService(calendar);
+
 
         Trip trip = new Trip();
         trip.setId(testTxt.getText().toString());
@@ -164,12 +164,34 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
         saveTripPresenter.saveTrip(trip);
         retrieveRequestCode(requestCode);
+
+
+        Calendar calendar2 = generateCalendar(trip.getDate(),trip.getTime());
+
+        ReminderPresenter reminderPresenter = new ReminderPresenter(this);
+        reminderPresenter.startReminderService(calendar2,trip.getRequestCodeHome());
+
+
         if(Internetonnection.isNetworkAvailable(this))
             requestCodePresenter.updateRequestCode(requestCode);
 //        tripDAO.insert(trip);
 //        List<Trip> trip1 = tripDAO.getTrips();
 //        testLbl.setText(trip1.get(0).getId());
 
+    }
+
+    private Calendar generateCalendar(String date, String time) {
+
+        List<String> dateSp = Arrays.asList(date.split("-"));
+        List<String> timeSp = Arrays.asList(time.split("-"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateSp.get(0)));
+        calendar.set(Calendar.MONTH, Integer.parseInt(dateSp.get(1)));
+        calendar.set(Calendar.YEAR, Integer.parseInt(dateSp.get(2)));
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeSp.get(0)));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(timeSp.get(1)));
+        calendar.set(Calendar.SECOND, 0);
+        return calendar;
     }
 
 
@@ -192,7 +214,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         int requestCode = sharedPref.getInt("requestCode", 0);
         if (requestCode == 0) {
-            requestCodePresenter = new RequestCodePresenter(this);
+
             requestCodePresenter.getRequestCode();
         }
         else {
