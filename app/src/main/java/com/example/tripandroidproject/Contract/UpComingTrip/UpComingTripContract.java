@@ -12,7 +12,7 @@ public class UpComingTripContract {
         void getTripList (List<Trip> tripList);
     }
     public interface IUpComingTripPresenter extends IBase {
-
+        List<Trip> getTripList ();
     }
     public interface IUpComingTripModel{
         void fetchData();

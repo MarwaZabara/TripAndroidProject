@@ -29,4 +29,9 @@ public class UpComingTripPresenter implements UpComingTripContract.IUpComingTrip
     public void onFail() {
 
     }
+
+    @Override
+    public List<Trip> getTripList() {
+        return input;
+    }
 }
