@@ -21,7 +21,9 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Reminder.StartTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.Service.FloatIcon.FloatingIconService;
 import com.example.tripandroidproject.Service.SnoozeNotification.SnoozeNotificationForegroundService;
@@ -33,7 +35,7 @@ public class ReminderActivity extends AppCompatActivity {
     boolean isServiceRunning = false;
     StartTripPresenter startTripPresenter;
     private int tripRequestCode;
-
+    Trip trip;
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -54,7 +56,7 @@ public class ReminderActivity extends AppCompatActivity {
         final MediaPlayer mp = MediaPlayer.create(this, com.example.tripandroidproject.R.raw.remind);
         mp.start();
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage("Reminder For Trip");
+        builder1.setMessage(trip.getName());
         builder1.setCancelable(false);
 
         builder1.setPositiveButton(
@@ -100,6 +102,8 @@ public class ReminderActivity extends AppCompatActivity {
     private void getTripInfoUsingRequestCode() {
         Intent intent = getIntent();
         tripRequestCode = intent.getIntExtra("requestCode",0);
+        GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(this);
+        trip = getOfflineTripPresenter.getTripInfo(tripRequestCode);
 
     }
 

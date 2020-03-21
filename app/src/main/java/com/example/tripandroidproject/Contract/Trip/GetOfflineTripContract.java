@@ -9,7 +9,7 @@ import java.util.List;
 public class GetOfflineTripContract {
     public interface IGetOfflineTripPresenter extends IBase,ITripPresenter {
         public void getOfflineTrip();
-        public List<Trip> getTripInfo(int requestCode);
+        public Trip getTripInfo(int requestCode);
         public void getOfflineNoteWithSpecificTrip(String tripID);
     }
     public interface IGetOfflineTripModel {
