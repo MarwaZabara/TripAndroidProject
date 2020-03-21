@@ -13,6 +13,7 @@ public class GetOfflineTripContract {
         public void getOfflineNoteWithSpecificTrip(String tripID);
     }
     public interface IGetOfflineTripModel {
+        public List<Trip> getTrips();
         public List<Trip> getOfflineTrip();
         public Trip getTripForSpecificCode(int requsetCode);
 //        public List<Note> getOfflineNote(String tripID);
