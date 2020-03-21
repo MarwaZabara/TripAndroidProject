@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 
     <application
@@ -35,6 +36,13 @@
         <receiver android:name=".Broadcast.ReminderService.ReminderReceiver" />
         <service android:name=".Service.SnoozeNotification.SnoozeNotificationForegroundService" />
         <service android:name=".Service.FloatIcon.FloatingIconService" />
+        <receiver
+            android:name=".Broadcast.BootBroadcast.BootBroadcastReeiver"
+            android:label="StartMyServiceAtBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 <!--        <receiver android:name=".Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver" >-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
