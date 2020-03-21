@@ -96,15 +96,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     }
 
     @Override
-
     public void showMessage(Boolean result) {
         if (result){
             Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
-//            Intent loginIntent = new Intent(this, NavDrawer.class);
-//            loginIntent.putExtra("Email",userDetails.getEmail());
-//            loginIntent.putExtra("Name",userDetails.getName());
-//            startActivity(loginIntent);
-            userDetails = saveUserLogIn.getLoggedInUser();
+//            userDetails = saveUserLogIn.getLoggedInUser();
             String em = userDetails.getEmail();
             String na = userDetails.getName();
             Intent intent = new Intent(this,NavDrawer.class);
