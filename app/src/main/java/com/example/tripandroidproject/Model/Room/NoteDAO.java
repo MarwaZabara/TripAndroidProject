@@ -21,5 +21,5 @@ public interface NoteDAO {
     @Delete
     public void delete(Note note);
     @Query("SELECT * FROM Note WHERE tripID == :tripID")
-    public List<Note> getTrips(String tripID);
+    public List<Note> getNotes(String tripID);
 }

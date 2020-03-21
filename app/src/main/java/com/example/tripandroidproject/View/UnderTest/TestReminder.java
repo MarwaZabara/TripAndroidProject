@@ -11,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
@@ -24,21 +25,31 @@ import android.widget.TimePicker;
 
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Broadcast.ReminderService.ReminderReceiver;
+import com.example.tripandroidproject.Contract.RequestCode.RequestCodeContract;
 import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
+import com.example.tripandroidproject.Model.Firebase.FirebaseRequestCodeModel;
+import com.example.tripandroidproject.Model.InternetConnection.Internetonnection;
 import com.example.tripandroidproject.Model.Room.AppDatabase;
 import com.example.tripandroidproject.Model.Room.TripDAO;
+import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
+import com.example.tripandroidproject.Presenter.RequestCode.RequestCodePresenter;
 import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.Service.SnoozeNotification.SnoozeNotificationForegroundService;
+import com.example.tripandroidproject.View.Reminder.ReminderActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class TestReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
+public class TestReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener , RequestCodeContract.IRequestCodeView {
     int hourOfDay = 0; int minute = 0;int year = 0; int month = 0; int dayOfMonth = 0;
     static int count = 1; // To be removed later
+    public static int requestCode;
+    RequestCodePresenter requestCodePresenter;
     TextView testLbl;
     TextView testTxt;
     AppDatabase database;
@@ -49,6 +60,8 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_reminder);
+        checkRequestCode();
+
         testLbl = findViewById(R.id.testLbl);
         testTxt = findViewById(R.id.testTxt);
         database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
@@ -60,6 +73,9 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         registerBroadcast();
 //        openSenderBroadcast();
     }
+
+
+
     private void registerBroadcast() {
         IntentFilter intentFilter = new IntentFilter();
 //        intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
@@ -134,11 +150,22 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         trip.setDate(date);
         String time = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendar.get(Calendar.MINUTE));
         trip.setTime(time);
-        trip.setRequestCodeHome(count++);
-
+        trip.setRequestCodeHome(requestCode++);
+        Note note = new Note();
+        note.setName("hello");
+        note.setStatus("Done");
+        Note note1 = new Note();
+        note1.setName("hello");
+        note1.setStatus("Done");
+        List<Note> notes = new ArrayList<>();
+        notes.add(note);
+        notes.add(note1);
+        trip.setNotes(notes);
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
         saveTripPresenter.saveTrip(trip);
-
+        retrieveRequestCode(requestCode);
+        if(Internetonnection.isNetworkAvailable(this))
+            requestCodePresenter.updateRequestCode(requestCode);
 //        tripDAO.insert(trip);
 //        List<Trip> trip1 = tripDAO.getTrips();
 //        testLbl.setText(trip1.get(0).getId());
@@ -160,5 +187,24 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 //                Uri.parse("google.navigation:q=1+Mahmoud+Salamah"));
 //        startActivity(intent);
 
+    }
+    private void checkRequestCode() {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        int requestCode = sharedPref.getInt("requestCode", 0);
+        if (requestCode == 0) {
+            requestCodePresenter = new RequestCodePresenter(this);
+            requestCodePresenter.getRequestCode();
+        }
+        else {
+            this.requestCode = requestCode;
+        }
+    }
+    @Override
+    public void retrieveRequestCode(int requestCode) {
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("requestCode", requestCode);
+        editor.commit();
+        this.requestCode = requestCode;
     }
 }

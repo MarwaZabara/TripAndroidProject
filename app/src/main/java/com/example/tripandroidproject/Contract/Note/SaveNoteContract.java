@@ -10,12 +10,12 @@ import java.util.List;
 
 public class SaveNoteContract {
     public interface ISaveNotePresenter extends IBase, INotePresenter {
-        public void saveNote(List<Note> notes);
+        public void saveNote(List<Note> notes, String tripid);
     }
     public interface ISaveNoteOnlineModel extends IFirebaseBase {
-        public void saveNote(List<Note> notes);
+        public void saveNote(Note note);
     }
     public interface ISaveNoteOfflineModel {
-        public void saveNote(List<Note> notes);
+        public void saveNote(Note note);
     }
 }
