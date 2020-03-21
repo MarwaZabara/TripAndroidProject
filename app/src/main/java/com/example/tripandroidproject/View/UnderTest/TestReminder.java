@@ -151,6 +151,10 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         String time = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendar.get(Calendar.MINUTE));
         trip.setTime(time);
         trip.setRequestCodeHome(requestCode++);
+        trip.setStatus("upcoming");
+        trip.setRoundDate("None");
+        trip.setRoundTime("None");
+        trip.setRoundRepeatEvery("None");
         Note note = new Note();
         note.setName("hello");
         note.setStatus("Done");

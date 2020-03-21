@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 public class Trip { // any attribute not need set it NULL (Capital letters)
+
     @PrimaryKey
     @NonNull
     private String id;
