@@ -103,7 +103,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         recyclerView.setLayoutManager(layoutManager);
         UpComingTripView upComingTripView = new UpComingTripView(this);
         input = upComingTripView.getData();
-        myAdapter = new TripAdapter(this,input);
+//        myAdapter = new TripAdapter(this,input);
+        myAdapter = upComingTripView.getAdapter();
         recyclerView.setAdapter(myAdapter);
     }
 
