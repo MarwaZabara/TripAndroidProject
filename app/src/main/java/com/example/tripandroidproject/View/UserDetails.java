@@ -1,9 +1,20 @@
 package com.example.tripandroidproject.View;
 
+import android.net.Uri;
+
 public class UserDetails {
     String email;
     String password;
     String name;
+    String imgUri;
+
+    public String getImgUri() {
+        return imgUri;
+    }
+
+    public void setImgUri(String imgUri) {
+        this.imgUri = imgUri;
+    }
 
     public UserDetails(){
     }

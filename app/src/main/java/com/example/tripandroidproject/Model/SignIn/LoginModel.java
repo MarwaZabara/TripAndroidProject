@@ -77,11 +77,7 @@ public class LoginModel implements LoginContract.ISignInModel {
                         if (task.isSuccessful()) {
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            UserDetails userDetails = new UserDetails();
-                            userDetails.setEmail(acct.getEmail());
-                            userDetails.setPassword(acct.getGivenName());
-                            saveUserLogIn.storeUserData(userDetails);
-                            saveUserLogIn.setUserLoggedIn(true);
+
                         } else {
                             Log.d("TAG", "signInWithCredential:failure", task.getException());
                         }
@@ -96,6 +92,12 @@ public class LoginModel implements LoginContract.ISignInModel {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+                UserDetails userDetails = new UserDetails();
+                userDetails.setEmail(account.getEmail());
+                userDetails.setName(account.getGivenName());
+                userDetails.setImgUri(account.getPhotoUrl().toString());
+                saveUserLogIn.storeUserData(userDetails);
+                saveUserLogIn.setUserLoggedIn(true);
                 presenter.onSucess();
             } catch (ApiException e) {
                 Log.d("TAG", "Google sign in failed", e);
@@ -105,9 +107,3 @@ public class LoginModel implements LoginContract.ISignInModel {
     }
 
 }
-
-/*
-* in case of logout
-* saveUserLogIn.clearUserData();
-* saveUserLogIn.setUserLoggedIn(false);
-* */

@@ -75,6 +75,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
             userDetails.setEmail(usrEmail.getText().toString());
             userDetails.setPassword(usrPass.getText().toString());
             userDetails.setName(usrName.getText().toString());
+
             presenter.onSendData(userDetails);
         }
     }
