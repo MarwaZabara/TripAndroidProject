@@ -30,6 +30,7 @@ public class UpComingTripModel implements UpComingTripContract.IUpComingTripMode
         this.presenter = presenter;
         input = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("Trip").child(id);
+//        fetchData();
     }
 
     @Override
@@ -55,5 +56,10 @@ public class UpComingTripModel implements UpComingTripContract.IUpComingTripMode
     @Override
     public List<Trip> returnData() {
         return input;
+    }
+
+    @Override
+    public RecyclerView.Adapter returnAdapter() {
+        return myAdapter;
     }
 }
