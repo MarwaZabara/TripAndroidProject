@@ -17,7 +17,9 @@ public class ReminderReceiver extends BroadcastReceiver {
 //        Ringtone r = RingtoneManager.getRingtone(getActivity(), alarmSound);
 //        r.play();
         Log.i("Done","Recieved");
+
         Intent intent1 = new Intent(context, ReminderActivity.class);
+        intent1.putExtra("requestCode",intent.getIntExtra("requestCode",0));
         context.startActivity(intent1);
     }
 }

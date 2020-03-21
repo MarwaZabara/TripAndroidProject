@@ -15,10 +15,9 @@ public class ReminderPresenter implements Reminder.IReminderPresenter {
     }
 
     @Override
-    public void startReminderService(Calendar calendar) {
+    public void startReminderService(Calendar calendar, int requestCode) {
         ReminderModel reminderModel = new ReminderModel(this,context);
-        int requestID = 1;
-        reminderModel.startAlarmService(calendar,requestID);
+        reminderModel.startAlarmService(calendar,requestCode);
     }
 
     @Override
