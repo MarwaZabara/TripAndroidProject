@@ -1,6 +1,4 @@
-package com.example.tripandroidproject.Contract.UpComingTrip;
-
-import android.content.Context;
+package com.example.tripandroidproject.Contract.Trip;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,15 +7,15 @@ import com.example.tripandroidproject.POJOs.Trip;
 
 import java.util.List;
 
-public class UpComingTripContract {
-    public interface IUpComingTripView{
+public class RetrieveTripContract {
+    public interface IRetrieveTripView{
         void setAdapter(RecyclerView.Adapter myAdapter);
-        RecyclerView.Adapter getAdapter();
+//        RecyclerView.Adapter getAdapter();
     }
-    public interface IUpComingTripPresenter extends IBase {
+    public interface IRetrieveTripPresenter extends IBase {
         List<Trip> getTripList ();
     }
-    public interface IUpComingTripModel{
+    public interface IRetrieveTripModel{
         void fetchData();
         List<Trip> returnData();
         RecyclerView.Adapter returnAdapter();

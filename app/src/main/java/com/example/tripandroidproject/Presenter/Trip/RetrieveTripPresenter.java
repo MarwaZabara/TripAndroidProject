@@ -1,26 +1,23 @@
-package com.example.tripandroidproject.Presenter.UpComingTrip;
+package com.example.tripandroidproject.Presenter.Trip;
 
 import android.content.Context;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.tripandroidproject.Contract.UpComingTrip.UpComingTripContract;
-import com.example.tripandroidproject.Model.UpComingTrip.UpComingTripModel;
+import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.Model.Firebase.FirebaseTripModel;
 import com.example.tripandroidproject.POJOs.Trip;
-
 import java.util.List;
 
-public class UpComingTripPresenter implements UpComingTripContract.IUpComingTripPresenter {
+public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTripPresenter {
     List<Trip> input;
-    UpComingTripContract.IUpComingTripModel model;
-    UpComingTripContract.IUpComingTripView view;
+    RetrieveTripContract.IRetrieveTripModel model;
+    RetrieveTripContract.IRetrieveTripView view;
     Context context;
     RecyclerView.Adapter myAdapter;
 
-    public UpComingTripPresenter(Context context, UpComingTripContract.IUpComingTripView view, String id){
+    public RetrieveTripPresenter(Context context, RetrieveTripContract.IRetrieveTripView view){
         this.context = context;
         this.view = view;
-        model = new UpComingTripModel(context,this,id);
+        model = new FirebaseTripModel(context,this);
         model.fetchData();
     }
 
