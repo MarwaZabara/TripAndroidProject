@@ -17,14 +17,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
 import com.example.tripandroidproject.AddTrip.AddTripActivity;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.Login.LoginActivity;
 import com.example.tripandroidproject.View.SaveUserLogIn;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
-import com.example.tripandroidproject.View.UpComingTrips.TripAdapter;
-import com.example.tripandroidproject.View.UpComingTrips.UpComingTripView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -35,7 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
-public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , RetrieveTripContract.IRetrieveTripView{
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -48,30 +48,9 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 
     //    private RecyclerView recyclerView;
     private RecyclerView.Adapter myAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recyclerView;
     private List<Trip> input;
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu_filter) {
-        getMenuInflater().inflate(R.menu.menu_filter,menu_filter);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.repeated:
-                Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.unrepeated:
-                Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
-
-                break;
-            default:
-                break;
-        }
-        return true;
-    }
+    private RetrieveTripPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,18 +74,20 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        ///////////////////////////////////////////////////////////////
-        RecyclerView recyclerView = findViewById(R.id.recycleView);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recyclerView = findViewById(R.id.recycleView);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        UpComingTripView upComingTripView = new UpComingTripView(this);
-        input = upComingTripView.getData();
-//        myAdapter = new TripAdapter(this,input);
-        myAdapter = upComingTripView.getAdapter();
-        recyclerView.setAdapter(myAdapter);
+        presenter = new RetrieveTripPresenter(this,this);
+//        UpComingTripView upComingTripView = new UpComingTripView(this);
+//        myAdapter = upComingTripView.getAdapter();
+//        recyclerView.setAdapter(myAdapter);
     }
 
     @Override
@@ -147,6 +128,28 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         return false;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu_filter) {
+        getMenuInflater().inflate(R.menu.menu_filter,menu_filter);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.repeated:
+                Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.unrepeated:
+                Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
+
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
     public void setPersonInfo(){
         View hView =  navigationView.getHeaderView(0);
         email = (TextView)hView.findViewById(R.id.navEmail);
@@ -158,6 +161,13 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         name.setText(intent.getStringExtra("Name"));
         String imageUri = intent.getStringExtra("imgUri");
 //        Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+    }
+
+    @Override
+    public void setAdapter(RecyclerView.Adapter myAdapter) {
+        this.myAdapter = myAdapter;
+        this.myAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(myAdapter);
     }
 
     public void GoToAddTrip(View view) {

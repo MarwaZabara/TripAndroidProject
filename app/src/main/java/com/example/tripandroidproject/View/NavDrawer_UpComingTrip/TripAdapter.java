@@ -1,4 +1,4 @@
-package com.example.tripandroidproject.View.UpComingTrips;
+package com.example.tripandroidproject.View.NavDrawer_UpComingTrip;
 
 import android.content.Context;
 import android.view.LayoutInflater;
