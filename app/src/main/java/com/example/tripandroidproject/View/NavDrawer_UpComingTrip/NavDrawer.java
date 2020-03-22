@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.AddTrip.AddTripActivity;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
@@ -169,4 +170,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         recyclerView.setAdapter(myAdapter);
     }
 
+    public void GoToAddTrip(View view) {
+        Intent intent = new Intent(NavDrawer.this, AddTripActivity.class);
+        startActivity(intent);
+    }
 }
