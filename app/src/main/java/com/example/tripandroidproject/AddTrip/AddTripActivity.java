@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -33,7 +34,6 @@ public class AddTripActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(getApplicationContext(),"in addtrip",Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_add_trip);
         Places.initialize(getApplicationContext(), "AIzaSyCVOvMSNN18_AJKQjfKfoWKxsYNF5GNxK0");
 
@@ -42,8 +42,8 @@ public class AddTripActivity extends AppCompatActivity {
     public void StartAutoCompleteActivity(View view) {
         Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
         Intent i = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,
-                Arrays.asList(Place.Field.ID,Place.Field.NAME))
-                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG))
+                .setTypeFilter(TypeFilter.ADDRESS)
                 .setCountries(Arrays.asList("BR","SR","GY","EG"))
                 .build(AddTripActivity.this);
         startActivityForResult(i,AUTOCOMPLETE_REQUEST_CODE);
@@ -59,10 +59,11 @@ public class AddTripActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-                Log.i(TAG, "longLat =  " + place.getLatLng());
-                Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
+                Log.i(TAG, "longLat =  " + place.getLatLng().latitude);
+               // Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Place: " + place.getName() , Toast.LENGTH_LONG).show();
 
-                Toast.makeText(getApplicationContext(), "LONGLAT = " + place.getLatLng(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "LONG = " + place.getLatLng().longitude, Toast.LENGTH_LONG).show();
 
 
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {

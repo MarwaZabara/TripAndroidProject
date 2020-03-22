@@ -16,4 +16,7 @@
     <string name="UpComingTrip">UpComingTrip</string>
     <string name="TripName">Trip Name</string>
     <string name="Add">Add</string>
+    <string name="Description">Description</string>
+    <string name="Rounded">Rounded</string>
+    <string name="Repeat">Repeat</string>
 </resources>
