@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tripandroidproject.AddTrip.AddTripActivity">
+    tools:context=".View.AddTrip.AddTripActivity">
 
 
 <!--    <fragment android:id="@+id/autocomplete_fragment"-->
@@ -17,36 +17,38 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
         android:text="@string/TripName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintHorizontal_bias="0.098"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="212dp"
-        android:layout_height="41dp"
-        android:layout_marginTop="16dp"
+        android:id="@+id/NameTxt"
+        android:layout_width="246dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="@string/TripName"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toEndOf="@+id/textView11"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/AddTripBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="56dp"
-        android:onClick="StartAutoCompleteActivity"
         android:text="@string/Add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText9"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView12"
@@ -55,53 +57,181 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="56dp"
         android:text="@string/Description"
-        app:layout_constraintEnd_toStartOf="@+id/editText2"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toEndOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
     <EditText
-        android:id="@+id/editText2"
-        android:layout_width="248dp"
-        android:layout_height="70dp"
+        android:id="@+id/DescTxt"
+        android:layout_width="242dp"
+        android:layout_height="69dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="36dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="@string/Description"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintStart_toStartOf="@+id/NameTxt"
+        app:layout_constraintTop_toBottomOf="@+id/NameTxt" />
 
     <Switch
         android:id="@+id/switch2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:text="@string/Repeat"
-        tools:layout_editor_absoluteX="40dp"
-        tools:layout_editor_absoluteY="514dp" />
+        app:layout_constraintEnd_toEndOf="@+id/switch1"
+        app:layout_constraintStart_toStartOf="@+id/switch1"
+        app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:text="@string/Rounded"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="568dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DestinationTxt" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/PickStart"
+        android:layout_width="87dp"
+        android:layout_height="49dp"
+        android:text="@string/Pick"
+        app:layout_constraintEnd_toEndOf="@+id/timeTxt"
+        android:onClick="StartAutoCompleteActivity"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/StartLocationTxt"
+        app:layout_constraintTop_toTopOf="@+id/StartLocationTxt" />
+
+    <EditText
+        android:id="@+id/DateTxt"
+        android:layout_width="134dp"
+        android:layout_height="47dp"
+        android:ems="10"
+        android:hint="@string/TripDate"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/timeTxt"
+        app:layout_constraintStart_toStartOf="@+id/textView12" />
+
+    <EditText
+        android:id="@+id/timeTxt"
+        android:layout_width="155dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:hint="@string/TripTime"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/DescTxt"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/DateTxt"
+        app:layout_constraintTop_toBottomOf="@+id/DescTxt" />
+
+    <EditText
+        android:id="@+id/StartLocationTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="287dp"
-        tools:layout_editor_absoluteY="223dp" />
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/StartLocation"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/DateTxt"
+        app:layout_constraintTop_toBottomOf="@+id/DateTxt" />
+
+    <EditText
+        android:id="@+id/DestinationTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/Destination"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/StartLocationTxt"
+        app:layout_constraintStart_toStartOf="@+id/StartLocationTxt"
+        app:layout_constraintTop_toBottomOf="@+id/StartLocationTxt" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/PickEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="286dp"
-        tools:layout_editor_absoluteY="291dp" />
+        android:text="@string/Pick"
+        android:onClick="StartAutoCompleteActivity"
+        app:layout_constraintEnd_toEndOf="@+id/PickStart"
+        app:layout_constraintStart_toStartOf="@+id/PickStart"
+        app:layout_constraintTop_toTopOf="@+id/DestinationTxt" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="121dp"
+        android:layout_height="0dp"
+        android:ems="10"
+        android:hint="@string/RoundDate"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/DateTxt"
+        app:layout_constraintStart_toStartOf="@+id/DestinationTxt"
+        app:layout_constraintTop_toTopOf="@+id/editText2" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="141dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="@string/RoundTime"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/timeTxt"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/timeTxt"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
+    <EditText
+        android:id="@+id/editText8"
+        android:layout_width="84dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="@string/Day"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/switch2" />
+
+    <EditText
+        android:id="@+id/editText9"
+        android:layout_width="97dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="32dp"
+        android:ems="10"
+        android:hint="@string/Week"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/editText8"
+        app:layout_constraintStart_toEndOf="@+id/editText8"
+        app:layout_constraintTop_toTopOf="@+id/editText8" />
+
+    <EditText
+        android:id="@+id/editText10"
+        android:layout_width="85dp"
+        android:layout_height="46dp"
+        android:ems="10"
+        android:hint="@string/Month"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/editText9"
+        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintStart_toEndOf="@+id/editText9"
+        app:layout_constraintTop_toTopOf="@+id/editText9" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="25dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/add2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.tripandroidproject.AddTrip.AddTripActivity"></activity>
+        <activity android:name=".View.AddTrip.AddTripActivity"></activity>
         <activity
             android:name=".View.NavDrawer_UpComingTrip.NavDrawer"
             android:theme="@style/AppTheme.NoActionBar"></activity>

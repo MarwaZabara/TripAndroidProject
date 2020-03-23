@@ -19,4 +19,14 @@
     <string name="Description">Description</string>
     <string name="Rounded">Rounded</string>
     <string name="Repeat">Repeat</string>
+    <string name="TripDate">Trip Date</string>
+    <string name="TripTime">Trip Time</string>
+    <string name="StartLocation">Start Location</string>
+    <string name="Pick">Pick</string>
+    <string name="Destination">Destination</string>
+    <string name="RoundDate">Round Date</string>
+    <string name="RoundTime">Round Time</string>
+    <string name="Day">Day</string>
+    <string name="Week">Week</string>
+    <string name="Month">Month</string>
 </resources>

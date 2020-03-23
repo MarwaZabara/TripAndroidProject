@@ -1,28 +1,23 @@
-package com.example.tripandroidproject.AddTrip;
+package com.example.tripandroidproject.View.AddTrip;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.R;
-import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 import java.util.Arrays;
@@ -30,6 +25,21 @@ import java.util.Arrays;
 public class AddTripActivity extends AppCompatActivity {
     String TAG = "Add";
     int AUTOCOMPLETE_REQUEST_CODE = 1;
+    private EditText NameTxt,DescTxt,TripDateTxt,TripTimetxt,StartLocationTxt,DestinationTxt;
+    private EditText RoundDateTxt,RoundTimeTxt,RepeatDayTxt,RepeatWeekTxt,RepeatMonthTxt;
+    private boolean isRepeat,isRound;
+    private Switch RepeatSwtch,RoundSwtch;
+    String StartLong,StartLat,EndLong,EndLat;
+
+
+
+//    private
+//    SignInButton signInButton;
+//    private UserDetails userDetails;
+//    private GoogleSignInClient mGoogleSignInClient;
+//    private static final int RC_SIGN_IN = 9001;
+//    private LoginPresenter presenter;
+//    private SaveUserLogIn saveUserLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +48,19 @@ public class AddTripActivity extends AppCompatActivity {
         Places.initialize(getApplicationContext(), "AIzaSyCVOvMSNN18_AJKQjfKfoWKxsYNF5GNxK0");
 
     }
-
+    // AutoComplete starts
     public void StartAutoCompleteActivity(View view) {
         Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
         Intent i = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,
                 Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG))
                 .setTypeFilter(TypeFilter.ADDRESS)
-                .setCountries(Arrays.asList("BR","SR","GY","EG"))
+                .setCountries(Arrays.asList("EG"))
                 .build(AddTripActivity.this);
         startActivityForResult(i,AUTOCOMPLETE_REQUEST_CODE);
 
     }
 
-
+// after a place is selected or autocomplete cancelled
     @Override
    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
