@@ -70,16 +70,16 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         database = Room.databaseBuilder(this, AppDatabase.class, "db-trips")
                 .allowMainThreadQueries()   //Allows room to do operation on main thread
                 .build();
-        tripDAO = database.getTripDAO();
-        List<Trip> trip1 = tripDAO.getTrips();
+//        tripDAO = database.getTripDAO();
+//        List<Trip> trip1 = tripDAO.getTrips();
 //        testLbl.setText(trip1.get(0).getId());
         registerBroadcast();
 //        openSenderBroadcast();
 
 
-        GetNotePresenter getNotePresenter = new GetNotePresenter(this,true);
-       List<Note> dasd = getNotePresenter.getNotes("-M2zmue57fQv3tGV5T_N");
-        int x = 6;
+//        GetNotePresenter getNotePresenter = new GetNotePresenter(this,true);
+//       List<Note> dasd = getNotePresenter.getNotes("-M2zmue57fQv3tGV5T_N");
+//        int x = 6;
     }
 
 

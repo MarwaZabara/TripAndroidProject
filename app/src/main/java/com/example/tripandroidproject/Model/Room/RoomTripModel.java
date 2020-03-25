@@ -7,6 +7,7 @@ import androidx.room.Room;
 import com.example.tripandroidproject.Contract.Trip.GetOfflineTripContract;
 import com.example.tripandroidproject.Contract.Trip.ITripPresenter;
 import com.example.tripandroidproject.Contract.Trip.SaveTripContract;
+import com.example.tripandroidproject.Model.Firebase.FirebaseUserModel;
 import com.example.tripandroidproject.POJOs.Trip;
 
 import java.util.List;
@@ -39,6 +40,6 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
     }
     @Override
     public List<Trip> getTrips() {
-        return tripDAO.getTrips();
+        return tripDAO.getTrips(FirebaseUserModel.getUserID());
     }
 }

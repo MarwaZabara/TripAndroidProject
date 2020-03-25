@@ -63,7 +63,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
             retrieveTripPresenter.retrieveUpcomingTrips();
         }
         renderData(trips);
-        
+
 //        myAdapter = new TripAdapter(this.getContext(),trips);
 ////        input = model.returnData();
 ////        myAdapter = returnAdapter();
