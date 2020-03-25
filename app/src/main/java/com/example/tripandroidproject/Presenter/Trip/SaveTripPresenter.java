@@ -31,8 +31,10 @@ public class SaveTripPresenter implements SaveTripContract.ISaveTripPresenter {
 
         }
         else {
-            trip.setIsSync(0);
-            trip.setId(firebaseTripModel.generateKey());
+            if(isOfflineOnly == false) {
+                trip.setIsSync(0);
+                trip.setId(firebaseTripModel.generateKey());
+            }
             roomTripModel.saveTrip(trip);
 
         }

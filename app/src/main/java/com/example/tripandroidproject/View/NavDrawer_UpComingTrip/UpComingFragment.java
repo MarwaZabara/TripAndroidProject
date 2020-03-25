@@ -63,10 +63,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
             retrieveTripPresenter.retrieveUpcomingTrips();
         }
         renderData(trips);
-        GetNotePresenter getNotePresenter = new GetNotePresenter(getContext());
-        List<Note> notes = getNotePresenter.getNotes("-M2zmue57fQv3tGV5T_N");
-        List<Note> notes1 = getNotePresenter.getNotes("-M38W2vTDllHTSOQDDA1");
-        List<Note> notes2 = getNotePresenter.getNotes("-M38WIHH8rBIXbY6mvEx");
+        
 //        myAdapter = new TripAdapter(this.getContext(),trips);
 ////        input = model.returnData();
 ////        myAdapter = returnAdapter();
