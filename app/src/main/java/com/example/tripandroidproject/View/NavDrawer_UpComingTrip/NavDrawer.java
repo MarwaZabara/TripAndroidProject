@@ -19,7 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tripandroidproject.AddTrip.AddTripActivity;
+import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
+import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
+
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.History.HistoryFragment;
 import com.example.tripandroidproject.View.Login.LoginActivity;

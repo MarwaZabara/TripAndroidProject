@@ -1,4 +1,10 @@
 <resources>
+    <string-array name="RepeatEvery">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Never</item>
+    </string-array>
     <string name="app_name">TripAndroidProject</string>
     <string name="Create_your_account">Create your account</string>
     <string name="Name">Name</string>
@@ -24,4 +30,18 @@
     <string name="Description">Description</string>
     <string name="Rounded">Rounded</string>
     <string name="Repeat">Repeat</string>
+    <string name="TripDate">Trip Date</string>
+    <string name="TripTime">Trip Time</string>
+    <string name="StartLocation">Start Location</string>
+    <string name="Pick">Pick</string>
+    <string name="Destination">Destination</string>
+    <string name="RoundDate">Round Date</string>
+    <string name="RoundTime">Round Time</string>
+    <string name="Day">Day</string>
+    <string name="Week">Week</string>
+    <string name="Month">Month</string>
+    <string name="TripDetails">Trip Details</string>
+    <string name="Round">Round</string>
+    <string name="Date">Date</string>
+    <string name="Time">Time</string>
 </resources>
