@@ -126,6 +126,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
                 } else if (options[item].equals("Delete Trip")) {
                     final CharSequence[] alert = {};
                     confirmation(position);
+                    notifyDataSetChanged();
 
                 } else if (options[item].equals("Cancel Trip")) {
                     Trip trip = values.get(position);
