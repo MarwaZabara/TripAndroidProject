@@ -34,6 +34,7 @@ import com.example.tripandroidproject.Model.Room.AppDatabase;
 import com.example.tripandroidproject.Model.Room.TripDAO;
 import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.Presenter.RequestCode.RequestCodePresenter;
 import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
@@ -74,6 +75,11 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 //        testLbl.setText(trip1.get(0).getId());
         registerBroadcast();
 //        openSenderBroadcast();
+
+
+        GetNotePresenter getNotePresenter = new GetNotePresenter();
+       List<Note> dasd = getNotePresenter.getNotes("-M2zmue57fQv3tGV5T_N");
+        int x = 6;
     }
 
 
