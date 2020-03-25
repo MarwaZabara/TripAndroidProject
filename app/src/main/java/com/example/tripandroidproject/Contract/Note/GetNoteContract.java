@@ -10,6 +10,7 @@ import java.util.List;
 public class GetNoteContract {
     public interface IGetNotePresenter extends IBase, INotePresenter {
         public List<Note> getNotes(String tripID);
+        public void onSucessUpcomingNotes(List<Note> notes);
     }
     public interface IGetNoteModel {
 //        public List<Trip> getOfflineTrip();

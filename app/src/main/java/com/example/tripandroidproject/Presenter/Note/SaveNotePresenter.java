@@ -14,15 +14,17 @@ import java.util.List;
 
 public class SaveNotePresenter implements SaveNoteContract.ISaveNotePresenter {
     Context context;
+    RoomNoteModel roomNoteModel;
     public SaveNotePresenter(Context context)  {
         this.context = context;
+        RoomNoteModel roomNoteModel = new RoomNoteModel(this,context);
+
     }
 
     @Override
     public void saveNote(List<Note> notes, String tripid) {
-        RoomNoteModel roomNoteModel = new RoomNoteModel(this,context);
-        FirebaseNoteModel firebaseNoteModel = new FirebaseNoteModel(tripid);
 
+        FirebaseNoteModel firebaseNoteModel = new FirebaseNoteModel(tripid);
         if(Internetonnection.isNetworkAvailable(context))
         {
             for (int i = 0 ; i < notes.size() ; i++)
@@ -34,12 +36,19 @@ public class SaveNotePresenter implements SaveNoteContract.ISaveNotePresenter {
             }
         }
         else {
-            for (int i = 0 ; i < notes.size() ; i++)
-            {
-                notes.get(i).setId(firebaseNoteModel.generateKey());
+
+            saveNotesInRoomOnly(tripid,notes,firebaseNoteModel.generateKey());
+        }
+    }
+    @Override
+    public void saveNotesInRoomOnly(String tripid,List<Note> notes, String generateKey) {
+        for (int i = 0 ; i < notes.size() ; i++)
+        {
+            if(generateKey != null) { // if not null this means that function above called it
+                notes.get(i).setId(generateKey);
                 notes.get(i).setTripID(tripid);
-                roomNoteModel.saveNote(notes.get(i));
             }
+            roomNoteModel.saveNote(notes.get(i));
         }
     }
 

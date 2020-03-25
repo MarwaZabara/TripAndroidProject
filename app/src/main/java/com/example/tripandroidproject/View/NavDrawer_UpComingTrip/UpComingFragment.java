@@ -16,15 +16,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpComingFragment extends Fragment implements RetrieveTripContract.IRetrieveTripView {
 
 
     private RecyclerView.Adapter myAdapter;
     private RecyclerView recyclerView;
-    private RetrieveTripPresenter presenter;
+    private RetrieveTripPresenter retrieveTripPresenter;
+    private GetOfflineTripPresenter getOfflineTripPresenter;
 //    private CommunicatorFrag communicatorFrag;
     private Trip trip;
 
@@ -46,8 +51,19 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        presenter = new RetrieveTripPresenter(this.getContext(),this);
+//        presenter = new RetrieveTripPresenter(this.getContext(),this);
 
+        getOfflineTripPresenter = new GetOfflineTripPresenter(this.getContext());
+        List<Trip> trips = getOfflineTripPresenter.getTrips();
+        if(trips.size() == 0)
+        {
+            retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);
+            retrieveTripPresenter.retrieveUpcomingTrips();
+        }
+        myAdapter = new TripAdapter(this.getContext(),trips);
+//        input = model.returnData();
+//        myAdapter = returnAdapter();
+        setAdapter(myAdapter);
         return view;
     }
 

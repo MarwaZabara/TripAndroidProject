@@ -26,6 +26,7 @@ import android.widget.TimePicker;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Broadcast.ReminderService.ReminderReceiver;
 import com.example.tripandroidproject.Contract.RequestCode.RequestCodeContract;
+import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
 import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
 import com.example.tripandroidproject.Model.Firebase.FirebaseRequestCodeModel;
 import com.example.tripandroidproject.Model.InternetConnection.Internetonnection;
@@ -33,6 +34,7 @@ import com.example.tripandroidproject.Model.Room.AppDatabase;
 import com.example.tripandroidproject.Model.Room.TripDAO;
 import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.Presenter.RequestCode.RequestCodePresenter;
 import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
@@ -73,6 +75,11 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 //        testLbl.setText(trip1.get(0).getId());
         registerBroadcast();
 //        openSenderBroadcast();
+
+
+        GetNotePresenter getNotePresenter = new GetNotePresenter();
+       List<Note> dasd = getNotePresenter.getNotes("-M2zmue57fQv3tGV5T_N");
+        int x = 6;
     }
 
 
@@ -170,7 +177,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         retrieveRequestCode(requestCode);
 
 
-        Calendar calendar2 = generateCalendar(trip.getDate(),trip.getTime());
+        Calendar calendar2 = GenerateCalendarObject.generateCalendar(trip.getDate(),trip.getTime());
 
         ReminderPresenter reminderPresenter = new ReminderPresenter(this);
         reminderPresenter.startReminderService(calendar2,trip.getRequestCodeHome());
@@ -184,19 +191,19 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 
     }
 
-    private Calendar generateCalendar(String date, String time) {
-
-        List<String> dateSp = Arrays.asList(date.split("-"));
-        List<String> timeSp = Arrays.asList(time.split("-"));
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateSp.get(0)));
-        calendar.set(Calendar.MONTH, Integer.parseInt(dateSp.get(1)));
-        calendar.set(Calendar.YEAR, Integer.parseInt(dateSp.get(2)));
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeSp.get(0)));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(timeSp.get(1)));
-        calendar.set(Calendar.SECOND, 0);
-        return calendar;
-    }
+//    private Calendar generateCalendar(String date, String time) {
+//
+//        List<String> dateSp = Arrays.asList(date.split("-"));
+//        List<String> timeSp = Arrays.asList(time.split("-"));
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateSp.get(0)));
+//        calendar.set(Calendar.MONTH, Integer.parseInt(dateSp.get(1)));
+//        calendar.set(Calendar.YEAR, Integer.parseInt(dateSp.get(2)));
+//        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeSp.get(0)));
+//        calendar.set(Calendar.MINUTE, Integer.parseInt(timeSp.get(1)));
+//        calendar.set(Calendar.SECOND, 0);
+//        return calendar;
+//    }
 
 
     public void openTime(View view) {

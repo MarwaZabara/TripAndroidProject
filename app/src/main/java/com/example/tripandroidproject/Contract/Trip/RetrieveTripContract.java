@@ -14,6 +14,8 @@ public class RetrieveTripContract {
     }
     public interface IRetrieveTripPresenter extends IBase {
         List<Trip> getTripList ();
+        public void retrieveUpcomingTrips();
+        public void onSuccessGetUpcomingTrips(List<Trip> trips);
     }
     public interface IRetrieveTripModel{
         void fetchData();
