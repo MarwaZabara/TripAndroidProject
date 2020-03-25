@@ -64,11 +64,6 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         }
 
         renderData(trips);
-
-//        myAdapter = new TripAdapter(this.getContext(),trips);
-////        input = model.returnData();
-////        myAdapter = returnAdapter();
-//        setAdapter(myAdapter);
         return view;
     }
 
@@ -80,11 +75,9 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
     }
     @Override
     public void renderData(List<Trip> trips) {
-//        this.myAdapter = myAdapter;
-//        this.myAdapter.notifyDataSetChanged();
-//        recyclerView.setAdapter(myAdapter);
         myAdapter = new TripAdapter(this.getContext(),trips);
         setAdapter(myAdapter);
+//        myAdapter.notifyDataSetChanged();
     }
 
 }
