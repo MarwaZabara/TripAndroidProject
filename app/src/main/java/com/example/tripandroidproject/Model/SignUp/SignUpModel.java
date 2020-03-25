@@ -40,7 +40,6 @@ public class SignUpModel implements SignUpContract.ISignUpModel {
                     Log.d(TAG, "createUserWithEmail:success");
                     roomPersonModel.savePerson(userDetails);
                     presenter.onSucess();
-//                    FirebaseUser user = mAuth.getCurrentUser();
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());

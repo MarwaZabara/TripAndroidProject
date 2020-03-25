@@ -8,7 +8,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +32,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -41,7 +45,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     private SaveUserLogIn saveUserLogIn;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private AppAdapter appAdapter;
     private ViewPager viewPager;
 
     @Override
@@ -83,7 +86,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(NavDrawer.this, "UpComingTrip us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(0);
                 drawerLayout.closeDrawers();
-//                startActivity(new Intent(this,NavDrawer.class));
                 break;
             case R.id.history:
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
@@ -145,11 +147,16 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         ImageView imageView = (ImageView) hView.findViewById(R.id.profilePic);
 
         Intent intent = getIntent();
+        String pass = intent.getStringExtra("password");
         email.setText(intent.getStringExtra("Email"));
         name.setText(intent.getStringExtra("Name"));
         String imageUri = intent.getStringExtra("imgUri");
-//        imageView.setImageURI(Uri.parse(imageUri));
-//        Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+        if (pass == null) {
+            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+        }else {
+            imageView.setImageURI(Uri.parse(imageUri));
+//            Picasso.get().load("http://www.google.co.in/"+imageUri).resize(120, 120).centerCrop().into(imageView);
+        }
     }
 
 
@@ -160,8 +167,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 
     private void setupViewPager(ViewPager viewPager1){
         AppAdapter adapter = new AppAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UpComingFragment(),"UpComingTrips");
-        adapter.addFragment(new HistoryFragment(),"History");
+        adapter.addFragment(new UpComingFragment(),"UpComingTrips");   //// fragmentNum --> 0
+        adapter.addFragment(new HistoryFragment(),"History");          //// fragmentNum --> 1
 
         viewPager1.setAdapter(adapter);
     }

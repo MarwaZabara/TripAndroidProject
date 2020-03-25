@@ -37,7 +37,6 @@ public class SaveUserLogIn {
         if (localDB.getBoolean("loggedIn", false) == false) {
             return null;
         }
-
         String email = localDB.getString("email", "");
         String name = localDB.getString("name","");
         String imgUri = localDB.getString("imgUri","");

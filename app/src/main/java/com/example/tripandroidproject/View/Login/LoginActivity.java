@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     @Override
     protected void onStart() {
         super.onStart();
-
         saveUserLogIn = new SaveUserLogIn(this);
         if (saveUserLogIn.getLoggedInUser() == null) {
             //////////////if user is coming from sign up///////////
@@ -81,11 +80,13 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
             Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
         }else {
             Intent intent = new Intent(this,NavDrawer.class);
+            /////////////////////get user information to sent it to nav drawer/////////////////////////
             userDetails = saveUserLogIn.getLoggedInUser();
             presenter.onSendData(userDetails);
             intent.putExtra("Email",userDetails.getEmail());
+            intent.putExtra("Password",userDetails.getPassword());
             intent.putExtra("Name",userDetails.getName());
-//            intent.putExtra("imgUri",userDetails.getImgUri());
+            intent.putExtra("imgUri",userDetails.getImgUri());
             startActivity(intent);
         }
     }
@@ -115,14 +116,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     @Override
     public void showMessage(Boolean result) {
         if (result){
-            Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this,NavDrawer.class);
             intent.putExtra("Email",userDetails.getEmail());
             intent.putExtra("Name",userDetails.getName());
             intent.putExtra("imgUri",userDetails.getImgUri());
+            intent.putExtra("password",userDetails.getPassword());
             startActivity(intent);
         }else{
-
             Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();
         }
     }

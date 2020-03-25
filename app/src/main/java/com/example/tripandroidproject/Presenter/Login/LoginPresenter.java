@@ -34,8 +34,9 @@ public class LoginPresenter implements LoginContract.ISignInPresenter , RoomPers
     public void onSucess() {
         result = true;
         Log.d("TAG","Success");
-        view.showMessage(result);
         personView.setCurrentPerson(userDetails);
+        view.showMessage(result);
+
     }
 
     @Override

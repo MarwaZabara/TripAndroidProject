@@ -7,6 +7,7 @@ import androidx.room.Room;
 import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
 import com.example.tripandroidproject.POJOs.Person;
 import com.example.tripandroidproject.View.UserDetails;
+import java.util.List;
 
 public class RoomPersonModel implements RoomPersonContract.IRoomPersonModel {
 
@@ -14,6 +15,7 @@ public class RoomPersonModel implements RoomPersonContract.IRoomPersonModel {
     private AppDatabase database;
     private PersonDAO personDAO;
     private Person person;
+    private List<Person> allPersons;
 
     public RoomPersonModel(Context context){
         this.context = context;
@@ -22,6 +24,7 @@ public class RoomPersonModel implements RoomPersonContract.IRoomPersonModel {
                 .build();
         personDAO = database.getPersonDAO();
         person = new Person();
+        allPersons = personDAO.getAllPersons();
     }
 
     @Override
@@ -50,4 +53,5 @@ public class RoomPersonModel implements RoomPersonContract.IRoomPersonModel {
         }
         return user;
     }
+
 }

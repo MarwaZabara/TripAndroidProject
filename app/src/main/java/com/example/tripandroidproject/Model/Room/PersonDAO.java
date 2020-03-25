@@ -7,6 +7,8 @@ import androidx.room.Update;
 
 import com.example.tripandroidproject.POJOs.Person;
 
+import java.util.List;
+
 @Dao
 public interface PersonDAO {
     @Insert
@@ -17,4 +19,7 @@ public interface PersonDAO {
 
     @Query("SELECT * FROM Person WHERE email = :personEmail")
     public Person getPerson(String personEmail);
+
+    @Query("SELECT * FROM Person")
+    List<Person> getAllPersons();
 }

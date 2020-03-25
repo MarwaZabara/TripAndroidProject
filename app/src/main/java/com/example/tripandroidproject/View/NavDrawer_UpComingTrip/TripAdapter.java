@@ -36,7 +36,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     private String tripName;
     private View view;
-    private DeleteTripContract.IDeleteTripPresenter presenter;
+    private DeleteTripPresenter presenter;
 
     public TripAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
         values = myDataSet;

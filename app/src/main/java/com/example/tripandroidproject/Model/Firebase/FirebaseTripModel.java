@@ -37,7 +37,8 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     public FirebaseTripModel(){
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("Trip").child(mAuth.getCurrentUser().getUid());
+        String userID = mAuth.getCurrentUser().getUid();
+        myRef = database.getReference("Trip").child(userID);
     }
 
     public FirebaseTripModel(ITripPresenter tripPresenter) {
@@ -70,7 +71,6 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     @Override
     public void fetchData() {
         Query query = myRef.orderByChild("status").equalTo("upcoming");
-
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -79,7 +79,6 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
                     Trip trip = tripSnapShot.getValue(Trip.class);
                     input.add(trip);
                 }
-//                myAdapter = new TripAdapter(context,input);
                 retrieveTripPresenter.onSuccessGetUpcomingTrips(input);
             }
 
