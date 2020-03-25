@@ -11,6 +11,7 @@ import java.util.List;
 public class SaveNoteContract {
     public interface ISaveNotePresenter extends IBase, INotePresenter {
         public void saveNote(List<Note> notes, String tripid);
+        public void saveNotesInRoomOnly(String tripid,List<Note> notes, String generateKey);
     }
     public interface ISaveNoteOnlineModel extends IFirebaseBase {
         public void saveNote(Note note);

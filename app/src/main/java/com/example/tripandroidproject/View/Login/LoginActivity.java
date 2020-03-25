@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Contract.Login.LoginContract;
+import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
 import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.NavDrawer;
@@ -21,7 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.ISignInView {
+public class LoginActivity extends AppCompatActivity implements LoginContract.ISignInView , RoomPersonContract.IRoomPersonView {
 
     private EditText loginEmail,loginPassword;
     private SignInButton signInButton;
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        presenter = new LoginPresenter(this,this);
+        presenter = new LoginPresenter(this,this,this);
 
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
@@ -58,17 +59,34 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         saveUserLogIn = new SaveUserLogIn(this);
         if (saveUserLogIn.getLoggedInUser() == null) {
+            //////////////if user is coming from sign up///////////
+            Intent intent = getIntent();
+            if (intent.getStringExtra("fromSignUp")!=null){
+                userDetails.setName(intent.getStringExtra("name"));
+                userDetails.setEmail(intent.getStringExtra("email"));
+                userDetails.setImgUri(intent.getStringExtra("imgUri"));
+
+                loginEmail.setText(intent.getStringExtra("email"));
+                loginPassword.setText(intent.getStringExtra("password"));
+                Toast.makeText(this, userDetails.getEmail(), Toast.LENGTH_SHORT).show();
+            }
             Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
         }else {
-            userDetails = saveUserLogIn.getLoggedInUser();
-            String em = userDetails.getEmail();
-            String na = userDetails.getName();
             Intent intent = new Intent(this,NavDrawer.class);
+            /////////////////////get user information to sent it to nav drawer/////////////////////////
+            userDetails = saveUserLogIn.getLoggedInUser();
+            presenter.onSendData(userDetails);
             intent.putExtra("Email",userDetails.getEmail());
+            intent.putExtra("Password",userDetails.getPassword());
             intent.putExtra("Name",userDetails.getName());
+            intent.putExtra("imgUri",userDetails.getImgUri());
             startActivity(intent);
         }
     }
@@ -98,17 +116,21 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     @Override
     public void showMessage(Boolean result) {
         if (result){
-            Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
-//            userDetails = saveUserLogIn.getLoggedInUser();
-            String em = userDetails.getEmail();
-            String na = userDetails.getName();
+//            Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this,NavDrawer.class);
             intent.putExtra("Email",userDetails.getEmail());
             intent.putExtra("Name",userDetails.getName());
+            intent.putExtra("imgUri",userDetails.getImgUri());
+            intent.putExtra("password",userDetails.getPassword());
             startActivity(intent);
         }else{
-
             Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public UserDetails setCurrentPerson(UserDetails userDetails) {
+        this.userDetails = userDetails;
+        return userDetails;
     }
 }

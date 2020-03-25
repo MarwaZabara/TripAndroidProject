@@ -3,6 +3,7 @@ package com.example.tripandroidproject.Presenter.Note;
 import android.content.Context;
 
 import com.example.tripandroidproject.Contract.Note.GetNoteContract;
+import com.example.tripandroidproject.Model.Firebase.FirebaseNoteModel;
 import com.example.tripandroidproject.Model.Room.RoomNoteModel;
 import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Note;
@@ -12,8 +13,14 @@ import java.util.List;
 
 public class GetNotePresenter implements GetNoteContract.IGetNotePresenter {
     Context context;
+    FirebaseNoteModel firebaseNoteModel;
     public GetNotePresenter(Context context) {
         this.context = context;
+    }
+
+    public GetNotePresenter(Context context,boolean isFirebase) {
+        firebaseNoteModel = new FirebaseNoteModel(this);
+
     }
 
     @Override
@@ -30,5 +37,14 @@ public class GetNotePresenter implements GetNoteContract.IGetNotePresenter {
     @Override
     public void onFail() {
 
+    }
+    @Override
+    public void onSucessUpcomingNotes(List<Note> notes) {
+        SaveNotePresenter saveNotePresenter = new SaveNotePresenter(context);
+        saveNotePresenter.saveNotesInRoomOnly(null,notes,null);
+    }
+    public void getUpComingNotes(String tripId, Context context) {
+        this.context = context;
+        firebaseNoteModel.getUpcomingNotesForSpecificTrip(tripId);
     }
 }
