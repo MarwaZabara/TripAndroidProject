@@ -76,6 +76,8 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         StartLocationTxt = findViewById(R.id.StartLocationTxt);
         DestinationTxt = findViewById(R.id.DestinationTxt);
         TripTimetxt = findViewById(R.id.TripTimeTxt);
+        NameTxt = findViewById(R.id.NameTxt);
+        DescTxt = findViewById(R.id.DescTxt);
         Next = findViewById(R.id.NextBtn);
         Repeatspinner = findViewById(R.id.Repeatspinner);
         Repeatspinner.setSelection(3);
@@ -183,8 +185,8 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                 TripDesc = DescTxt.getText().toString();
                 Trip trip = new Trip();
                // trip.setId(testTxt.getText().toString());
-               // trip.setName("Trip" + String.valueOf(requestCode));
-               // trip.setDescription("Description" + String.valueOf(requestCode));
+                trip.setName(TripName);
+                trip.setDescription(TripDesc);
                 trip.setIsRound(isRound);
                 trip.setDate(TripDate);
                 trip.setTime(TripTime);

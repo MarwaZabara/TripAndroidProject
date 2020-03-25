@@ -155,12 +155,12 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         email.setText(intent.getStringExtra("Email"));
         name.setText(intent.getStringExtra("Name"));
         String imageUri = intent.getStringExtra("imgUri");
-        if (pass == null) {
-            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
-        }else {
-            imageView.setImageURI(Uri.parse(imageUri));
-//            Picasso.get().load("http://www.google.co.in/"+imageUri).resize(120, 120).centerCrop().into(imageView);
-        }
+//        if (pass == null) {
+//            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+//        }else {
+//            imageView.setImageURI(Uri.parse(imageUri));
+////            Picasso.get().load("http://www.google.co.in/"+imageUri).resize(120, 120).centerCrop().into(imageView);
+//        }
     }
 
 
