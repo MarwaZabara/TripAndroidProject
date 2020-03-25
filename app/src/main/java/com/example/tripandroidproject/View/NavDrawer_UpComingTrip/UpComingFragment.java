@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
@@ -60,10 +62,15 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
             retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);
             retrieveTripPresenter.retrieveUpcomingTrips();
         }
-        myAdapter = new TripAdapter(this.getContext(),trips);
-//        input = model.returnData();
-//        myAdapter = returnAdapter();
-        setAdapter(myAdapter);
+        renderData(trips);
+        GetNotePresenter getNotePresenter = new GetNotePresenter(getContext());
+        List<Note> notes = getNotePresenter.getNotes("-M2zmue57fQv3tGV5T_N");
+        List<Note> notes1 = getNotePresenter.getNotes("-M38W2vTDllHTSOQDDA1");
+        List<Note> notes2 = getNotePresenter.getNotes("-M38WIHH8rBIXbY6mvEx");
+//        myAdapter = new TripAdapter(this.getContext(),trips);
+////        input = model.returnData();
+////        myAdapter = returnAdapter();
+//        setAdapter(myAdapter);
         return view;
     }
 
@@ -72,6 +79,14 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         this.myAdapter = myAdapter;
         this.myAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(myAdapter);
+    }
+    @Override
+    public void renderData(List<Trip> trips) {
+//        this.myAdapter = myAdapter;
+//        this.myAdapter.notifyDataSetChanged();
+//        recyclerView.setAdapter(myAdapter);
+        myAdapter = new TripAdapter(this.getContext(),trips);
+        setAdapter(myAdapter);
     }
 
 }

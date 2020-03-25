@@ -77,7 +77,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 //        openSenderBroadcast();
 
 
-        GetNotePresenter getNotePresenter = new GetNotePresenter();
+        GetNotePresenter getNotePresenter = new GetNotePresenter(this,true);
        List<Note> dasd = getNotePresenter.getNotes("-M2zmue57fQv3tGV5T_N");
         int x = 6;
     }
@@ -173,7 +173,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         notes.add(note1);
         trip.setNotes(notes);
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
-        saveTripPresenter.saveTrip(trip);
+        saveTripPresenter.saveTrip(trip,false);
         retrieveRequestCode(requestCode);
 
 
