@@ -18,7 +18,7 @@ public class GetNotePresenter implements GetNoteContract.IGetNotePresenter {
         this.context = context;
     }
 
-    public GetNotePresenter() {
+    public GetNotePresenter(Context context,boolean isFirebase) {
         firebaseNoteModel = new FirebaseNoteModel(this);
 
     }
@@ -43,7 +43,8 @@ public class GetNotePresenter implements GetNoteContract.IGetNotePresenter {
         SaveNotePresenter saveNotePresenter = new SaveNotePresenter(context);
         saveNotePresenter.saveNotesInRoomOnly(null,notes,null);
     }
-    public void getUpComingNotes(String tripId) {
+    public void getUpComingNotes(String tripId, Context context) {
+        this.context = context;
         firebaseNoteModel.getUpcomingNotesForSpecificTrip(tripId);
     }
 }

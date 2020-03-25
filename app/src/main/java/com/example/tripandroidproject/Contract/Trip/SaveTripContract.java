@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SaveTripContract {
     public interface ISaveTripPresenter extends IBase,ITripPresenter {
-        public void saveTrip(Trip trip);
+        public void saveTrip(Trip trip,boolean isOfflineOnly);
     }
     public interface ISaveTripOnlineModel extends IFirebaseBase {
         public void saveTrip(Trip trip);

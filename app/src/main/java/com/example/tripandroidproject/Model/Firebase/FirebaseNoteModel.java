@@ -1,5 +1,7 @@
 package com.example.tripandroidproject.Model.Firebase;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.example.tripandroidproject.Contract.Note.INotePresenter;
@@ -38,12 +40,13 @@ public class FirebaseNoteModel implements SaveNoteContract.ISaveNoteOnlineModel 
 
     public FirebaseNoteModel(INotePresenter notePresenter) {
         this.notePresenter = notePresenter;
+
     }
 
     private void initializeVariables(String tripID) {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("Note").child(mAuth.getCurrentUser().getUid()).child(this.tripID);
+        myRef = database.getReference("Note").child(mAuth.getCurrentUser().getUid()).child(tripID);
     }
 
     @Override
@@ -57,6 +60,10 @@ public class FirebaseNoteModel implements SaveNoteContract.ISaveNoteOnlineModel 
     }
 
     public void getUpcomingNotesForSpecificTrip(String tripId) {
+        if(myRef == null)
+        {
+            initializeVariables(tripId);
+        }
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

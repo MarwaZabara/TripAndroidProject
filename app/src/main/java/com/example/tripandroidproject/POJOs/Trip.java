@@ -15,6 +15,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     @PrimaryKey
     @NonNull
     private String id;
+    private String userID;
     private String name;
 //    private int isFinished; // instead of boolean for firebase 1 or 0 performance better than true and false
     private String description;
@@ -51,6 +52,14 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     @Exclude
     public List<Note> getNotes() {
         return notes;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public void setNotes(List<Note> notes) {

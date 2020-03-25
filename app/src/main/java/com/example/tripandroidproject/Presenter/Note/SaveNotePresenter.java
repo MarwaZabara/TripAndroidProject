@@ -17,7 +17,7 @@ public class SaveNotePresenter implements SaveNoteContract.ISaveNotePresenter {
     RoomNoteModel roomNoteModel;
     public SaveNotePresenter(Context context)  {
         this.context = context;
-        RoomNoteModel roomNoteModel = new RoomNoteModel(this,context);
+        roomNoteModel = new RoomNoteModel(this,context);
 
     }
 

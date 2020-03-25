@@ -58,7 +58,7 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
 
     @Override
     public void saveTrip(Trip trip) {
-        //trip.setId(generateKey());
+        trip.setUserID(FirebaseUserModel.getUserID());
         myRef.child(trip.getId()).setValue(trip);
     }
 
@@ -66,6 +66,10 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     public String generateKey() {
         return myRef.push().getKey();
     }
+//    @Override
+//    public String getUserID() {
+//        return mAuth.getCurrentUser().getUid();
+//    }
 
 
     @Override

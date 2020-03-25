@@ -18,11 +18,11 @@ public class SaveTripPresenter implements SaveTripContract.ISaveTripPresenter {
     }
 
     @Override
-    public void saveTrip(Trip trip) {
+    public void saveTrip(Trip trip,boolean isOfflineOnly) {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
 
-        if(Internetonnection.isNetworkAvailable(context))
+        if(Internetonnection.isNetworkAvailable(context) && isOfflineOnly == false)
         {
             trip.setIsSync(1);
             trip.setId(firebaseTripModel.generateKey());
@@ -31,12 +31,14 @@ public class SaveTripPresenter implements SaveTripContract.ISaveTripPresenter {
 
         }
         else {
-            trip.setIsSync(0);
-            trip.setId(firebaseTripModel.generateKey());
+            if(isOfflineOnly == false) {
+                trip.setIsSync(0);
+                trip.setId(firebaseTripModel.generateKey());
+            }
             roomTripModel.saveTrip(trip);
 
         }
-        if (trip.getNotes().size() > 0)
+        if (isOfflineOnly == false && trip.getNotes().size() > 0)
         {
             SaveNotePresenter saveNotePresenter = new SaveNotePresenter(context);
             saveNotePresenter.saveNote(trip.getNotes(),trip.getId());

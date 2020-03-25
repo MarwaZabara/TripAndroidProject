@@ -20,8 +20,8 @@ public interface TripDAO {
 
     @Delete
     public void delete(Trip trip);
-    @Query("SELECT * FROM Trip")
-    public List<Trip> getTrips();
+    @Query("SELECT * FROM Trip WHERE userID = :userId")
+    public List<Trip> getTrips(String userId);
     @Query("SELECT * FROM Trip WHERE isSync = 0")
     public List<Trip> getOfflineTrips();
     @Query("SELECT * FROM Trip WHERE requestCodeHome = :requestCode OR requestCodeAway = :requestCode")

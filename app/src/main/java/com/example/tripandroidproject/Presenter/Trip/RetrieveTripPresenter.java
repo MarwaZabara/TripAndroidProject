@@ -31,17 +31,18 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
 
     @Override
     public void onSuccessGetUpcomingTrips(List<Trip> trips) {
+        view.renderData(trips);
+        SaveTripPresenter saveTripPresenter = new SaveTripPresenter(context);
+
         for (int i = 0 ; i < trips.size() ; i++){
-            getNotePresenter = new GetNotePresenter();
-            getNotePresenter.getUpComingNotes(trips.get(i).getId());
+            saveTripPresenter.saveTrip(trips.get(i),true);
+            getNotePresenter = new GetNotePresenter(context,true);
+            getNotePresenter.getUpComingNotes(trips.get(i).getId(),context);
         }
     }
 
     @Override
     public void onSucess() {
-        input = model.returnData();
-        myAdapter = model.returnAdapter();
-        view.setAdapter(myAdapter);
     }
 
     @Override

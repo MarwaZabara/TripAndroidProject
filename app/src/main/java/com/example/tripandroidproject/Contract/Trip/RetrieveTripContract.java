@@ -10,6 +10,7 @@ import java.util.List;
 public class RetrieveTripContract {
     public interface IRetrieveTripView{
         void setAdapter(RecyclerView.Adapter myAdapter);
+        public void renderData(List<Trip> trips);
 //        RecyclerView.Adapter getAdapter();
     }
     public interface IRetrieveTripPresenter extends IBase {
