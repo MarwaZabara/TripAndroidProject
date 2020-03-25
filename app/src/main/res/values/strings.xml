@@ -16,6 +16,11 @@
     <string name="UpComingTrip">UpComingTrip</string>
     <string name="TripName">Trip Name</string>
     <string name="Add">Add</string>
+    <string name="History">History</string>
+    <string name="Confimation">Are you sure to delete trip?</string>
+    <string name="Warnning">Warning</string>
+    <string name="No">No</string>
+    <string name="Yes">Yes</string>
     <string name="Description">Description</string>
     <string name="Rounded">Rounded</string>
     <string name="Repeat">Repeat</string>

@@ -7,8 +7,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.room.Room;
 
 import com.example.tripandroidproject.Contract.Login.LoginContract;
+import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
+import com.example.tripandroidproject.Model.Room.AppDatabase;
+import com.example.tripandroidproject.Model.Room.PersonDAO;
+import com.example.tripandroidproject.Model.Room.RoomPersonModel;
 import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.Login.LoginActivity;
@@ -37,17 +42,22 @@ public class LoginModel implements LoginContract.ISignInModel {
     private Context context;
     private LoginContract.ISignInPresenter presenter;
     private SaveUserLogIn saveUserLogIn;
+    private RoomPersonModel roomPersonModel;
+    private RoomPersonContract.IRoomPersonPresenter personPresenter;
 
-    public LoginModel(Context context, LoginContract.ISignInPresenter presenter){
+    public LoginModel(Context context, LoginContract.ISignInPresenter presenter,RoomPersonContract.IRoomPersonPresenter personPresenter){
         mAuth = FirebaseAuth.getInstance();
         this.context = context;
         this.presenter = presenter;
+        this.personPresenter = personPresenter;
         saveUserLogIn = new SaveUserLogIn(context);
+        roomPersonModel = new RoomPersonModel(this.context);
     }
 
     @Override
     public void signIn(final UserDetails userDetails) {
         if (userDetails.getEmail().matches("") | userDetails.getPassword().matches("")) {
+            Log.d(TAG,"error from sign in");
             return;
         }
         mAuth.signInWithEmailAndPassword(userDetails.getEmail(), userDetails.getPassword())
@@ -55,9 +65,11 @@ public class LoginModel implements LoginContract.ISignInModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
+//                            FirebaseUser user = mAuth.getCurrentUser();
+                            UserDetails user = roomPersonModel.getCurrentPerson(userDetails.getEmail());
+                            personPresenter.setCurrentPerson(user);
                             presenter.onSucess();
-                            saveUserLogIn.storeUserData(userDetails);
+                            saveUserLogIn.storeUserData(user);
                             saveUserLogIn.setUserLoggedIn(true);
                         } else {
                             Log.d("TAG", "signInWithEmail:failure", task.getException());
@@ -96,6 +108,9 @@ public class LoginModel implements LoginContract.ISignInModel {
                 userDetails.setEmail(account.getEmail());
                 userDetails.setName(account.getGivenName());
                 userDetails.setImgUri(account.getPhotoUrl().toString());
+                //// in case of sign in by gmail user needs internet cann't sign in offline
+//                UserDetails user = roomPersonModel.getCurrentPerson(userDetails.getEmail());
+                personPresenter.setCurrentPerson(userDetails);
                 saveUserLogIn.storeUserData(userDetails);
                 saveUserLogIn.setUserLoggedIn(true);
                 presenter.onSucess();

@@ -5,8 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
 import com.example.tripandroidproject.AddTrip.AddTripActivity;
-import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.View.History.HistoryFragment;
 import com.example.tripandroidproject.View.Login.LoginActivity;
 import com.example.tripandroidproject.View.SaveUserLogIn;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
@@ -33,9 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
-
-public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener , RetrieveTripContract.IRetrieveTripView{
+public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -46,16 +41,17 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     private SaveUserLogIn saveUserLogIn;
     private GoogleSignInClient mGoogleSignInClient;
 
-    //    private RecyclerView recyclerView;
-    private RecyclerView.Adapter myAdapter;
-    private RecyclerView recyclerView;
-    private List<Trip> input;
-    private RetrieveTripPresenter presenter;
+    private AppAdapter appAdapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
+//////////////////////////////////////////////////////////////////
+        viewPager = (ViewPager) findViewById(R.id.container);
+        setupViewPager(viewPager);
+/////////////////////////////////////////////////////////////////
         mAuth = FirebaseAuth.getInstance();
         saveUserLogIn = new SaveUserLogIn(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,20 +73,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        recyclerView = findViewById(R.id.recycleView);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
-        presenter = new RetrieveTripPresenter(this,this);
-//        UpComingTripView upComingTripView = new UpComingTripView(this);
-//        myAdapter = upComingTripView.getAdapter();
-//        recyclerView.setAdapter(myAdapter);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.profile:
@@ -98,10 +80,13 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 break;
             case R.id.upComingTrip:
                 Toast.makeText(NavDrawer.this, "UpComingTrip us Selected", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this,NavDrawer.class));
+                setViewPager(0);
+//                startActivity(new Intent(this,NavDrawer.class));
                 break;
             case R.id.history:
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
+                setViewPager(1);
+//                startActivity(new Intent(NavDrawer.this, HistoryActivity.class));
                 break;
             case R.id.synch:
                 Intent intent = new Intent(this, TestReminder.class);
@@ -117,7 +102,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                                 // ...
                             }
                         });
-                saveUserLogIn.clearUserData();
+//                saveUserLogIn.clearUserData();
                 saveUserLogIn.setUserLoggedIn(false);
                 Intent intentLoginActivity = new Intent(this, LoginActivity.class);
                 startActivity(intentLoginActivity);
@@ -160,18 +145,25 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         email.setText(intent.getStringExtra("Email"));
         name.setText(intent.getStringExtra("Name"));
         String imageUri = intent.getStringExtra("imgUri");
+//        imageView.setImageURI(Uri.parse(imageUri));
 //        Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
     }
 
-    @Override
-    public void setAdapter(RecyclerView.Adapter myAdapter) {
-        this.myAdapter = myAdapter;
-        this.myAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(myAdapter);
-    }
 
     public void GoToAddTrip(View view) {
         Intent intent = new Intent(NavDrawer.this, AddTripActivity.class);
         startActivity(intent);
+    }
+
+    private void setupViewPager(ViewPager viewPager1){
+        AppAdapter adapter = new AppAdapter(getSupportFragmentManager());
+        adapter.addFragment(new UpComingFragment(),"UpComingTrips");
+        adapter.addFragment(new HistoryFragment(),"History");
+
+        viewPager1.setAdapter(adapter);
+    }
+
+    private void setViewPager(int fragmentNum) {
+        viewPager.setCurrentItem(fragmentNum);
     }
 }

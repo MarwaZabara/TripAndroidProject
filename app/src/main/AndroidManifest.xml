@@ -13,15 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.tripandroidproject.AddTrip.AddTripActivity"></activity>
+        <activity android:name=".AddTrip.AddTripActivity" />
         <activity
             android:name=".View.NavDrawer_UpComingTrip.NavDrawer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".View.Reminder.ReminderActivity"
             android:theme="@style/Theme.AppCompat.Transparent.NoActionBar" />
         <activity android:name=".View.UnderTest.TestReminder" />
-        <activity android:name=".View.SignUp.SignupActivity"></activity>
+        <activity android:name=".View.SignUp.SignupActivity" />
         <activity android:name=".View.Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,6 +48,5 @@
 <!--        </receiver>-->
 
     </application>
-
 
 </manifest>
