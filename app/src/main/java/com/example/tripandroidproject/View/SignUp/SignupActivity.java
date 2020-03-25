@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity implements SignUpContract.ISignUpView {
@@ -44,6 +45,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
     private SignUpPresenter presenter;
     private EditText usrName,usrEmail,usrPass,usrConfirmPass;
     private ImageView usrImg;
+    private String usrImgUri = "";
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
                     "(?=.*[0-9])" +         //at least 1 digit
@@ -75,7 +77,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
             userDetails.setEmail(usrEmail.getText().toString());
             userDetails.setPassword(usrPass.getText().toString());
             userDetails.setName(usrName.getText().toString());
-
+            userDetails.setImgUri(usrImgUri);
             presenter.onSendData(userDetails);
         }
     }
@@ -115,7 +117,6 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
                         usrImg.setImageBitmap(selectedImage);
                     }
-
                     break;
                 case 1:
                     if (resultCode == RESULT_OK && data != null) {
@@ -123,6 +124,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
                             try {
+                                usrImgUri = selectedImage.toString();
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                                 usrImg.setImageBitmap(bitmap.createScaledBitmap(bitmap, 120, 120, false));
                             } catch (FileNotFoundException e) {
@@ -201,6 +203,11 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
         if (result){
             Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show();
             Intent loginIntent = new Intent(this, LoginActivity.class);
+            loginIntent.putExtra("fromSignUp","signUp");
+            loginIntent.putExtra("name",userDetails.getName());
+            loginIntent.putExtra("email",userDetails.getEmail());
+            loginIntent.putExtra("password",userDetails.getPassword());
+            loginIntent.putExtra("imgUri",userDetails.getImgUri());
             startActivity(loginIntent);
         }else{
             Toast.makeText(this, "Register Failed", Toast.LENGTH_SHORT).show();
