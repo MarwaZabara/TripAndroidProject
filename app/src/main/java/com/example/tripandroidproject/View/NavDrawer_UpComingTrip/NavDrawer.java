@@ -77,15 +77,18 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         switch (menuItem.getItemId()){
             case R.id.profile:
                 Toast.makeText(NavDrawer.this, "Profile Selected", Toast.LENGTH_SHORT).show();
+                drawerLayout.closeDrawers();
                 break;
             case R.id.upComingTrip:
                 Toast.makeText(NavDrawer.this, "UpComingTrip us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(0);
+                drawerLayout.closeDrawers();
 //                startActivity(new Intent(this,NavDrawer.class));
                 break;
             case R.id.history:
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(1);
+                drawerLayout.closeDrawers();
 //                startActivity(new Intent(NavDrawer.this, HistoryActivity.class));
                 break;
             case R.id.synch:
