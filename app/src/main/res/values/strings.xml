@@ -21,4 +21,7 @@
     <string name="Warnning">Warning</string>
     <string name="No">No</string>
     <string name="Yes">Yes</string>
+    <string name="Description">Description</string>
+    <string name="Rounded">Rounded</string>
+    <string name="Repeat">Repeat</string>
 </resources>
