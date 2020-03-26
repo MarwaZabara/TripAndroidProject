@@ -21,8 +21,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
+import com.example.tripandroidproject.POJOs.SemiCalendar;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -42,6 +44,10 @@ import java.util.concurrent.TimeUnit;
 public class AddTripActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     String TAG = "Add";
     int AUTOCOMPLETE_REQUEST_CODE = 1;
+//    int hourOfDay = 0; int minute = 0;int year = 0; int month = 0; int dayOfMonth = 0;
+//    int hourOfDayRound = 0; int minuteRound = 0;int yearRound = 0; int monthRound = 0; int dayOfMonthRound = 0;
+    SemiCalendar semiCalendarHome,semiCalendarRound;
+    Calendar calendarMain,calendarRound;
     public static final String DATE_FORMAT_1 = "hh:mm a";
     private EditText NameTxt,DescTxt,TripDateTxt,TripTimetxt,StartLocationTxt,DestinationTxt;
     private EditText RoundDateTxt,RoundTimeTxt;
@@ -278,40 +284,44 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                calendar.set(Calendar.YEAR,year);
-                calendar.set(Calendar.MONTH,month);
-                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
-//                TestReminder.this.year = year;
-//                TestReminder.this.month = month;
-//                TestReminder.this.dayOfMonth = dayOfMonth;
-//                if(hourOfDay > 0 && minute > 0) {
-//                    fillCalenderObj();
-//                }
+//                calendar.set(Calendar.YEAR,year);
+//                calendar.set(Calendar.MONTH,month);
+//                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
+
                 if (Date.equals("Round")){
-                    RoundDate = simpleDateFormat.format(calendar.getTime());
-                  //  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    try {
-                        Date Round = simpleDateFormat.parse(RoundDate);
-                        Date Trip = simpleDateFormat.parse(TripDate);
-                        RepeatRound = TimeUnit.DAYS.convert((Round.getTime() - Trip.getTime()),TimeUnit.MILLISECONDS)+"";
-                        Toast.makeText(getApplicationContext(), RepeatRound, Toast.LENGTH_LONG).show();
+//                    RoundDate = simpleDateFormat.format(calendar.getTime());
+//                  //  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//                    try {
+//                        Date Round = simpleDateFormat.parse(RoundDate);
+//                        Date Trip = simpleDateFormat.parse(TripDate);
+//                        RepeatRound = TimeUnit.DAYS.convert((Round.getTime() - Trip.getTime()),TimeUnit.MILLISECONDS)+"";
+//                        Toast.makeText(getApplicationContext(), RepeatRound, Toast.LENGTH_LONG).show();
 
-
-
-
-                    } catch (ParseException e) {
-                    }
+                            semiCalendarRound.year = year;
+                    semiCalendarRound.month = month;
+                    semiCalendarRound.dayOfMonth = dayOfMonth;
+                        if(semiCalendarRound.hourOfDay > 0 && semiCalendarRound.minute > 0) {
+                            fillCalenderObj(calendarRound,semiCalendarRound);
+                        }
+//                    } catch (ParseException e) {
+//                    }
 
                 }
                 else if (Date.equals("Trip")) {
-                    chosenTripDate = calendar.getTimeInMillis();
-                    TripDate = simpleDateFormat.format(chosenTripDate);
-                    Toast.makeText(getApplicationContext(), "Trip data = "+TripDate, Toast.LENGTH_LONG).show();
+                    semiCalendarHome.year = year;
+                    semiCalendarHome.month = month;
+                    semiCalendarHome.dayOfMonth = dayOfMonth;
+                    if(semiCalendarHome.hourOfDay > 0 && semiCalendarHome.minute > 0) {
+                        fillCalenderObj(calendarMain,semiCalendarHome);
+                    }
+//                    chosenTripDate = calendar.getTimeInMillis();
+//                    TripDate = simpleDateFormat.format(chosenTripDate);
+//                    Toast.makeText(getApplicationContext(), "Trip data = "+TripDate, Toast.LENGTH_LONG).show();
                 }
 
 
-                Txt.setText(simpleDateFormat.format(calendar.getTime()));
+//                Txt.setText(simpleDateFormat.format(calendar.getTime()));
 
             }
         };
@@ -347,13 +357,33 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (SelectedTime.equals("Trip")){
-            TripTime = hourOfDay + ":" + minute;
-
-            TripTimetxt.setText(TripTime);}
+//            TripTime = hourOfDay + ":" + minute;
+//
+//            TripTimetxt.setText(TripTime);
+            semiCalendarHome.hourOfDay = hourOfDay;
+            semiCalendarHome.minute = minute;
+            if(semiCalendarHome.month > 0) {
+                fillCalenderObj(calendarMain,semiCalendarHome);
+            }
+        }
         else if (SelectedTime.equals("Round")){
-            RoundTime =  hourOfDay + ":" + minute;
-            RoundTimeTxt.setText(RoundTime);
+//            RoundTime =  hourOfDay + ":" + minute;
+//            RoundTimeTxt.setText(RoundTime);
+            semiCalendarRound.hourOfDay = hourOfDay;
+            semiCalendarRound.minute = minute;
+            if(semiCalendarRound.month > 0) {
+                fillCalenderObj(calendarRound,semiCalendarRound);
+            }
         }
 
+    }
+    private void fillCalenderObj(Calendar calendar,SemiCalendar semiCalendar) {
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, semiCalendar.year);
+        calendar.set(Calendar.MONTH, semiCalendar.month);
+        calendar.set(Calendar.DAY_OF_MONTH, semiCalendar.dayOfMonth);
+        calendar.set(Calendar.HOUR_OF_DAY, semiCalendar.hourOfDay);
+        calendar.set(Calendar.MINUTE, semiCalendar.minute);
+        calendar.set(Calendar.SECOND, 0);
     }
 }
