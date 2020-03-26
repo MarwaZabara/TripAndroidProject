@@ -138,6 +138,12 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         new DatePickerDialog(TestReminder.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeBroadcastReceiver);
+    }
+
     private void fillCalenderObj() {
         Calendar calendar=Calendar.getInstance();
         calendar.set(Calendar.YEAR,year);
