@@ -110,4 +110,8 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
         databaseReference.removeValue();
         Log.d("TAG","Delete from firebase");
     }
+
+    public void updateTrip(Trip trip) {
+        myRef.child(trip.getId()).setValue(trip);
+    }
 }

@@ -44,4 +44,5 @@
     <string name="Round">Round</string>
     <string name="Date">Date</string>
     <string name="Time">Time</string>
+    <string name="close">close</string>
 </resources>

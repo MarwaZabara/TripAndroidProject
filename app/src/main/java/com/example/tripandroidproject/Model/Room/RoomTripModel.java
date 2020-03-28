@@ -42,4 +42,16 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
     public List<Trip> getTrips() {
         return tripDAO.getTrips(FirebaseUserModel.getUserID());
     }
+
+    public Trip startTrip(String tripID) {
+        return tripDAO.getTripForID(tripID);
+    }
+
+    public void updateTrip(Trip trip) {
+        tripDAO.update(trip);
+    }
+
+    public Trip getTripForSpecificID(String tripID) {
+        return tripDAO.getTripForID(tripID);
+    }
 }

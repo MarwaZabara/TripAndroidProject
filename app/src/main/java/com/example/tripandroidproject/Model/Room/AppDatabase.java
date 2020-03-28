@@ -12,4 +12,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TripDAO getTripDAO();
     public abstract NoteDAO getNoteDAO();
     public abstract PersonDAO getPersonDAO();
+    public abstract RepeatedTripHistoryDAO getRepeatedTripHistoryDAO();
 }

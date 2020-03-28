@@ -10,24 +10,14 @@ import com.google.firebase.database.Exclude;
 import java.util.List;
 
 @Entity
-public class Trip { // any attribute not need set it NULL (Capital letters)
-
+public class RepeatedTripHistory {
     @PrimaryKey
     @NonNull
     private String id;
     private String userID;
     private String name;
-//    private int isFinished; // instead of boolean for firebase 1 or 0 performance better than true and false
+    //    private int isFinished; // instead of boolean for firebase 1 or 0 performance better than true and false
     private String description;
-
-    public Trip(@NonNull String id, String name, String description, String status, String date, String time) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.date = date;
-        this.time = time;
-    }
 
     private String status; // cancel ,start, finished , upcoming , repeated ,repeated_Start, repeated_Cancelled -- > repeat issue
     private int isRound;
@@ -47,7 +37,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     @Ignore
 
     private List<Note> notes;
-    public Trip() {
+    public RepeatedTripHistory() {
     }
     @Exclude
     public List<Note> getNotes() {

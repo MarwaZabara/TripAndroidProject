@@ -26,5 +26,6 @@ public interface TripDAO {
     public List<Trip> getOfflineTrips();
     @Query("SELECT * FROM Trip WHERE requestCodeHome = :requestCode OR requestCodeAway = :requestCode")
     public Trip getTripForSpecificCode(int requestCode);
-
+    @Query("SELECT * FROM Trip WHERE id = :tripID")
+    public Trip getTripForID(String tripID);
 }

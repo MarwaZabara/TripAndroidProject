@@ -3,11 +3,7 @@ package com.example.tripandroidproject.View.History;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.transition.TransitionManager;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.Contract.Trip.DeleteTripContract;
 import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Reminder.StartTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
 import com.example.tripandroidproject.R;
-import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.TripAdapter;
 
 import java.util.List;
 

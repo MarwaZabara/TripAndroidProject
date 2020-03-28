@@ -63,11 +63,13 @@ public class ReminderModel implements Reminder.IReminderModel {
             ((Activity) context).startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
 
         } else {
-            initializeView();
+            initializeView(tripID);
         }
     }
-    public void initializeView() {
-        context.startService(new Intent(context, FloatingIconService.class));
+    public void initializeView(String tripID) {
+        Intent intent = new Intent(context, FloatingIconService.class);
+        intent.putExtra("tripID",tripID);
+        context.startService(intent);
 
     }
 

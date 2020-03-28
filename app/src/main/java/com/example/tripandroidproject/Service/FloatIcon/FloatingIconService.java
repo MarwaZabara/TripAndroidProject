@@ -10,23 +10,43 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripandroidproject.POJOs.Note;
+import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.View.FloatIcon.FloatAdapter;
+import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.NavDrawer;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
+
+import java.util.List;
 
 public class FloatingIconService extends Service {
     private WindowManager mWindowManager;
     private View mFloatingView;
-    @Override
-    public void onCreate() {
+    RecyclerView recyclerView;
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//
+//        return START_NOT_STICKY;
+//    }
 
-        super.onCreate();
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+//super.onStartCommand()
+//        super.onCreate();
         //Inflate the floating view layout we created
         //mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_icon, null);
         int LAYOUT_FLAG;
+
+//        intent = null;
+//        intent = new Intent(FloatingIconService.this, NavDrawer.class);
+//        intent.putExtra("isFloatingService",true);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_icon, null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -66,6 +86,20 @@ public class FloatingIconService extends Service {
         final View collapsedView = mFloatingView.findViewById(R.id.collapse_view);
         //The root element of the expanded view layout
         final View expandedView = mFloatingView.findViewById(R.id.expanded_container);
+
+
+
+        recyclerView = mFloatingView.findViewById(R.id.noteFloatRecyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        String tripID = intent.getStringExtra("tripID");
+        List<Note> notes = getNotes(tripID);
+        FloatAdapter floatAdapter = new FloatAdapter(this,notes);
+        recyclerView.setAdapter(floatAdapter);
+
+
+
         controls();
         //Drag and move floating view using user's touch action.
         mFloatingView.findViewById(R.id.root_container).setOnTouchListener(new View.OnTouchListener() {
@@ -96,13 +130,17 @@ public class FloatingIconService extends Service {
                         //The check for Xdiff <10 && YDiff< 10 because sometime elements moves a little while clicking.
                         //So that is click event.
                         if (Xdiff < 10 && Ydiff < 10) {
-                            if (isViewCollapsed()) {
+//                            if (isViewCollapsed()) {
+//                            if(FloatingIconService.this.intent == null){
                                 //When user clicks on the image view of the collapsed layout,
                                 //visibility of the collapsed layout will be changed to "View.GONE"
                                 //and expanded view will become visible.
+//                                startActivity(intent);
+//                                s
                                 collapsedView.setVisibility(View.GONE);
                                 expandedView.setVisibility(View.VISIBLE);
-                            }
+
+//                            }
                         }
                         return true;
                     case MotionEvent.ACTION_MOVE:
@@ -118,6 +156,15 @@ public class FloatingIconService extends Service {
                 return false;
             }
         });
+
+        return START_NOT_STICKY;
+    }
+
+    private List<Note> getNotes(String tripID) {
+
+        GetNotePresenter getNotePresenter = new GetNotePresenter(this);
+        List<Note> notes= getNotePresenter.getNotes(tripID);
+        return notes;
     }
 
     private void Move(final WindowManager.LayoutParams params) {
@@ -142,8 +189,8 @@ public class FloatingIconService extends Service {
                 stopSelf();
             }
         });
-        //Set the close button
-        ImageView closeButton = (ImageView) mFloatingView.findViewById(R.id.close_button);
+//        Set the close button
+        Button closeButton = mFloatingView.findViewById(R.id.close_button);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

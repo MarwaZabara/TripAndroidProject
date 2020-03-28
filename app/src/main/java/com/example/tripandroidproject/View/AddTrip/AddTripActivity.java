@@ -35,6 +35,7 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,7 +54,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     private EditText RoundDateTxt,RoundTimeTxt;
     private int RepeatEvery=0;
     private int isRound=0;
-    private String RepeatRound;
+    private long RepeatRound = 0;
     double StartLong;
     double StartLat;
     double EndLong;
@@ -61,6 +62,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     String TripDate,RoundDate="None";
     String TripTime,RoundTime="None";
     String TripName,TripDesc;
+    String status = "upcoming";
     String SelectedLocation,SelectedTime;
     long chosenTripDate;
     Spinner Repeatspinner;
@@ -86,6 +88,8 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         DescTxt = findViewById(R.id.DescTxt);
         Next = findViewById(R.id.NextBtn);
         Repeatspinner = findViewById(R.id.Repeatspinner);
+        calendarMain = Calendar.getInstance();
+        calendarRound = Calendar.getInstance();
         Repeatspinner.setSelection(3);
         semiCalendarHome = new SemiCalendar();
         semiCalendarRound = new SemiCalendar();
@@ -119,8 +123,9 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         IsRound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                                    Toast.makeText(getApplicationContext(), "Rounded",Toast.LENGTH_LONG).show();
-                                    isRound =1;
+                    Toast.makeText(getApplicationContext(), "Rounded",Toast.LENGTH_LONG).show();
+                    isRound =1;
+
                     RoundDateTxt.setEnabled(true);
                     RoundTimeTxt.setEnabled(true);
 
@@ -128,12 +133,14 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                 } else {
                     Toast.makeText(getApplicationContext(), " NOT Rounded",Toast.LENGTH_LONG).show();
                     isRound = 0;
+                    RepeatRound = 0;
+
                     RoundDateTxt.setEnabled(false);
                     RoundTimeTxt.setEnabled(false);
                     RoundTimeTxt.setText("");
                     RoundDateTxt.setText("");
-                    RoundDate = null;
-                    RoundTime = null;
+                    RoundDate = "None";
+                    RoundTime = "None";
                     // The toggle is disabled
                 }
             }
@@ -189,6 +196,22 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isRound == 1){
+//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                        RepeatRound = ChronoUnit.DAYS.between(calendarMain.toInstant(), calendarRound.toInstant());
+//                    }
+                    RepeatRound = daysBetween(calendarMain,calendarRound);
+                }
+                else {
+                    RoundDate = RoundTime = "None";
+                }
+                if (RepeatEvery == 0)
+                {
+                    status = "upcoming";
+                }
+                else {
+                    status = "repeated";
+                }
                 TripName = NameTxt.getText().toString();
                 TripDesc = DescTxt.getText().toString();
                 Trip trip = new Trip();
@@ -196,23 +219,18 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                 trip.setName(TripName);
                 trip.setDescription(TripDesc);
                 trip.setIsRound(isRound);
-                String date = String.valueOf(calendarMain.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendarMain.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendarMain.get(Calendar.YEAR));
-                trip.setDate(date);
-                String time = String.valueOf(calendarMain.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendarMain.get(Calendar.MINUTE));
-                trip.setTime(time);
+                trip.setDate(TripDate);
+                trip.setTime(TripTime);
                 //trip.setRequestCodeHome(requestCode++);
-                trip.setStatus("upcoming");
-                String dateRound = String.valueOf(calendarRound.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendarRound.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendarRound.get(Calendar.YEAR));
-                trip.setRoundDate(dateRound);
-                String timeRound = String.valueOf(calendarRound.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendarRound.get(Calendar.MINUTE));
-                trip.setRoundTime(timeRound);
-                trip.setRoundRepeatEvery("None");
+                trip.setStatus(status);
+                trip.setRoundDate(RoundDate);
+                trip.setRoundTime(RoundTime);
+                trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
                 trip.setEndLatitude(EndLat);
                 trip.setEndLongitude(EndLong);
                 trip.setStartLatitude(StartLat);
                 trip.setStartLongitude(StartLong);
                 trip.setRepeatEvery(RepeatEvery);
-                trip.setRoundRepeatEvery(RepeatRound);
 //                Note note = new Note();
 //                note.setName("hello");
 //                note.setStatus("Done");
@@ -240,7 +258,21 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         startActivityForResult(i,AUTOCOMPLETE_REQUEST_CODE);
 
     }
+    public long daysBetween(Calendar startDate, Calendar endDate) {
+        startDate.set(Calendar.HOUR_OF_DAY,0);
+        endDate.set(Calendar.HOUR_OF_DAY,0);
+        startDate.set(Calendar.MINUTE,0);
+        endDate.set(Calendar.MINUTE,0);
 
+        long end = endDate.getTimeInMillis();
+        long start = startDate.getTimeInMillis();
+        startDate.set(Calendar.HOUR_OF_DAY,semiCalendarHome.hourOfDay);
+        endDate.set(Calendar.HOUR_OF_DAY,semiCalendarRound.hourOfDay);
+        startDate.set(Calendar.MINUTE,semiCalendarHome.minute);
+        endDate.set(Calendar.MINUTE,semiCalendarRound.minute);
+        return TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
+
+    }
 // after a place is selected or autocomplete cancelled
     @Override
    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -293,43 +325,42 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
 //                calendar.set(Calendar.YEAR,year);
 //                calendar.set(Calendar.MONTH,month);
 //                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-                if (Date.equals("Round")){
-//                    RoundDate = simpleDateFormat.format(calendar.getTime());
-//                  //  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//                    try {
-//                        Date Round = simpleDateFormat.parse(RoundDate);
-//                        Date Trip = simpleDateFormat.parse(TripDate);
-//                        RepeatRound = TimeUnit.DAYS.convert((Round.getTime() - Trip.getTime()),TimeUnit.MILLISECONDS)+"";
-//                        Toast.makeText(getApplicationContext(), RepeatRound, Toast.LENGTH_LONG).show();
+                    if (Date.equals("Round")){
+                    //RoundDate = simpleDateFormat.format(calendarRound.getTime());
+                    //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        //  Date Round = simpleDateFormat.parse(RoundDate);
+                        //Date Trip = simpleDateFormat.parse(TripDate);
+                        //RepeatRound = TimeUnit.DAYS.convert((Round.getTime() - Trip.getTime()),TimeUnit.MILLISECONDS)+"";
+                        // Toast.makeText(getApplicationContext(), RepeatRound, Toast.LENGTH_LONG).show();
 
-                            semiCalendarRound.year = year;
-                            semiCalendarRound.month = month;
-                            semiCalendarRound.dayOfMonth = dayOfMonth;
-                            if(semiCalendarRound.hourOfDay > 0 && semiCalendarRound.minute > 0) {
-                                fillCalenderObj(calendarRound,semiCalendarRound);
+                        semiCalendarRound.year = year;
+                        semiCalendarRound.month = month;
+                        semiCalendarRound.dayOfMonth = dayOfMonth;
+                        if(semiCalendarRound.hourOfDay > 0 && semiCalendarRound.minute > 0) {
+                            fillCalenderObj(calendarRound,semiCalendarRound);
                         }
-//                    } catch (ParseException e) {
-//                    }
-
-                }
+                        RoundDate = String.valueOf(calendarRound.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendarRound.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendarRound.get(Calendar.YEAR));
+                        Txt.setText(RoundDate);
+                    }
                 else if (Date.equals("Trip")) {
 
                     semiCalendarHome.year = year;
                     semiCalendarHome.month = month;
                     semiCalendarHome.dayOfMonth = dayOfMonth;
                     if(semiCalendarHome.hourOfDay > 0 && semiCalendarHome.minute > 0) {
-                        calend
+
                         fillCalenderObj(calendarMain,semiCalendarHome);
                     }
-//                    chosenTripDate = calendar.getTimeInMillis();
-//                    TripDate = simpleDateFormat.format(chosenTripDate);
+                    TripDate = String.valueOf(calendarMain.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendarMain.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendarMain.get(Calendar.YEAR));
+                    Txt.setText(simpleDateFormat.format(calendar.getTime()));
+                    chosenTripDate = calendar.getTimeInMillis();
+                    TripDate = simpleDateFormat.format(chosenTripDate);
 //                    Toast.makeText(getApplicationContext(), "Trip data = "+TripDate, Toast.LENGTH_LONG).show();
                 }
 
 
-//                Txt.setText(simpleDateFormat.format(calendar.getTime()));
 
             }
         };
@@ -338,10 +369,11 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         }
         else if  (Date.equals("Round")) {
-            datePickerDialog.getDatePicker().setMinDate(chosenTripDate+(24*60*60*1000));
+//            datePickerDialog.getDatePicker().setMinDate(chosenTripDate+(24*60*60*1000));
+            datePickerDialog.getDatePicker().setMinDate(chosenTripDate);
             switch (RepeatEvery) {
                 case 0:
-                    datePickerDialog.getDatePicker().setMaxDate(chosenTripDate+(24*60*60*1000));
+//                    datePickerDialog.getDatePicker().setMaxDate(chosenTripDate+(24*60*60*1000));
                     break;
                 case 1:
                     datePickerDialog.getDatePicker().setMaxDate(chosenTripDate+(24*60*60*1000));
@@ -367,12 +399,14 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         if (SelectedTime.equals("Trip")){
 //            TripTime = hourOfDay + ":" + minute;
 //
-//            TripTimetxt.setText(TripTime);
+
             semiCalendarHome.hourOfDay = hourOfDay;
             semiCalendarHome.minute = minute;
             if(semiCalendarHome.month > 0) {
                 fillCalenderObj(calendarMain,semiCalendarHome);
             }
+            TripTime = String.valueOf(calendarMain.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendarMain.get(Calendar.MINUTE));
+            TripTimetxt.setText(TripTime);
         }
         else if (SelectedTime.equals("Round")){
 //            RoundTime =  hourOfDay + ":" + minute;
@@ -382,11 +416,13 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             if(semiCalendarRound.month > 0) {
                 fillCalenderObj(calendarRound,semiCalendarRound);
             }
+            RoundTime = String.valueOf(calendarRound.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendarRound.get(Calendar.MINUTE));
+            RoundTimeTxt.setText(RoundTime);
         }
 
     }
     private void fillCalenderObj(Calendar calendar,SemiCalendar semiCalendar) {
-        calendar = Calendar.getInstance();
+//        calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, semiCalendar.year);
         calendar.set(Calendar.MONTH, semiCalendar.month);
         calendar.set(Calendar.DAY_OF_MONTH, semiCalendar.dayOfMonth);

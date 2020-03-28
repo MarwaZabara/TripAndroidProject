@@ -11,7 +11,7 @@ public class Note {
     private String id;
     private String tripID; // to escape from foreign keys
     private String name;
-    private String status;
+    private String status; // checked ,unchecked
 
     public Note() {
     }

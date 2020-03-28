@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -38,6 +40,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DrawerLayout drawerLayout;
@@ -50,6 +54,13 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     private GoogleSignInClient mGoogleSignInClient;
 
     private ViewPager viewPager;
+
+
+    TextView mItemSelected;
+
+    String[] listItems =  {"dfsd","fsdfds"};
+    boolean[] checkedItems;
+    ArrayList<Integer> mUserItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +88,66 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        if(getIntent().getBooleanExtra("isFloatingService",false)){
+            checkedItems  = new boolean[listItems.length];
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavDrawer.this);
+            mBuilder.setTitle("Notes");
+            mBuilder.setMultiChoiceItems(listItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+//                        if (isChecked) {
+//                            if (!mUserItems.contains(position)) {
+//                                mUserItems.add(position);
+//                            }
+//                        } else if (mUserItems.contains(position)) {
+//                            mUserItems.remove(position);
+//                        }
+                    if(isChecked){
+                        mUserItems.add(position);
+                    }else{
+                        mUserItems.remove((Integer.valueOf(position)));
+                    }
+                }
+            });
+
+            mBuilder.setCancelable(false);
+            mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    String item = "";
+                    for (int i = 0; i < mUserItems.size(); i++) {
+                        item = item + listItems[mUserItems.get(i)];
+                        if (i != mUserItems.size() - 1) {
+                            item = item + ", ";
+                        }
+                    }
+                    mItemSelected.setText(item);
+                }
+            });
+
+            mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            mBuilder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int which) {
+                    for (int i = 0; i < checkedItems.length; i++) {
+                        checkedItems[i] = false;
+                        mUserItems.clear();
+                        mItemSelected.setText("");
+                    }
+                }
+            });
+
+            AlertDialog mDialog = mBuilder.create();
+            mDialog.show();
+        }
     }
 
     @Override
@@ -180,4 +251,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     private void setViewPager(int fragmentNum) {
         viewPager.setCurrentItem(fragmentNum);
     }
+
+
 }
