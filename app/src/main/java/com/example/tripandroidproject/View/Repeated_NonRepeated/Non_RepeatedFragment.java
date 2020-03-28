@@ -1,31 +1,26 @@
-package com.example.tripandroidproject.View.NavDrawer_UpComingTrip;
+package com.example.tripandroidproject.View.Repeated_NonRepeated;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
-import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.TripAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class UpComingFragment extends Fragment implements RetrieveTripContract.IRetrieveTripView {
+public class Non_RepeatedFragment extends Fragment implements RetrieveTripContract.IRetrieveTripView {
 
     private RecyclerView.Adapter myAdapter;
     private RecyclerView recyclerView;
@@ -48,16 +43,12 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-//        presenter = new RetrieveTripPresenter(this.getContext(),this);
 
+        ////get data by select
         getOfflineTripPresenter = new GetOfflineTripPresenter(this.getContext());
-        List<Trip> trips = getOfflineTripPresenter.getTrips();
-        if(trips.size() == 0){
-            retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);
-            retrieveTripPresenter.retrieveUpcomingTrips();
-        }
-
+        List<Trip> trips = getOfflineTripPresenter.getOfflineFilteredTrip("upcoming");
         renderData(trips);
+
         return view;
     }
 
@@ -71,7 +62,5 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
     public void renderData(List<Trip> trips) {
         myAdapter = new TripAdapter(this.getContext(),trips);
         setAdapter(myAdapter);
-
     }
-
 }
