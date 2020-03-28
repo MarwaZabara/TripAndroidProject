@@ -19,8 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="25dp"
-            android:src="@drawable/add2"
-            android:onClick="GoToAddTrip"/>
+            android:onClick="GoToAddTrip"
+            android:src="@drawable/add2" />
 
     </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
