@@ -3,6 +3,8 @@ package com.example.tripandroidproject.View.NavDrawer_UpComingTrip;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,24 +21,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
+import com.example.tripandroidproject.Contract.Trip.SaveTripContract;
+import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
+import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Reminder.StartTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
 import com.example.tripandroidproject.R;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 
     private final Context context;
-    private List<Trip> values;
+    private List<Trip> upComingTripList;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     private String tripName;
     private View view;
     private DeleteTripPresenter presenter;
+    private DeleteOfflineTripPresenter deleteOfflineTripPresenter;
+    private CheckInternetConnection checkInternetConnection;
 
     public TripAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
-        values = myDataSet;
+        upComingTripList = myDataSet;
         this.context = context;
         presenter = new DeleteTripPresenter();
+        deleteOfflineTripPresenter = new DeleteOfflineTripPresenter(context);
+        checkInternetConnection = new CheckInternetConnection();
     }
 
     @NonNull
@@ -50,20 +65,28 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 
     @Override
     public void onBindViewHolder(@NonNull final TripAdapter.ViewHolder holder, final int position) {
-        holder.date.setText(values.get(position).getDate());
-        holder.time.setText(values.get(position).getTime());
-        holder.status.setText(values.get(position).getStatus());
-        holder.location1.setText(values.get(position).getDescription());
-        holder.location2.setText(values.get(position).getDescription());
-        holder.tripName.setText(values.get(position).getName());
+        ////////////////////to get start/end Locations///////////////////////////////////////////
+//        double lat1 = values.get(position).getStartLatitude();
+//        double long1 = values.get(position).getStartLongitude();
+//        double lat2 = values.get(position).getEndLatitude();
+//        double long2 = values.get(position).getEndLongitude();
+        double lat1 = 31.2554761; double long1 = 30.001308899999998;
+        double lat2 = 31.2554761; double long2 = 30.001308899999998;
+        String location1 = getRegionName(lat1,long1);
+        String location2 = getRegionName(lat2,long2);
+        holder.date.setText(upComingTripList.get(position).getDate());
+        holder.time.setText(upComingTripList.get(position).getTime());
+        holder.status.setText(upComingTripList.get(position).getStatus());
+        holder.location1.setText(location1);
+        holder.location2.setText(location2);
+        holder.tripName.setText(upComingTripList.get(position).getName());
         holder.cardView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_transition_animation));
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //        Toast.makeText(context, values.get(position).getName(), Toast.LENGTH_SHORT).show();
-        tripName = values.get(position).getName();
-
+        tripName = upComingTripList.get(position).getName();
         takeAction(tripName,position);
             }
         });
@@ -71,7 +94,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 
     @Override
     public int getItemCount() {
-        return values.size();
+        return upComingTripList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -119,16 +142,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 
 
                 } else if (options[item].equals("Delete Trip")) {
-                    final CharSequence[] alert = {};
+//                    final CharSequence[] alert = {};
                     confirmation(position);
-                    notifyDataSetChanged();
 
                 } else if (options[item].equals("Cancel Trip")) {
-                    Trip trip = values.get(position);
-                    trip.setStatus("Cancel");
-                    notifyDataSetChanged();
-//                    communicatorFrag.cancelTrip(trip);
-                    values.remove(position);
+                    Trip trip = upComingTripList.get(position);
+                    trip.setStatus("Cancel");     ///////change status of trip
+//                  communicatorFrag.cancelTrip(trip);
+                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
                 }
             }
         });
@@ -150,7 +171,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         view1.findViewById(R.id.buttonYes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeItem(position);
+                removeItem(position);    //// function to remove trip from arrayInRecycleView and room
                 alertDialog.dismiss();
                 Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
             }
@@ -160,9 +181,40 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         }
         alertDialog.show();
     }
+
     public void removeItem(int position) {
-        presenter.deleteTrip(values.get(position));
-        values.remove(position);
+        Trip trip = upComingTripList.get(position);
+        if (checkInternetConnection.getConnectivityStatusString(context)) {
+            presenter.deleteTrip(trip);    ///////////delete from firebase
+            deleteOfflineTripPresenter.deleteOfflineTrip(trip); /////delete from room
+            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
+        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==1){
+            //////// isSync = 1 mean it stored in firebase allready and need to delete it from firebase & room
+            trip.setIsSync(0);
+            /////// -> here send trip to Hassan
+            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
+
+        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==0){
+            //////// isSync = 0 mean it didn't store in firebase so need to delete it from room only
+            trip.setIsSync(1);
+            /////// -> here send trip to Hassan
+            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
+        }
+
         notifyItemRemoved(position);
+    }
+
+    private String getRegionName(Double lat,Double lon) {
+        String region = "";
+        List<Address> addresses;
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        try {
+            addresses = geocoder.getFromLocation(lat, lon, 1);
+            String address = addresses.get(0).getAddressLine(0);
+            region = addresses.get(0).getLocality();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return region;
     }
 }

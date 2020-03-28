@@ -29,6 +29,8 @@ import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.History.HistoryFragment;
 import com.example.tripandroidproject.View.Login.LoginActivity;
+import com.example.tripandroidproject.View.Repeated_NonRepeated.Non_RepeatedFragment;
+import com.example.tripandroidproject.View.Repeated_NonRepeated.RepeatedFragment;
 import com.example.tripandroidproject.View.SaveUserLogIn;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -204,10 +206,11 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         switch (item.getItemId()) {
             case R.id.repeated:
                 Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
+                setViewPager(2);
                 break;
             case R.id.unrepeated:
                 Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
-
+                setViewPager(3);
                 break;
             default:
                 break;
@@ -226,12 +229,13 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         email.setText(intent.getStringExtra("Email"));
         name.setText(intent.getStringExtra("Name"));
         String imageUri = intent.getStringExtra("imgUri");
-//        if (pass == null) {
-//            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
-//        }else {
-//            imageView.setImageURI(Uri.parse(imageUri));
-////            Picasso.get().load("http://www.google.co.in/"+imageUri).resize(120, 120).centerCrop().into(imageView);
-//        }
+        if (pass == null) {
+            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+        }else {
+//            String[] separated = imageUri.split(":");
+//            imageUri = separated[1];
+            imageView.setImageURI(Uri.parse(imageUri));
+        }
     }
 
 
@@ -244,6 +248,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         AppAdapter adapter = new AppAdapter(getSupportFragmentManager());
         adapter.addFragment(new UpComingFragment(),"UpComingTrips");   //// fragmentNum --> 0
         adapter.addFragment(new HistoryFragment(),"History");          //// fragmentNum --> 1
+        adapter.addFragment(new RepeatedFragment(),"RepeatedTrips");   //// fragmentNum --> 2
+        adapter.addFragment(new Non_RepeatedFragment(),"NonRepeatedTrips");          //// fragmentNum --> 3
 
         viewPager1.setAdapter(adapter);
     }

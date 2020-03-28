@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.AddNote.AddNote">
+
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Add Note"
+        android:textSize="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/NotesListView"
+        android:layout_width="383dp"
+        android:layout_height="548dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider4">
+
+    </ListView>
+
+    <EditText
+        android:id="@+id/AddNoteTxt"
+        android:layout_width="278dp"
+        android:layout_height="43dp"
+        android:layout_margin="10dp"
+        android:hint="Note"
+        app:layout_constraintBottom_toBottomOf="@+id/AddNoteBtn"
+        app:layout_constraintStart_toStartOf="@+id/NotesListView"
+        app:layout_constraintTop_toTopOf="@+id/AddNoteBtn"
+        tools:ignore="MissingConstraints" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <Button
+        android:id="@+id/AddNoteBtn"
+        android:layout_width="80dp"
+        android:layout_height="47dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="16dp"
+        android:text="INPUT"
+        app:layout_constraintEnd_toEndOf="@+id/NotesListView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/AddNoteTxt"
+        app:layout_constraintTop_toBottomOf="@+id/NotesListView"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/DismissBtn"
+        android:layout_width="59dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:drawableBottom="@drawable/close50"
+        android:textColorHint="#F4F4F4"
+        app:layout_constraintBottom_toBottomOf="@+id/textView18"
+        app:layout_constraintEnd_toStartOf="@+id/textView18"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

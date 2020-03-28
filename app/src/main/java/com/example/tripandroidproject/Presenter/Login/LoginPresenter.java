@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.example.tripandroidproject.Contract.Login.LoginContract;
 import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
-import com.example.tripandroidproject.Model.SignIn.LoginModel;
+import com.example.tripandroidproject.Model.LogIn.LoginModel;
 import com.example.tripandroidproject.View.UserDetails;
 
 public class LoginPresenter implements LoginContract.ISignInPresenter , RoomPersonContract.IRoomPersonPresenter {
@@ -36,7 +36,6 @@ public class LoginPresenter implements LoginContract.ISignInPresenter , RoomPers
         Log.d("TAG","Success");
         personView.setCurrentPerson(userDetails);
         view.showMessage(result);
-
     }
 
     @Override

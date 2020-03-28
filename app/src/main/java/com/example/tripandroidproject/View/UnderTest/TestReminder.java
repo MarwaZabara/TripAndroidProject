@@ -7,7 +7,6 @@ import androidx.room.Room;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,40 +14,35 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
-import com.example.tripandroidproject.Broadcast.ReminderService.ReminderReceiver;
 import com.example.tripandroidproject.Contract.RequestCode.RequestCodeContract;
 import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
-import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
-import com.example.tripandroidproject.Model.Firebase.FirebaseRequestCodeModel;
 import com.example.tripandroidproject.Model.InternetConnection.Internetonnection;
 import com.example.tripandroidproject.Model.Room.AppDatabase;
 import com.example.tripandroidproject.Model.Room.TripDAO;
 import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.Presenter.RequestCode.RequestCodePresenter;
 import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
 import com.example.tripandroidproject.R;
-import com.example.tripandroidproject.Service.SnoozeNotification.SnoozeNotificationForegroundService;
-import com.example.tripandroidproject.View.Reminder.ReminderActivity;
+import com.example.tripandroidproject.TimePicker.TimePickerFragment;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.room.Room;
+
+//import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
 
 public class TestReminder extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener , RequestCodeContract.IRequestCodeView {
     int hourOfDay = 0; int minute = 0;int year = 0; int month = 0; int dayOfMonth = 0;

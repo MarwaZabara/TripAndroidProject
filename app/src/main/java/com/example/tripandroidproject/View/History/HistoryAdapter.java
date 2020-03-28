@@ -34,12 +34,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private String tripName;
     private View view;
     private DeleteTripContract.IDeleteTripPresenter presenter;
-    private HistoryAdapter.CancelledTrip cancelledTrip;
 
-    public HistoryAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet, HistoryAdapter.CancelledTrip cancelledTrip) {
+    public HistoryAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
         values = myDataSet;
         this.context = context;
-        this.cancelledTrip = cancelledTrip;
         presenter = new DeleteTripPresenter();
     }
 
@@ -48,7 +46,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public HistoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup recycleView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recycleView.getContext());
         view = inflater.inflate(R.layout.trip_row, recycleView, false);
-        ViewHolder vh = new ViewHolder(view, cancelledTrip);
+        ViewHolder vh = new ViewHolder(view);
         return vh;
     }
 
@@ -78,17 +76,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return values.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView date, time, location1, location2, status, tripName;
-        public Button startTrip;
         public ConstraintLayout constraintLayout;
-        HistoryAdapter.CancelledTrip cancelledTrip;
         public View layout;
         private CardView cardView;
 
-        public ViewHolder(@NonNull View itemView, HistoryAdapter.CancelledTrip cancelledTrip) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.cancelledTrip = cancelledTrip;
             layout = itemView;
             date = itemView.findViewById(R.id.date);
             time = itemView.findViewById(R.id.time);
@@ -96,25 +91,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             location2 = itemView.findViewById(R.id.location2);
             status = itemView.findViewById(R.id.status);
             tripName = itemView.findViewById(R.id.tripName);
-            startTrip = itemView.findViewById(R.id.startTripId);
+
             constraintLayout = itemView.findViewById(R.id.row);
             cardView = itemView.findViewById(R.id.myCardView);
-
-            itemView.setOnClickListener(this);
-
-            startTrip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    StartTripPresenter startTripPresenter = new StartTripPresenter(context);
-                    String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
-                    startTripPresenter.startTrip(destination, "trip1", 1);
-                }
-            });
-        }
-
-        @Override
-        public void onClick(View v) {
-            cancelledTrip.getPosition(getAdapterPosition());
         }
     }
 
@@ -170,10 +149,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         presenter.deleteTrip(values.get(position));
         values.remove(position);
         notifyItemRemoved(position);
-    }
-
-    public interface CancelledTrip {
-        void getPosition(int position);
     }
 }
 

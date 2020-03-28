@@ -31,8 +31,9 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     //////////////////////////////////////////////////////
     private RetrieveTripContract.IRetrieveTripPresenter retrieveTripPresenter;
     List<Trip> input;
+    List<Trip> repeatedList,nonRepeatedList;
     Context context;
-    RecyclerView.Adapter myAdapter;
+//    RecyclerView.Adapter myAdapter;
 
     public FirebaseTripModel(){
         mAuth = FirebaseAuth.getInstance();
@@ -90,18 +91,45 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+    }
 
+    @Override
+    public void fetchFilteredData(String filter) {
+        Query query = myRef.orderByChild("status").equalTo(filter);
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                input.clear();
+                for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
+                    Trip trip = tripSnapShot.getValue(Trip.class);
+                    input.add(trip);
+                }
+                retrieveTripPresenter.onSuccessGetUpcomingTrips(input);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
     public List<Trip> returnData() {
         return input;
     }
-
     @Override
-    public RecyclerView.Adapter returnAdapter() {
-        return myAdapter;
+    public List<Trip> returnRepeatedData() {
+        return repeatedList;
     }
+    @Override
+    public List<Trip> returnNonRepeatedData() {
+        return nonRepeatedList;
+    }
+
+//    @Override
+//    public RecyclerView.Adapter returnAdapter() {
+//        return myAdapter;
+//    }
 
 
     @Override

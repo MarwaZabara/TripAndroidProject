@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tripandroidproject">
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        
-        <activity android:name=".View.AddTrip.AddTripActivity"></activity>
-   
-
+        <activity android:name=".View.AddNote.AddNote"></activity>
+        <activity android:name=".View.AddTrip.AddTripActivity" />
         <activity
             android:name=".View.NavDrawer_UpComingTrip.NavDrawer"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -35,8 +29,6 @@
 
         <receiver android:name=".Broadcast.ReminderService.ReminderReceiver" />
 
-        <service android:name=".Service.SnoozeNotification.SnoozeNotificationForegroundService" />
-        <service android:name=".Service.FloatIcon.FloatingIconService" />
         <receiver
             android:name=".Broadcast.BootBroadcast.BootBroadcastReeiver"
             android:label="StartMyServiceAtBootReceiver">
@@ -44,12 +36,14 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-<!--        <receiver android:name=".Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver" >-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
+        <service android:name=".Service.SnoozeNotification.SnoozeNotificationForegroundService" />
 
+        <service android:name=".Service.FloatIcon.FloatingIconService" />
     </application>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
 </manifest>

@@ -1,30 +1,32 @@
 package com.example.tripandroidproject.View.AddTrip;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
+import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.SemiCalendar;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.R;
-import com.example.tripandroidproject.View.UnderTest.TestReminder;
+import com.example.tripandroidproject.SwipeDeleteTVItem.SwipeDismissListViewTouchListener;
+import com.example.tripandroidproject.TimePicker.TimePickerFragment;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -32,15 +34,19 @@ import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+
+//import com.example.tripandroidproject.Custom.TimePicker.TimePickerFragment;
 
 public class AddTripActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
     String TAG = "Add";
@@ -67,12 +73,16 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     long chosenTripDate;
     Spinner Repeatspinner;
     Button Next;
-
+    AlertDialog dialog = null;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> NotesAL =new ArrayList<String>();//Creating arraylist
+    ListView lv;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        NotesAL.add("Ravi");//Adding object in arraylist
         setContentView(R.layout.activity_add_trip);
         Places.initialize(getApplicationContext(), "AIzaSyCVOvMSNN18_AJKQjfKfoWKxsYNF5GNxK0");
         Switch IsRound = findViewById(R.id.RoundSwitch);
@@ -116,6 +126,14 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 parent.setSelection(3);
+            }
+        });
+
+        FloatingActionButton ShowDialogBtn = findViewById(R.id.ShowAddNoteDialog);
+        ShowDialogBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogListView();
             }
         });
 
@@ -193,6 +211,24 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             }
         });
 
+        if(savedInstanceState != null && savedInstanceState.getBoolean("alertShown",true)) {
+    showDialogListView();
+        }
+
+
+//        NotesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                ViewGroup vg =(ViewGroup) view;
+//                TextView txt =(TextView) vg.findViewById(R.id.NoteListTxt);
+//                Toast.makeText(AddTripActivity.this, txt.getText().toString(),Toast.LENGTH_LONG).show();
+//                m.add("plzzzz");
+//                adapter.notifyDataSetChanged();
+
+//
+//            }
+//        });
+
         Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,6 +267,17 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                 trip.setStartLatitude(StartLat);
                 trip.setStartLongitude(StartLong);
                 trip.setRepeatEvery(RepeatEvery);
+                trip.setRoundRepeatEvery(RepeatRound);
+                for (int i=0;i<NotesAL.size();i++){
+                    Note note = new Note();
+                    note.setName(NotesAL.get(i));
+                    note.setStatus("");
+//                    note.setTripID();
+                    //note.setId();
+                    Toast.makeText(getApplicationContext(),note.getName(),Toast.LENGTH_LONG).show();
+
+
+                }
 //                Note note = new Note();
 //                note.setName("hello");
 //                note.setStatus("Done");
@@ -243,9 +290,85 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             }
         });
 
+    }
+    public void showDialogListView() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View dialogLayout = getLayoutInflater().inflate(R.layout.notes_dialog,null);
+            lv = (ListView) dialogLayout.findViewById(R.id.NotesListView);
+        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,NotesAL);
+        lv.setAdapter(adapter);
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        lv,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+
+                                    NotesAL.remove(position);
+                                    adapter.notifyDataSetChanged();
+
+                                }
 
 
+                            }
+                        });
+        lv.setOnTouchListener(touchListener);
 
+        adapter.notifyDataSetChanged();
+        builder.setView(dialogLayout);
+        dialog = builder.create();
+        dialog.setCancelable(true);
+        final Button AddNoteBtn = dialogLayout.findViewById(R.id.AddNoteBtn);
+        final EditText AddNoteTxt= dialogLayout.findViewById(R.id.AddNoteTxt);
+        AddNoteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!AddNoteTxt.equals("")){
+                    NotesAL.add(AddNoteTxt.getText().toString());
+                    AddNoteTxt.setText("");
+                    adapter.notifyDataSetChanged();
+                }}
+            });
+        Button DismissBtn = dialogLayout.findViewById(R.id.DismissBtn);
+        DismissBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            ViewGroup.LayoutParams params = lv.getLayoutParams();
+            params.height = 1000;
+            lv.setLayoutParams(params);
+            lv.requestLayout();
+        }
+        else {
+            ViewGroup.LayoutParams params = lv.getLayoutParams();
+            params.height = 250;
+            lv.setLayoutParams(params);
+            lv.requestLayout();
+
+        }
+
+        dialog.show();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            outState.putBoolean("alertShown", true);
+        }
     }
     // AutoComplete starts
     public void StartAutoCompleteActivity() {
