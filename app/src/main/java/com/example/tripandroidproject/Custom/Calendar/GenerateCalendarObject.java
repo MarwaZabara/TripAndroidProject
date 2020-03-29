@@ -18,4 +18,10 @@ public class GenerateCalendarObject {
         calendar.set(Calendar.SECOND, 0);
         return calendar;
     }
+    public static String generateStringDate(Calendar calendar) {
+        return String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendar.get(Calendar.YEAR));
+    }
+    public static String generateStringTme(Calendar calendar) {
+        return String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendar.get(Calendar.MINUTE));
+    }
 }

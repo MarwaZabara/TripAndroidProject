@@ -6,6 +6,7 @@ import androidx.room.Room;
 
 import com.example.tripandroidproject.Contract.Trip.ITripPresenter;
 import com.example.tripandroidproject.POJOs.RepeatedTripHistory;
+import com.example.tripandroidproject.POJOs.Trip;
 
 public class RoomRepeatedTripHistoryModel {
     private final AppDatabase database;
@@ -18,5 +19,8 @@ public class RoomRepeatedTripHistoryModel {
                 .allowMainThreadQueries()   //Allows room to do operation on main thread
                 .build();
         repeatedTripHistoryDAO = database.getRepeatedTripHistoryDAO();
+    }
+    public void saveTrip(RepeatedTripHistory repeatedTripHistory) {
+        repeatedTripHistoryDAO.insert(repeatedTripHistory);
     }
 }

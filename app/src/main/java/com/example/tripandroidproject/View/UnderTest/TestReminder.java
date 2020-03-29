@@ -162,16 +162,16 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         trip.setId(testTxt.getText().toString());
         trip.setName("Trip" + String.valueOf(requestCode));
         trip.setDescription("Description" + String.valueOf(requestCode));
-        trip.setIsRound(0);
         String date = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + "-" + String.valueOf(calendar.get(Calendar.YEAR));
         trip.setDate(date);
         String time = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendar.get(Calendar.MINUTE));
         trip.setTime(time);
         trip.setRequestCodeHome(requestCode++);
         trip.setStatus("upcoming");
+        /*trip.setIsRound(0);
         trip.setRoundDate("None");
         trip.setRoundTime("None");
-        trip.setRoundRepeatEvery("None");
+        trip.setRoundRepeatEvery("None");*/
         Note note = new Note();
         note.setName("hello");
         note.setStatus("Done");
@@ -184,7 +184,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         trip.setNotes(notes);
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
         saveTripPresenter.saveTrip(trip,false);
-        retrieveRequestCode(requestCode);
+        setRequestCodeInSharedPreference(requestCode);
 
 
         Calendar calendar2 = GenerateCalendarObject.generateCalendar(trip.getDate(),trip.getTime());
@@ -243,7 +243,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         }
     }
     @Override
-    public void retrieveRequestCode(int requestCode) {
+    public void setRequestCodeInSharedPreference(int requestCode) {
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("requestCode", requestCode);

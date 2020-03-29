@@ -176,4 +176,5 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     public void updateTrip(Trip trip) {
         myRef.child(trip.getId()).setValue(trip);
     }
+
 }

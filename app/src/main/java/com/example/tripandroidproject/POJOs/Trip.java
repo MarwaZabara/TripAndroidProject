@@ -17,28 +17,17 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     private String id;
     private String userID;
     private String name;
-//    private int isFinished; // instead of boolean for firebase 1 or 0 performance better than true and false
     private String description;
-
-    public Trip(@NonNull String id, String name, String description, String status, String date, String time) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.status = status;
-        this.date = date;
-        this.time = time;
-    }
-
     private String status; // cancel ,start, finished , upcoming , repeated ,repeated_Start, repeated_Cancelled -- > repeat issue
-    private int isRound;
+    //private int isRound;
     private String date; // updated if repeated
     private String time;
-    private int repeatEvery; // no of days
-    private String roundRepeatEvery; // no of days
-    private String roundDate; // updated if repeated
-    private String roundTime;
+    private long repeatEvery; // no of days
+    //private String roundRepeatEvery; // no of days
+    //private String roundDate; // updated if repeated
+    //private String roundTime;
     private int requestCodeHome;
-    private int requestCodeAway;
+    //private int requestCodeAway;
     private double startLongitude;
     private double startLatitude;
     private double endLongitude;
@@ -90,14 +79,6 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
         this.name = name;
     }
 
-//    public int getIsFinished() {
-//        return isFinished;
-//    }
-//
-//    public void setIsFinished(int isFinished) {
-//        this.isFinished = isFinished;
-//    }
-
     public String getDescription() {
         return description;
     }
@@ -113,7 +94,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     public void setStatus(String status) {
         this.status = status;
     }
-
+/*
     public int getIsRound() {
         return isRound;
     }
@@ -121,7 +102,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     public void setIsRound(int isRound) {
         this.isRound = isRound;
     }
-
+*/
     public String getDate() {
         return date;
     }
@@ -138,14 +119,14 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
         this.time = time;
     }
 
-    public int getRepeatEvery() {
+    public long getRepeatEvery() {
         return repeatEvery;
     }
 
-    public void setRepeatEvery(int repeatEvery) {
+    public void setRepeatEvery(long repeatEvery) {
         this.repeatEvery = repeatEvery;
     }
-
+/*
     public String getRoundRepeatEvery() {
         return roundRepeatEvery;
     }
@@ -169,7 +150,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     public void setRoundTime(String roundTime) {
         this.roundTime = roundTime;
     }
-
+*/
     public int getRequestCodeHome() {
         return requestCodeHome;
     }
@@ -177,7 +158,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     public void setRequestCodeHome(int requestCodeHome) {
         this.requestCodeHome = requestCodeHome;
     }
-
+/*
     public int getRequestCodeAway() {
         return requestCodeAway;
     }
@@ -185,7 +166,7 @@ public class Trip { // any attribute not need set it NULL (Capital letters)
     public void setRequestCodeAway(int requestCodeAway) {
         this.requestCodeAway = requestCodeAway;
     }
-
+*/
     public double getStartLongitude() {
         return startLongitude;
     }

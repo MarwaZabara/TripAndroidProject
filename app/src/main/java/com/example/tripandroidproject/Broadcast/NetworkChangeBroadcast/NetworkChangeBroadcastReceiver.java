@@ -28,7 +28,7 @@ public class NetworkChangeBroadcastReceiver extends BroadcastReceiver implements
     }
 
     @Override
-    public void retrieveRequestCode(int requestCode) {
+    public void setRequestCodeInSharedPreference(int requestCode) {
 
     }
 }
