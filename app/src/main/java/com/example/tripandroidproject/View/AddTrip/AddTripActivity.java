@@ -42,6 +42,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -267,7 +268,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                 trip.setStartLatitude(StartLat);
                 trip.setStartLongitude(StartLong);
                 trip.setRepeatEvery(RepeatEvery);
-                trip.setRoundRepeatEvery(RepeatRound);
+                trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
                 for (int i=0;i<NotesAL.size();i++){
                     Note note = new Note();
                     note.setName(NotesAL.get(i));

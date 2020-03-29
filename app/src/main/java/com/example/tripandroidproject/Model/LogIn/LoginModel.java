@@ -61,8 +61,10 @@ public class LoginModel implements LoginContract.ISignInModel {
                             personPresenter.setCurrentPerson(user);
                             presenter.onSucess();
                             if (user.getName()!=null){
-                            saveUserLogIn.storeUserData(user);
-                            saveUserLogIn.setUserLoggedIn(true);}
+                                saveUserLogIn.storeUserData(user);
+                                saveUserLogIn.setUserLoggedIn(true);
+                            }
+
                         } else {
                             Log.d("TAG", "signInWithEmail:failure", task.getException());
                             presenter.onFail();

@@ -24,7 +24,6 @@ import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.Contract.Trip.SaveTripContract;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
 import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Reminder.StartTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
