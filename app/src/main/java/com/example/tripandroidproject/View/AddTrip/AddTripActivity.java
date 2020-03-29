@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -244,7 +245,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                 for (int i=0;i<NotesAL.size();i++){
                     Note note = new Note();
                     note.setName(NotesAL.get(i));
-                    note.setStatus("");
+                    note.setStatus("unchecked");
 //                    note.setTripID();
                     //note.setId();
                     Toast.makeText(getApplicationContext(),note.getName(),Toast.LENGTH_LONG).show();
@@ -264,6 +265,15 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         });
 
     }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        NotesAL = savedInstanceState.getStringArrayList("SavedNotes");
+        if (savedInstanceState.getBoolean("alertShown",false)){
+            showDialogListView();
+        }
+    }
+
     public void showDialogListView() {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             View dialogLayout = getLayoutInflater().inflate(R.layout.notes_dialog,null);
@@ -293,6 +303,23 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                         });
         lv.setOnTouchListener(touchListener);
 
+        if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
+
+            ViewGroup.LayoutParams params = lv.getLayoutParams();
+            params.height = 100 ;
+            lv.setLayoutParams(params);
+            lv.requestLayout();
+        }
+        else if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            ViewGroup.LayoutParams params = lv.getLayoutParams();
+            Toast.makeText(getApplicationContext(),"portrait",Toast.LENGTH_LONG).show();
+
+            params.height = 1000;
+            lv.setLayoutParams(params);
+            lv.requestLayout();
+        }
+
         adapter.notifyDataSetChanged();
         builder.setView(dialogLayout);
         dialog = builder.create();
@@ -302,7 +329,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         AddNoteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!AddNoteTxt.equals("")){
+                    if(!AddNoteTxt.getText().toString().equals("")){
                     NotesAL.add(AddNoteTxt.getText().toString());
                     AddNoteTxt.setText("");
                     adapter.notifyDataSetChanged();
@@ -317,19 +344,19 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         });
 
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            ViewGroup.LayoutParams params = lv.getLayoutParams();
-            params.height = 1000;
-            lv.setLayoutParams(params);
-            lv.requestLayout();
-        }
-        else {
-            ViewGroup.LayoutParams params = lv.getLayoutParams();
-            params.height = 250;
-            lv.setLayoutParams(params);
-            lv.requestLayout();
-
-        }
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            ViewGroup.LayoutParams params = lv.getLayoutParams();
+//            params.height = 1000;
+//            lv.setLayoutParams(params);
+//            lv.requestLayout();
+//        }
+//        else {
+//            ViewGroup.LayoutParams params = lv.getLayoutParams();
+//            params.height = 250;
+//            lv.setLayoutParams(params);
+//            lv.requestLayout();
+//
+//        }
 
         dialog.show();
     }
@@ -339,9 +366,11 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         super.onSaveInstanceState(outState);
 
         if(dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
+            //dialog.dismiss();
             outState.putBoolean("alertShown", true);
         }
+        outState.putStringArrayList("SavedNotes",NotesAL);
+
     }
     // AutoComplete starts
     public void StartAutoCompleteActivity() {

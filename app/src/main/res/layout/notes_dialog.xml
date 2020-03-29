@@ -21,10 +21,11 @@
 
     <ListView
         android:id="@+id/NotesListView"
-        android:layout_width="383dp"
-        android:layout_height="548dp"
+        android:layout_width="324dp"
+        android:layout_height="239dp"
         android:layout_marginTop="24dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/AddNoteBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +35,8 @@
 
     <EditText
         android:id="@+id/AddNoteTxt"
-        android:layout_width="278dp"
-        android:layout_height="43dp"
+        android:layout_width="222dp"
+        android:layout_height="37dp"
         android:layout_margin="10dp"
         android:hint="Note"
         app:layout_constraintBottom_toBottomOf="@+id/AddNoteBtn"
@@ -55,15 +56,14 @@
 
     <Button
         android:id="@+id/AddNoteBtn"
-        android:layout_width="80dp"
+        android:layout_width="63dp"
         android:layout_height="47dp"
         android:layout_margin="10dp"
-        android:layout_marginTop="16dp"
-        android:text="INPUT"
+        android:text="@string/Add"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/NotesListView"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/AddNoteTxt"
-        app:layout_constraintTop_toBottomOf="@+id/NotesListView"
         tools:ignore="MissingConstraints" />
 
     <Button
