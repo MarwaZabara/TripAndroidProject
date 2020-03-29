@@ -15,7 +15,6 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
     RetrieveTripContract.IRetrieveTripView view;
     GetNotePresenter getNotePresenter;
     Context context;
-//    RecyclerView.Adapter myAdapter;
 
     public RetrieveTripPresenter(Context context, RetrieveTripContract.IRetrieveTripView view){
         this.context = context;
@@ -31,6 +30,11 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
     @Override
     public void retrieveFilteredTrips(String filter) {
         model.fetchFilteredData(filter);
+    }
+
+    @Override
+    public void fetchData(String filter1, String filter2) {
+        model.fetchData(filter1,filter2);
     }
 
     @Override

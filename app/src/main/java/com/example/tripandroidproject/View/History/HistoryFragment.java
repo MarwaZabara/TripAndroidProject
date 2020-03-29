@@ -11,19 +11,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.TripAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryFragment extends Fragment{
+public class HistoryFragment extends Fragment implements RetrieveTripContract.IRetrieveTripView {
 
     private RecyclerView.Adapter myAdapter;
     private RecyclerView recyclerView;
-    private List<Trip> values;
+    private List<Trip> trips;
     private Trip trip;
+    RetrieveTripContract.IRetrieveTripPresenter retrieveTripPresenter;
 
     @Nullable
     @Override
@@ -34,12 +37,20 @@ public class HistoryFragment extends Fragment{
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        values = new ArrayList<>();
-        myAdapter = new HistoryAdapter(getContext(),values);
+        trips = new ArrayList<>();
+        myAdapter = new HistoryAdapter(getContext(),trips);
+        retrieveTripPresenter = new RetrieveTripPresenter(getContext(),this);
+        retrieveTripPresenter.retrieveFilteredTrips("Cancel");
         myAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(myAdapter);
+        renderData(trips);
 
         return view;
+    }
+
+    public void setAdapter(RecyclerView.Adapter myAdapter) {
+        this.myAdapter = myAdapter;
+        this.myAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(myAdapter);
     }
 
     @Override
@@ -47,10 +58,10 @@ public class HistoryFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
     }
 
-    public void setCanceledTrip(Trip trip){
-        values.add(trip);
+    @Override
+    public void renderData(List<Trip> trips) {
+        myAdapter = new TripAdapter(this.getContext(),trips);
+        setAdapter(myAdapter);
     }
+
 }
-//    interface CommunicatorFrag {
-//        public void cancelTrip(Trip trip);
-//    }

@@ -56,7 +56,6 @@ public class RepeatedFragment extends Fragment implements RetrieveTripContract.I
         return view;
     }
 
-    @Override
     public void setAdapter(RecyclerView.Adapter myAdapter) {
         this.myAdapter = myAdapter;
         this.myAdapter.notifyDataSetChanged();

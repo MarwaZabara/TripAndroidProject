@@ -54,6 +54,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         List<Trip> trips = getOfflineTripPresenter.getTrips();
         if(trips.size() == 0){
             retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);
+//            retrieveTripPresenter.fetchData("upcoming","repeated");
             retrieveTripPresenter.retrieveUpcomingTrips();
         }
 
@@ -61,7 +62,6 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         return view;
     }
 
-    @Override
     public void setAdapter(RecyclerView.Adapter myAdapter) {
         this.myAdapter = myAdapter;
         this.myAdapter.notifyDataSetChanged();

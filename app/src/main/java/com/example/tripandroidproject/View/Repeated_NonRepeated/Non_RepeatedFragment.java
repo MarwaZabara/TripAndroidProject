@@ -52,7 +52,6 @@ public class Non_RepeatedFragment extends Fragment implements RetrieveTripContra
         return view;
     }
 
-    @Override
     public void setAdapter(RecyclerView.Adapter myAdapter) {
         this.myAdapter = myAdapter;
         this.myAdapter.notifyDataSetChanged();

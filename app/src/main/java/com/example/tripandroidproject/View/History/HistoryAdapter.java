@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private List<Trip> values;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     private String tripName;
+    private ImageView historyImg;
     private View view;
     private DeleteTripContract.IDeleteTripPresenter presenter;
 
@@ -45,7 +47,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public HistoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup recycleView, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(recycleView.getContext());
-        view = inflater.inflate(R.layout.trip_row, recycleView, false);
+        view = inflater.inflate(R.layout.history_row, recycleView, false);
         ViewHolder vh = new ViewHolder(view);
         return vh;
     }
@@ -58,14 +60,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.location1.setText(values.get(position).getDescription());
         holder.location2.setText(values.get(position).getDescription());
         holder.tripName.setText(values.get(position).getName());
+//        historyImg.setImageURI(values.get(position).getImgPath());
         holder.cardView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_transition_animation));
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//        Toast.makeText(context, values.get(position).getName(), Toast.LENGTH_SHORT).show();
                 tripName = values.get(position).getName();
-
                 takeAction(tripName, position);
             }
         });
@@ -85,15 +86,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             layout = itemView;
-            date = itemView.findViewById(R.id.date);
-            time = itemView.findViewById(R.id.time);
-            location1 = itemView.findViewById(R.id.location1);
-            location2 = itemView.findViewById(R.id.location2);
-            status = itemView.findViewById(R.id.status);
-            tripName = itemView.findViewById(R.id.tripName);
-
-            constraintLayout = itemView.findViewById(R.id.row);
-            cardView = itemView.findViewById(R.id.myCardView);
+            date = itemView.findViewById(R.id.historyDate);
+            time = itemView.findViewById(R.id.historyTime);
+            location1 = itemView.findViewById(R.id.historyLocation1);
+            location2 = itemView.findViewById(R.id.historyLocation2);
+            status = itemView.findViewById(R.id.historyStatus);
+            tripName = itemView.findViewById(R.id.historyTripName);
+//            historyImg = itemView.findViewById(R.id.historyImage);
+            constraintLayout = itemView.findViewById(R.id.historyRow);
+            cardView = itemView.findViewById(R.id.historyCardView);
         }
     }
 
@@ -151,4 +152,3 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         notifyItemRemoved(position);
     }
 }
-

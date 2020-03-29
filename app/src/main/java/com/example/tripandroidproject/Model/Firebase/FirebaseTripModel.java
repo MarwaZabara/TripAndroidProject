@@ -10,6 +10,7 @@ import com.example.tripandroidproject.Contract.Trip.DeleteTripContract;
 import com.example.tripandroidproject.Contract.Trip.ITripPresenter;
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
 import com.example.tripandroidproject.Contract.Trip.SaveTripContract;
+import com.example.tripandroidproject.Contract.Trip.UpdateTripContract;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.TripAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel , RetrieveTripContract.IRetrieveTripModel, DeleteTripContract.IDeleteTripModel {
+public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel , UpdateTripContract.IUpdateTripModel,RetrieveTripContract.IRetrieveTripModel, DeleteTripContract.IDeleteTripModel {
     FirebaseDatabase database;
     DatabaseReference myRef;
     private FirebaseAuth mAuth;
@@ -31,7 +32,7 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     //////////////////////////////////////////////////////
     private RetrieveTripContract.IRetrieveTripPresenter retrieveTripPresenter;
     List<Trip> input;
-    List<Trip> repeatedList,nonRepeatedList;
+//    List<Trip> repeatedList,nonRepeatedList;
     Context context;
 //    RecyclerView.Adapter myAdapter;
 
@@ -114,23 +115,55 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     }
 
     @Override
+    public void fetchData(String filter1, String filter2) {
+//        Query query = myRef.orderByChild("status_status").equalTo(filter1+"_"+filter2);
+//        Query query1 = myRef.orderByChild("status").equalTo(filter1);
+        Query q = myRef.orderByChild("status").startAt(filter1).endAt(filter2);
+        q.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                input.clear();
+                for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
+                    Trip trip = tripSnapShot.getValue(Trip.class);
+                    input.add(trip);
+                }
+//                retrieveTripPresenter.onSuccessGetUpcomingTrips(input);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+//        Query query2 = myRef.orderByChild("status").equalTo(filter2);
+//        query2.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                input.clear();
+//                for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
+//                    Trip trip = tripSnapShot.getValue(Trip.class);
+//                    input.add(trip);
+//                }
+//                retrieveTripPresenter.onSuccessGetUpcomingTrips(input);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+    }
+
+    @Override
     public List<Trip> returnData() {
         return input;
     }
-    @Override
-    public List<Trip> returnRepeatedData() {
-        return repeatedList;
-    }
-    @Override
-    public List<Trip> returnNonRepeatedData() {
-        return nonRepeatedList;
-    }
-
 //    @Override
-//    public RecyclerView.Adapter returnAdapter() {
-//        return myAdapter;
+//    public List<Trip> returnRepeatedData() {
+//        return input;
 //    }
-
+//    @Override
+//    public List<Trip> returnNonRepeatedData() {
+//        return input;
+//    }
 
     @Override
     public void deleteTrip(Trip trip) {
@@ -139,6 +172,7 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
         Log.d("TAG","Delete from firebase");
     }
 
+    @Override
     public void updateTrip(Trip trip) {
         myRef.child(trip.getId()).setValue(trip);
     }

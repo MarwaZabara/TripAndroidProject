@@ -19,6 +19,7 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripandroidproject.Contract.Trip.UpdateTripContract;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.Contract.Trip.SaveTripContract;
@@ -27,6 +28,7 @@ import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.UpdateTripPresenter;
 import com.example.tripandroidproject.R;
 
 import java.io.IOException;
@@ -44,11 +46,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
     private DeleteTripPresenter presenter;
     private DeleteOfflineTripPresenter deleteOfflineTripPresenter;
     private CheckInternetConnection checkInternetConnection;
+    private UpdateTripContract.IUpdateTripPresenter updateTripPresenter;
 
     public TripAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
         upComingTripList = myDataSet;
         this.context = context;
         presenter = new DeleteTripPresenter();
+        updateTripPresenter = new UpdateTripPresenter();
         deleteOfflineTripPresenter = new DeleteOfflineTripPresenter(context);
         checkInternetConnection = new CheckInternetConnection();
     }
@@ -147,8 +151,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
                 } else if (options[item].equals("Cancel Trip")) {
                     Trip trip = upComingTripList.get(position);
                     trip.setStatus("Cancel");     ///////change status of trip
+                    updateTripPresenter.updateTrip(trip);
+                    upComingTripList.remove(position);
+                    notifyItemRemoved(position);
 //                  communicatorFrag.cancelTrip(trip);
-                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
+//                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
                 }
             }
         });
@@ -190,12 +197,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==1){
             //////// isSync = 1 mean it stored in firebase allready and need to delete it from firebase & room
             trip.setIsSync(0);
+            updateTripPresenter.updateTrip(trip);
             /////// -> here send trip to Hassan
             upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
 
         } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==0){
             //////// isSync = 0 mean it didn't store in firebase so need to delete it from room only
             trip.setIsSync(1);
+            updateTripPresenter.updateTrip(trip);
             /////// -> here send trip to Hassan
             upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
         }
