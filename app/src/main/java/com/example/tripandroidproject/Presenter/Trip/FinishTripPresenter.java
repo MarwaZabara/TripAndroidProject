@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.tripandroidproject.Contract.Trip.ITripPresenter;
 import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
+import com.example.tripandroidproject.Model.Firebase.FirebaseRepeatedTripHistory;
 import com.example.tripandroidproject.Model.Firebase.FirebaseTripModel;
 import com.example.tripandroidproject.Model.InternetConnection.Internetonnection;
 import com.example.tripandroidproject.Model.ReminderModel.ReminderModel;
@@ -27,37 +28,63 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
     public void finishTrip(String tripID) {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
         RoomRepeatedTripHistoryModel roomRepeatedTripHistoryModel = new RoomRepeatedTripHistoryModel(this,context);
-        FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
+
+        FirebaseRepeatedTripHistory firebaseRepeatedTripHistory = new FirebaseRepeatedTripHistory();
+        FirebaseTripModel firebaseTripModel = new FirebaseTripModel();
         Trip trip = roomTripModel.getTripForSpecificID(tripID);
-        RepeatedTripHistory repeatedTripHistory = new RepeatedTripHistory();
+        ;
         trip.setStatus("finished");
+        if (trip.getRepeatEvery() > 0)
+        {
+
+            RepeatedTripHistory repeatedTripHistory = setObject(trip);
+            if(Internetonnection.isNetworkAvailable(context))
+            {
+                trip.setIsSync(1);
+                firebaseRepeatedTripHistory.saveTrip(repeatedTripHistory);
+            }
+            else {
+                repeatedTripHistory.setIsSync(0);
+                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory);
+            }
+            Calendar calendarHome = GenerateCalendarObject.generateCalendar(trip.getDate(),"0-0");
+            calendarHome.add(Calendar.DAY_OF_MONTH, (int) trip.getRepeatEvery());
+            calendarHome.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip.getTime().split("-")[0]));
+            calendarHome.set(Calendar.MINUTE, Integer.parseInt(trip.getTime().split("-")[1]));
+            trip.setDate(GenerateCalendarObject.generateStringDate(calendarHome));
+            trip.setTime(GenerateCalendarObject.generateStringTme(calendarHome));
+
+//                if(trip.getIsRound() == 1)
+//                {
+//                    Calendar calendarRound = GenerateCalendarObject.generateCalendar(trip.getRoundDate(),"0-0");
+//                    calendarRound.add(Calendar.DAY_OF_MONTH, trip.getRepeatEvery());
+//                    calendarRound.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip.getRoundTime().split("-")[0]));
+//                    calendarRound.set(Calendar.MINUTE, Integer.parseInt(trip.getRoundTime().split("-")[1]));
+//                    trip.setRoundDate(GenerateCalendarObject.generateStringDate(calendarHome));
+//                    trip.setRoundTime(GenerateCalendarObject.generateStringTme(calendarHome));
+//                }
+
+        }
         if(Internetonnection.isNetworkAvailable(context))
         {
             trip.setIsSync(1);
-            if (trip.getRepeatEvery() > 0)
-            {
-                try {
-                    copyObject(trip,repeatedTripHistory);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                }
-                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory);
-                Calendar calendarHome = GenerateCalendarObject.generateCalendar(trip.getDate(),"0-0");
-                calendarHome.add(Calendar.DAY_OF_MONTH, trip.getRepeatEvery());
-                calendarHome.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip.getTime().split("-")[0]));
-                calendarHome.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip.getTime().split("-")[1]));
-                trip.setDate(GenerateCalendarObject.generateStringDate(calendarHome));
-                trip.setTime(GenerateCalendarObject.generateStringTme(calendarHome));
-                
-
-            }
-
+            firebaseTripModel.saveTrip(trip);
         }
         else {
             trip.setIsSync(0);
         }
+        roomTripModel.updateTrip(trip);
+
+
+    }
+
+    private RepeatedTripHistory setObject(Trip trip) {
+        RepeatedTripHistory repeatedTripHistory = new RepeatedTripHistory(trip.getId(), trip.getUserID(), trip.getName(),
+                trip.getDescription(), trip.getStatus(), trip.getDate(), trip.getTime(),
+                trip.getRepeatEvery(), trip.getRequestCodeHome(), trip.getStartLongitude(),
+                trip.getStartLatitude(), trip.getEndLongitude(), trip.getEndLatitude(), trip.getIsSync(),
+                trip.getNotes());
+        return repeatedTripHistory;
     }
 
     @Override

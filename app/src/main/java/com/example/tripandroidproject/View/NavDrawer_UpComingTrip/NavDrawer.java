@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.ControlNetworkChangeBroadcast;
+import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
 import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 import com.example.tripandroidproject.POJOs.Trip;
@@ -56,6 +58,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     private GoogleSignInClient mGoogleSignInClient;
 
     private ViewPager viewPager;
+    private NetworkChangeBroadcastReceiver networkChangeBroadcastReceiver;
 
 
     TextView mItemSelected;
@@ -67,6 +70,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ControlNetworkChangeBroadcast.registerBroadcast(this);
         setContentView(R.layout.activity_nav_drawer);
 //////////////////////////////////////////////////////////////////
         viewPager = (ViewPager) findViewById(R.id.container);
@@ -258,5 +262,9 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         viewPager.setCurrentItem(fragmentNum);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ControlNetworkChangeBroadcast.unregisterReceiver(this);
+    }
 }

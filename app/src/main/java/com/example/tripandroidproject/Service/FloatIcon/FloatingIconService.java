@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
+import com.example.tripandroidproject.Presenter.Trip.FinishTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.FloatIcon.FloatAdapter;
 import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.NavDrawer;
@@ -30,6 +31,7 @@ public class FloatingIconService extends Service {
     private WindowManager mWindowManager;
     private View mFloatingView;
     RecyclerView recyclerView;
+    private String tripID;
 //    @Override
 //    public int onStartCommand(Intent intent, int flags, int startId) {
 //
@@ -93,7 +95,7 @@ public class FloatingIconService extends Service {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        String tripID = intent.getStringExtra("tripID");
+        tripID = intent.getStringExtra("tripID");
         List<Note> notes = getNotes(tripID);
         FloatAdapter floatAdapter = new FloatAdapter(this,notes);
         recyclerView.setAdapter(floatAdapter);
@@ -196,6 +198,14 @@ public class FloatingIconService extends Service {
             public void onClick(View view) {
                 collapsedView.setVisibility(View.VISIBLE);
                 expandedView.setVisibility(View.GONE);
+            }
+        });
+        Button finishBtn = mFloatingView.findViewById(R.id.finishBtn);
+        finishBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FinishTripPresenter finishTripPresenter = new FinishTripPresenter(FloatingIconService.this);
+                finishTripPresenter.finishTrip(tripID);
             }
         });
 

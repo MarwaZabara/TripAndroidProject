@@ -33,7 +33,7 @@ public class RequestCodePresenter implements RequestCodeContract.IRequestCodePre
             firebaseRequestCodeModel.getRequestCode();
         }
         else {
-            iRequestCodeView.retrieveRequestCode(requestCode);
+            iRequestCodeView.setRequestCodeInSharedPreference(requestCode);
         }
     }
 

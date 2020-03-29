@@ -27,6 +27,7 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
         List<Trip> trips = roomTripModel.getOfflineTrip();
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
         for (int i = 0; i < trips.size(); i++) {
+            trips.get(i).setIsSync(1);
             firebaseTripModel.saveTrip(trips.get(i));
             getOfflineNoteWithSpecificTrip(trips.get(i).getId());
         }
@@ -44,8 +45,6 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
         }
         return trips;
     }
-
-
     public List<Trip> getTrips() {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
         List<Trip> trips = roomTripModel.getTrips();
