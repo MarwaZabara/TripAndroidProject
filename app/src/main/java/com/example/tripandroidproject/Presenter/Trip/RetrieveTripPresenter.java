@@ -15,18 +15,22 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
     RetrieveTripContract.IRetrieveTripView view;
     GetNotePresenter getNotePresenter;
     Context context;
-    RecyclerView.Adapter myAdapter;
+//    RecyclerView.Adapter myAdapter;
 
     public RetrieveTripPresenter(Context context, RetrieveTripContract.IRetrieveTripView view){
         this.context = context;
         this.view = view;
         model = new FirebaseTripModel(context,this);
-
     }
 
     @Override
     public void retrieveUpcomingTrips() {
         model.fetchData();
+    }
+
+    @Override
+    public void retrieveFilteredTrips(String filter) {
+        model.fetchFilteredData(filter);
     }
 
     @Override

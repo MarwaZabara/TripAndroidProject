@@ -1,28 +1,19 @@
-package com.example.tripandroidproject.Model.SignIn;
+package com.example.tripandroidproject.Model.LogIn;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.room.Room;
 
 import com.example.tripandroidproject.Contract.Login.LoginContract;
 import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
-import com.example.tripandroidproject.Model.Room.AppDatabase;
-import com.example.tripandroidproject.Model.Room.PersonDAO;
 import com.example.tripandroidproject.Model.Room.RoomPersonModel;
-import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
-import com.example.tripandroidproject.R;
-import com.example.tripandroidproject.View.Login.LoginActivity;
 import com.example.tripandroidproject.View.SaveUserLogIn;
 import com.example.tripandroidproject.View.UserDetails;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,8 +60,11 @@ public class LoginModel implements LoginContract.ISignInModel {
                             UserDetails user = roomPersonModel.getCurrentPerson(userDetails.getEmail());
                             personPresenter.setCurrentPerson(user);
                             presenter.onSucess();
-                            saveUserLogIn.storeUserData(user);
-                            saveUserLogIn.setUserLoggedIn(true);
+                            if (user.getName()!=null){
+                                saveUserLogIn.storeUserData(user);
+                                saveUserLogIn.setUserLoggedIn(true);
+                            }
+
                         } else {
                             Log.d("TAG", "signInWithEmail:failure", task.getException());
                             presenter.onFail();

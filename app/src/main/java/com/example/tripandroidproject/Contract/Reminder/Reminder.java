@@ -16,11 +16,8 @@ public class Reminder {
     public interface IReminderModel {
         public void startAlarmService(Calendar calendar, int requestCode);
         public void startTrip(String destinationPlaceName, String tripID,int requestCode);
-        public void initializeView();
+        public void initializeView(String tripID);
     }
 
-    public interface IStartTripPresenter extends IBase,IBaseReminder {
-        public void startTrip(String destinationPlaceName, String tripID,int requestCode);
-        public void initializeView();
-    }
+
 }

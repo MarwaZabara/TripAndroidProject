@@ -7,11 +7,12 @@ import androidx.room.Room;
 import com.example.tripandroidproject.Contract.Note.GetNoteContract;
 import com.example.tripandroidproject.Contract.Note.INotePresenter;
 import com.example.tripandroidproject.Contract.Note.SaveNoteContract;
+import com.example.tripandroidproject.Contract.Note.UpdateNoteContract;
 import com.example.tripandroidproject.POJOs.Note;
 
 import java.util.List;
 
-public class RoomNoteModel implements SaveNoteContract.ISaveNoteOfflineModel, GetNoteContract.IGetNoteModel {
+public class RoomNoteModel implements SaveNoteContract.ISaveNoteOfflineModel, GetNoteContract.IGetNoteModel, UpdateNoteContract.IUpdateNoteOfflineModel {
     private final AppDatabase database;
     private final NoteDAO noteDAO;
     private final INotePresenter notePresenter;
@@ -32,5 +33,11 @@ public class RoomNoteModel implements SaveNoteContract.ISaveNoteOfflineModel, Ge
     @Override
     public List<Note> getNotes(String tripID) {
         return noteDAO.getNotes(tripID);
+    }
+
+
+    @Override
+    public void updateNote(Note note) {
+        noteDAO.update(note);
     }
 }

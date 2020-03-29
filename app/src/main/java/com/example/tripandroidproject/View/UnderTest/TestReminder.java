@@ -1,8 +1,16 @@
 package com.example.tripandroidproject.View.UnderTest;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.room.Room;
+
+import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -47,6 +55,13 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
     TripDAO tripDAO;
     private NetworkChangeBroadcastReceiver networkChangeBroadcastReceiver;
 
+
+    TextView mItemSelected;
+
+    String[] listItems =  {"dfsd","fsdfds"};
+    boolean[] checkedItems;
+    ArrayList<Integer> mUserItems = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +83,7 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
 //        GetNotePresenter getNotePresenter = new GetNotePresenter(this,true);
 //       List<Note> dasd = getNotePresenter.getNotes("-M2zmue57fQv3tGV5T_N");
 //        int x = 6;
+        checkedItems  = new boolean[listItems.length];
     }
 
 
@@ -233,5 +249,63 @@ public class TestReminder extends AppCompatActivity implements TimePickerDialog.
         editor.putInt("requestCode", requestCode);
         editor.commit();
         this.requestCode = requestCode;
+    }
+
+    public void dialog(View view) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(TestReminder.this);
+        mBuilder.setTitle("Notes");
+        mBuilder.setMultiChoiceItems(listItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+//                        if (isChecked) {
+//                            if (!mUserItems.contains(position)) {
+//                                mUserItems.add(position);
+//                            }
+//                        } else if (mUserItems.contains(position)) {
+//                            mUserItems.remove(position);
+//                        }
+                if(isChecked){
+                    mUserItems.add(position);
+                }else{
+                    mUserItems.remove((Integer.valueOf(position)));
+                }
+            }
+        });
+
+        mBuilder.setCancelable(false);
+        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                String item = "";
+                for (int i = 0; i < mUserItems.size(); i++) {
+                    item = item + listItems[mUserItems.get(i)];
+                    if (i != mUserItems.size() - 1) {
+                        item = item + ", ";
+                    }
+                }
+                mItemSelected.setText(item);
+            }
+        });
+
+        mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        mBuilder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                for (int i = 0; i < checkedItems.length; i++) {
+                    checkedItems[i] = false;
+                    mUserItems.clear();
+                    mItemSelected.setText("");
+                }
+            }
+        });
+
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
     }
 }

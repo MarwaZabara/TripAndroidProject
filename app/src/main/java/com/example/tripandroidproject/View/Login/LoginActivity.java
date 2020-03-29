@@ -8,9 +8,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tripandroidproject.Contract.Firebase.FirebaseUserContract;
 import com.example.tripandroidproject.Contract.Login.LoginContract;
 import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
+import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
 import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
+import com.example.tripandroidproject.Presenter.User.FirebaseUserPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.NavDrawer;
 import com.example.tripandroidproject.View.SaveUserLogIn;
@@ -22,7 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.ISignInView , RoomPersonContract.IRoomPersonView {
+public class LoginActivity extends AppCompatActivity implements LoginContract.ISignInView , RoomPersonContract.IRoomPersonView , FirebaseUserContract.IUserView {
 
     private EditText loginEmail,loginPassword;
     private SignInButton signInButton;
@@ -31,6 +34,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     private static final int RC_SIGN_IN = 9001;
     private LoginPresenter presenter;
     private SaveUserLogIn saveUserLogIn;
+    private CheckInternetConnection checkInternetConnection;
+    private FirebaseUserPresenter userPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +43,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         setContentView(R.layout.activity_login);
 
         presenter = new LoginPresenter(this,this,this);
-
+        checkInternetConnection = new CheckInternetConnection();
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
+
+        userPresenter = new FirebaseUserPresenter(this);
 
         userDetails = new UserDetails();
 
@@ -72,6 +79,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 userDetails.setName(intent.getStringExtra("name"));
                 userDetails.setEmail(intent.getStringExtra("email"));
                 userDetails.setImgUri(intent.getStringExtra("imgUri"));
+                userDetails.setPassword(intent.getStringExtra("password"));
+
+                userPresenter.saveUserData(userDetails);            /////////save data in firebase
 
                 loginEmail.setText(intent.getStringExtra("email"));
                 loginPassword.setText(intent.getStringExtra("password"));
@@ -79,16 +89,24 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
             }
             Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
         }else {
-            Intent intent = new Intent(this,NavDrawer.class);
             /////////////////////get user information to sent it to nav drawer/////////////////////////
             userDetails = saveUserLogIn.getLoggedInUser();
             presenter.onSendData(userDetails);
-            intent.putExtra("Email",userDetails.getEmail());
-            intent.putExtra("Password",userDetails.getPassword());
-            intent.putExtra("Name",userDetails.getName());
-            intent.putExtra("imgUri",userDetails.getImgUri());
-            startActivity(intent);
+//            if (userDetails.getName()==null){       ///////userData doesn't store in room
+//                getUserData();          //////get from firebase
+//            }else {
+//                /////data will be get from room
+//            }
+            if (userDetails.getName()!=null) {
+                Intent intent = new Intent(this, NavDrawer.class);
+                intent.putExtra("Email", userDetails.getEmail());
+                intent.putExtra("Password", userDetails.getPassword());
+                intent.putExtra("Name", userDetails.getName());
+                intent.putExtra("imgUri", userDetails.getImgUri());
+                startActivity(intent);
+            }
         }
+        userPresenter = new FirebaseUserPresenter(this);
     }
 
     @Override
@@ -98,8 +116,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     }
 
     private void signInGoogle() {
+        if (checkInternetConnection.getConnectivityStatusString(this)){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        }
     }
 
     public void SignUP_Btn(View view) {
@@ -108,21 +128,28 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     }
 
     public void LogIn_Btn(View view) {
-        userDetails.setEmail(loginEmail.getText().toString());
-        userDetails.setPassword(loginPassword.getText().toString());
-        presenter.onSendData(userDetails);
+        if (checkInternetConnection.getConnectivityStatusString(this)) {
+            userDetails.setEmail(loginEmail.getText().toString());
+            userDetails.setPassword(loginPassword.getText().toString());
+            presenter.onSendData(userDetails);
+        }
     }
 
     @Override
     public void showMessage(Boolean result) {
         if (result){
 //            Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this,NavDrawer.class);
-            intent.putExtra("Email",userDetails.getEmail());
-            intent.putExtra("Name",userDetails.getName());
-            intent.putExtra("imgUri",userDetails.getImgUri());
-            intent.putExtra("password",userDetails.getPassword());
-            startActivity(intent);
+            if (userDetails.getName()==null){       ///////userData doesn't store in room
+                getUserData();          //////get from firebase
+
+            }else  {
+                Intent intent = new Intent(this, NavDrawer.class);
+                intent.putExtra("Email", userDetails.getEmail());
+                intent.putExtra("Name", userDetails.getName());
+                intent.putExtra("imgUri", userDetails.getImgUri());
+                intent.putExtra("password", userDetails.getPassword());
+                startActivity(intent);
+            }
         }else{
             Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();
         }
@@ -132,5 +159,23 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     public UserDetails setCurrentPerson(UserDetails userDetails) {
         this.userDetails = userDetails;
         return userDetails;
+    }
+
+    @Override
+    public void getUserData() {
+        userPresenter.getUserData();
+    }
+
+    @Override
+    public void setUserData(UserDetails user) {
+        this.userDetails = user;
+        saveUserLogIn.storeUserData(user);
+        saveUserLogIn.setUserLoggedIn(true);
+        Intent intent = new Intent(this, NavDrawer.class);
+        intent.putExtra("Email", userDetails.getEmail());
+        intent.putExtra("Name", userDetails.getName());
+        intent.putExtra("imgUri", userDetails.getImgUri());
+        intent.putExtra("password", userDetails.getPassword());
+        startActivity(intent);
     }
 }

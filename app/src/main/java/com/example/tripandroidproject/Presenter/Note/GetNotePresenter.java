@@ -20,7 +20,7 @@ public class GetNotePresenter implements GetNoteContract.IGetNotePresenter {
 
     public GetNotePresenter(Context context,boolean isFirebase) {
         firebaseNoteModel = new FirebaseNoteModel(this);
-
+        this.context = context;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.example.tripandroidproject.Presenter.Trip;
 
-import android.content.Context;
-
 import com.example.tripandroidproject.Contract.Trip.DeleteTripContract;
 import com.example.tripandroidproject.Model.Firebase.FirebaseTripModel;
 import com.example.tripandroidproject.POJOs.Trip;

@@ -18,7 +18,7 @@ import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.TripAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryFragment extends Fragment implements HistoryAdapter.CancelledTrip {
+public class HistoryFragment extends Fragment{
 
     private RecyclerView.Adapter myAdapter;
     private RecyclerView recyclerView;
@@ -35,7 +35,7 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.Cancelle
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         values = new ArrayList<>();
-        myAdapter = new HistoryAdapter(getContext(),values,this);
+        myAdapter = new HistoryAdapter(getContext(),values);
         myAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(myAdapter);
 
@@ -49,12 +49,6 @@ public class HistoryFragment extends Fragment implements HistoryAdapter.Cancelle
 
     public void setCanceledTrip(Trip trip){
         values.add(trip);
-    }
-
-    @Override
-    public void getPosition(int position) {
-        trip = values.get(position);
-        setCanceledTrip(trip);
     }
 }
 //    interface CommunicatorFrag {

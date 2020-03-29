@@ -14,18 +14,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Reminder.StartTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.R;
-import com.example.tripandroidproject.Service.FloatIcon.FloatingIconService;
 import com.example.tripandroidproject.Service.SnoozeNotification.SnoozeNotificationForegroundService;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
 
@@ -126,7 +122,7 @@ public class ReminderActivity extends AppCompatActivity {
         if (requestCode == CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
             //Check if the permission is granted or not.
             if (resultCode == RESULT_OK) {
-                startTripPresenter.initializeView();
+                startTripPresenter.initializeView("-M3SXR-SAqbNODQuujOw");
             } else { //Permission is not available
                 Toast.makeText(this,
                         "Draw over other app permission not available. Closing the application",
