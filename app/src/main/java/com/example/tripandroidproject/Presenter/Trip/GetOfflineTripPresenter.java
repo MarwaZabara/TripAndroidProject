@@ -38,13 +38,24 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
     public List<Trip> getOfflineFilteredTrip(String filter) {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
         List<Trip> trips = roomTripModel.getOfflineFilteredTrip(filter);
-        FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
+//        FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
         for (int i = 0; i < trips.size(); i++) {
 //            firebaseTripModel.saveTrip(trips.get(i));
             getOfflineNoteWithSpecificTrip(trips.get(i).getId());
         }
         return trips;
     }
+
+    @Override
+    public List<Trip> getOfflineFilteredTrip(String filter1, String filter2) {
+        RoomTripModel roomTripModel = new RoomTripModel(this,context);
+        List<Trip> trips = roomTripModel.getOfflineFilteredTrip(filter1, filter2);
+        for (int i = 0; i < trips.size(); i++) {
+            getOfflineNoteWithSpecificTrip(trips.get(i).getId());
+        }
+        return trips;
+    }
+
     public List<Trip> getTrips() {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
         List<Trip> trips = roomTripModel.getTrips();

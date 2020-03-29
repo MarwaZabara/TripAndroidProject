@@ -31,6 +31,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
     private RecyclerView recyclerView;
     private RetrieveTripPresenter retrieveTripPresenter;
     private GetOfflineTripPresenter getOfflineTripPresenter;
+//    private List<Trip> trips;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -48,16 +49,23 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-//        presenter = new RetrieveTripPresenter(this.getContext(),this);
 
+////////////////////////////////////////////////////////////////////////
+        ///online Only for test
+//        trips = new ArrayList<>();
+//        retrieveTripPresenter = new RetrieveTripPresenter(getContext(),this);
+//        retrieveTripPresenter.retrieveFilteredTrips("upcoming");
+
+/////////////////////////////////////////////////////////////////////////////////
         getOfflineTripPresenter = new GetOfflineTripPresenter(this.getContext());
-        List<Trip> trips = getOfflineTripPresenter.getTrips();
+//        List<Trip> trips = getOfflineTripPresenter.getTrips();
+        List<Trip> trips = getOfflineTripPresenter.getOfflineFilteredTrip("upcoming","repeated");
         if(trips.size() == 0){
             retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);
 //            retrieveTripPresenter.fetchData("upcoming","repeated");
             retrieveTripPresenter.retrieveUpcomingTrips();
         }
-
+////////////////////////////////////////////////////////////////////////////////
         renderData(trips);
         return view;
     }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.TripAdapter;

@@ -8,19 +8,30 @@ import com.example.tripandroidproject.Contract.Trip.DeleteOfflineTripContract;
 import com.example.tripandroidproject.Contract.Trip.GetOfflineTripContract;
 import com.example.tripandroidproject.Contract.Trip.ITripPresenter;
 import com.example.tripandroidproject.Contract.Trip.SaveTripContract;
+import com.example.tripandroidproject.Contract.Trip.UpdateTripOfflineContract;
 import com.example.tripandroidproject.Model.Firebase.FirebaseUserModel;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.UpdateTripOfflinePresenter;
 
 import java.util.List;
 
-public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , GetOfflineTripContract.IGetOfflineTripModel , DeleteOfflineTripContract.IDeleteOfflineTripModel {
+public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , GetOfflineTripContract.IGetOfflineTripModel , DeleteOfflineTripContract.IDeleteOfflineTripModel, UpdateTripOfflineContract.IUpdateTripOfflineModel {
     private final AppDatabase database;
     private final TripDAO tripDAO;
     private ITripPresenter tripPresenter;
     private DeleteOfflineTripPresenter offlineTripPresenter;
+    private UpdateTripOfflinePresenter updateTripOfflinePresenter;
 
     public RoomTripModel(Context context) {    //////// this constructor for delete offline
+        database = Room.databaseBuilder(context, AppDatabase.class, "db-trips")
+                .allowMainThreadQueries()   //Allows room to do operation on main thread
+                .build();
+        tripDAO = database.getTripDAO();
+    }
+
+    public RoomTripModel(Context context, UpdateTripOfflinePresenter presenter) {    //////// this constructor for update offline
+        this.updateTripOfflinePresenter =  presenter;
         database = Room.databaseBuilder(context, AppDatabase.class, "db-trips")
                 .allowMainThreadQueries()   //Allows room to do operation on main thread
                 .build();
@@ -50,6 +61,11 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
     }
 
     @Override
+    public List<Trip> getOfflineFilteredTrip(String filter1,String filter2) {
+        return tripDAO.getOfflineFilteredTrips(filter1, filter2);
+    }
+
+    @Override
     public Trip getTripForSpecificCode(int requsetCode) {
         return tripDAO.getTripForSpecificCode(requsetCode);
     }
@@ -62,6 +78,7 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
         return tripDAO.getTripForID(tripID);
     }
 
+    @Override
     public void updateTrip(Trip trip) {
         tripDAO.update(trip);
     }
