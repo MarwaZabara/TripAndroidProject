@@ -28,6 +28,9 @@ import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.SwipeDeleteTVItem.SwipeDismissListViewTouchListener;
 import com.example.tripandroidproject.TimePicker.TimePickerFragment;
+import com.example.tripandroidproject.View.HistoryMapActivity.HistoryMapActivity;
+import com.example.tripandroidproject.View.Login.LoginActivity;
+import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -234,6 +237,12 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                Intent intent = new Intent(AddTripActivity.this,HistoryMapActivity.class);
+                startActivity(intent);
+
+
                 if(isRound == 1){
 //                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 //                        RepeatRound = ChronoUnit.DAYS.between(calendarMain.toInstant(), calendarRound.toInstant());
@@ -289,8 +298,10 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
 //                List<Note> notes = new ArrayList<>();
 //                notes.add(note);
 //                notes.add(note1);
+
             }
         });
+
 
     }
 
