@@ -35,7 +35,6 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
         tripDAO = database.getTripDAO();
     }
 
-    @Override
     public void saveTrip(Trip trip) {
         tripDAO.insert(trip);
     }
