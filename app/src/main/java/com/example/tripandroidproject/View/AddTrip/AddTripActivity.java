@@ -84,7 +84,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        NotesAL.add("Ravi");//Adding object in arraylist
+        //NotesAL.add("Ravi");//Adding object in arraylist
         setContentView(R.layout.activity_add_trip);
         Places.initialize(getApplicationContext(), "AIzaSyCVOvMSNN18_AJKQjfKfoWKxsYNF5GNxK0");
         Switch IsRound = findViewById(R.id.RoundSwitch);
@@ -213,9 +213,9 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             }
         });
 
-        if(savedInstanceState != null && savedInstanceState.getBoolean("alertShown",true)) {
-    showDialogListView();
-        }
+//        if(savedInstanceState != null && savedInstanceState.getBoolean("alertShown",true)) {
+//    showDialogListView();
+//        }
 
 
 //        NotesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -392,7 +392,6 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         if(dialog != null && dialog.isShowing()) {
             //dialog.dismiss();
             outState.putBoolean("alertShown", true);

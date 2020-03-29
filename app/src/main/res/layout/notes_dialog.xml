@@ -35,8 +35,8 @@
 
     <EditText
         android:id="@+id/AddNoteTxt"
-        android:layout_width="222dp"
-        android:layout_height="37dp"
+        android:layout_width="231dp"
+        android:layout_height="53dp"
         android:layout_margin="10dp"
         android:hint="Note"
         app:layout_constraintBottom_toBottomOf="@+id/AddNoteBtn"
