@@ -76,7 +76,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
 
         }
         else {
-            trip.setStatus("finished");
+            trip.setStatus("finished"); 
         }
         if(Internetonnection.isNetworkAvailable(context))
         {
