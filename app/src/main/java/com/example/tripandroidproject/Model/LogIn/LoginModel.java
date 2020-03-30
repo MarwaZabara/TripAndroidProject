@@ -82,8 +82,6 @@ public class LoginModel implements LoginContract.ISignInModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d("TAG", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-
                         } else {
                             Log.d("TAG", "signInWithCredential:failure", task.getException());
                         }
@@ -102,12 +100,14 @@ public class LoginModel implements LoginContract.ISignInModel {
                 userDetails.setEmail(account.getEmail());
                 userDetails.setName(account.getGivenName());
                 userDetails.setImgUri(account.getPhotoUrl().toString());
+
                 //// in case of sign in by gmail user needs internet cann't sign in offline
-//                UserDetails user = roomPersonModel.getCurrentPerson(userDetails.getEmail());
+
                 personPresenter.setCurrentPerson(userDetails);
                 saveUserLogIn.storeUserData(userDetails);
                 saveUserLogIn.setUserLoggedIn(true);
                 presenter.onSucess();
+
             } catch (ApiException e) {
                 Log.d("TAG", "Google sign in failed", e);
                 presenter.onFail();

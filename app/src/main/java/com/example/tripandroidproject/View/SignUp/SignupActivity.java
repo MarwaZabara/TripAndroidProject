@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Contract.SignUp.SignUpContract;
+import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
 import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
 import com.example.tripandroidproject.Presenter.SignUp.SignUpPresenter;
 import com.example.tripandroidproject.R;
@@ -41,6 +42,7 @@ import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity implements SignUpContract.ISignUpView {
 
+    private CheckInternetConnection checkInternetConnection;
     private UserDetails userDetails;
     private SignUpPresenter presenter;
     private EditText usrName,usrEmail,usrPass,usrConfirmPass;
@@ -66,6 +68,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
 
         userDetails = new UserDetails();
         presenter = new SignUpPresenter(this,this);
+        checkInternetConnection = new CheckInternetConnection();
     }
 
     public void ChooseImg(View view) {

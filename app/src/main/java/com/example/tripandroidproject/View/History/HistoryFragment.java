@@ -41,7 +41,8 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
         trips = new ArrayList<>();
         myAdapter = new HistoryAdapter(getContext(),trips);
         retrieveTripPresenter = new RetrieveTripPresenter(getContext(),this);
-        retrieveTripPresenter.retrieveFilteredTrips("Cancel");
+        retrieveTripPresenter.fetchData("Cancel","finished");
+//        retrieveTripPresenter.retrieveFilteredTrips("Cancel");
         myAdapter.notifyDataSetChanged();
         renderData(trips);
 
