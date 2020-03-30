@@ -1,11 +1,16 @@
 package com.example.tripandroidproject.View.HistoryMapActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,18 +29,25 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryMapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class HistoryMapActivity extends AppCompatActivity implements OnMapReadyCallback, RetrieveTripContract.IRetrieveTripView {
     GoogleMap map;
     Polyline polyline = null;
     Button mapBtn;
     MarkerOptions place1,place2;
     List<LatLng> latLngList = new ArrayList<>();
     List<Marker> markerList = new ArrayList<>();
-
+    private RetrieveTripPresenter retrieveTripPresenter;
+    List<Trip> finishedTrips;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_map);
+        retrieveTripPresenter = new RetrieveTripPresenter(this, this);
+        retrieveTripPresenter.retrieveFilteredTrips("finished");
+//        for (int i = 0; i < finishedTrips.size(); i++){
+//            Toast.makeText(getApplicationContext(), finishedTrips.get(i).getName(), Toast.LENGTH_LONG).show();
+//    }
+
         mapBtn = findViewById(R.id.mapBtn);
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.mapFrag);
@@ -64,6 +76,26 @@ public class HistoryMapActivity extends AppCompatActivity implements OnMapReadyC
 //                                new LatLng(-33.501, 150.217),
 //                                new LatLng(-32.306, 149.248),
                                 new LatLng(30.0609444,31.2234375)));
+                Polyline polyline2 = map.addPolyline(new PolylineOptions()
+                        .clickable(true)
+                        .add(
+                                new LatLng(31.06391939999999,29.8144185),
+//                                new LatLng(-34.747, 145.592),
+//                                new LatLng(-34.364, 147.891),
+//                                new LatLng(-33.501, 150.217),
+//                                new LatLng(-32.306, 149.248),
+                                new LatLng(29.991216,31.128639)));
+
+
+                Polyline polyline3 = map.addPolyline(new PolylineOptions()
+                        .clickable(true)
+                        .add(
+                                new LatLng(30.0602316,31.3373878),
+//                                new LatLng(-34.747, 145.592),
+//                                new LatLng(-34.364, 147.891),
+//                                new LatLng(-33.501, 150.217),
+//                                new LatLng(-32.306, 149.248),
+                                new LatLng(31.06391939999999,29.8144185)));
 
 // Store a data object with the polyline, used here to indicate an arbitrary type.
                 polyline1.setTag("A");
@@ -116,6 +148,21 @@ public class HistoryMapActivity extends AppCompatActivity implements OnMapReadyC
 
         }
     });
+
+    }
+
+
+    @Override
+    public void setAdapter(RecyclerView.Adapter myAdapter) {
+
+    }
+
+    @Override
+    public void renderData(List<Trip> trips) {
+        finishedTrips = trips;
+        for (int i = 0; i < trips.size(); i++){
+            Toast.makeText(getApplicationContext(), trips.get(i).getName(), Toast.LENGTH_LONG).show();
+        }
 
     }
 }
