@@ -32,10 +32,10 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
         FirebaseRepeatedTripHistory firebaseRepeatedTripHistory = new FirebaseRepeatedTripHistory();
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel();
         Trip trip = roomTripModel.getTripForSpecificID(tripID);
-        trip.setStatus("repeated");
+
         if (trip.getRepeatEvery() > 0)
         {
-
+            trip.setStatus("repeated");
             RepeatedTripHistory repeatedTripHistory = setObject(trip);
             if(Internetonnection.isNetworkAvailable(context))
             {
@@ -74,6 +74,9 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
 //                    trip.setRoundTime(GenerateCalendarObject.generateStringTme(calendarHome));
 //                }
 
+        }
+        else {
+            trip.setStatus("finished"); 
         }
         if(Internetonnection.isNetworkAvailable(context))
         {
