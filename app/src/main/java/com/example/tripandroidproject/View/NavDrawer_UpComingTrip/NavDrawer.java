@@ -263,6 +263,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ControlNetworkChangeBroadcast.unregisterReceiver(this);
+//        ControlNetworkChangeBroadcast.unregisterReceiver(this);
     }
 }

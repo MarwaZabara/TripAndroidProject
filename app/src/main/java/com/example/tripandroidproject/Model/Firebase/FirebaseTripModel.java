@@ -32,9 +32,7 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     //////////////////////////////////////////////////////
     private RetrieveTripContract.IRetrieveTripPresenter retrieveTripPresenter;
     List<Trip> input;
-//    List<Trip> repeatedList,nonRepeatedList;
     Context context;
-//    RecyclerView.Adapter myAdapter;
 
     public FirebaseTripModel(){
         mAuth = FirebaseAuth.getInstance();
@@ -115,55 +113,30 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     }
 
     @Override
-    public void fetchData(String filter1, String filter2) {
-//        Query query = myRef.orderByChild("status_status").equalTo(filter1+"_"+filter2);
-//        Query query1 = myRef.orderByChild("status").equalTo(filter1);
-        Query q = myRef.orderByChild("status").startAt(filter1).endAt(filter2);
-        q.addValueEventListener(new ValueEventListener() {
+    public void fetchData(final String filter1, final String filter2) {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 input.clear();
                 for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
                     Trip trip = tripSnapShot.getValue(Trip.class);
-                    input.add(trip);
+                    if (trip.getStatus().matches(filter1) | trip.getStatus().matches(filter2)){
+                        input.add(trip);
+                    }
                 }
-//                retrieveTripPresenter.onSuccessGetUpcomingTrips(input);
+                retrieveTripPresenter.onSuccessGetUpcomingTrips(input);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-//        Query query2 = myRef.orderByChild("status").equalTo(filter2);
-//        query2.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                input.clear();
-//                for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
-//                    Trip trip = tripSnapShot.getValue(Trip.class);
-//                    input.add(trip);
-//                }
-//                retrieveTripPresenter.onSuccessGetUpcomingTrips(input);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//            }
-//        });
     }
 
     @Override
     public List<Trip> returnData() {
         return input;
     }
-//    @Override
-//    public List<Trip> returnRepeatedData() {
-//        return input;
-//    }
-//    @Override
-//    public List<Trip> returnNonRepeatedData() {
-//        return input;
-//    }
 
     @Override
     public void deleteTrip(Trip trip) {

@@ -32,7 +32,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
         FirebaseRepeatedTripHistory firebaseRepeatedTripHistory = new FirebaseRepeatedTripHistory();
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel();
         Trip trip = roomTripModel.getTripForSpecificID(tripID);
-        trip.setStatus("upcoming");
+        trip.setStatus("repeated");
         if (trip.getRepeatEvery() > 0)
         {
 
@@ -51,10 +51,16 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
             }
             Calendar calendarHome = GenerateCalendarObject.generateCalendar(trip.getDate(),"0-0");
 //            calendarHome.add(Calendar.DAY_OF_YEAR, (int) trip.getRepeatEvery());
-            calendarHome.set(Calendar.DAY_OF_YEAR,GenerateCalendarObject.dayOfYear + (int) trip.getRepeatEvery());
+//            calendarHome.set(Calendar.DAY_OF_YEAR,GenerateCalendarObject.dayOfYear + (int) trip.getRepeatEvery());
 //            calendarHome.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip.getTime().split("-")[0]));
 //            calendarHome.set(Calendar.MINUTE, Integer.parseInt(trip.getTime().split("-")[1]));
-            trip.setDate(GenerateCalendarObject.generateStringDate(calendarHome));
+//            trip.setDate(GenerateCalendarObject.generateStringDate(calendarHome));
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_YEAR, GenerateCalendarObject.dayOfYear + (int) trip.getRepeatEvery());
+//            calendar.set(Calendar.MONTH, GenerateCalendarObject.month);
+//            calendar.set(Calendar.YEAR, GenerateCalendarObject.year);
+//            String x= String.valueOf(calendarHome.get(Calendar.DAY_OF_MONTH));
+            trip.setDate(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendar.get(Calendar.YEAR)));
 //            trip.setTime(GenerateCalendarObject.generateStringTme(calendarHome));
             reminderModel.startAlarmService(GenerateCalendarObject.generateCalendar(trip.getDate(),trip.getTime()),trip.getRequestCodeHome());
 

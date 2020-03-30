@@ -19,14 +19,12 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
     GetNotePresenter getNotePresenter;
     Context context;
     private RoomTripModel roomTripModel;
-//    RecyclerView.Adapter myAdapter;
 
     public RetrieveTripPresenter(Context context, RetrieveTripContract.IRetrieveTripView view){
         this.context = context;
         this.view = view;
         model = new FirebaseTripModel(context,this);
         roomTripModel = new RoomTripModel(this,context);
-
     }
 
     @Override
@@ -47,6 +45,7 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
     @Override
     public void onSuccessGetUpcomingTrips(List<Trip> trips) {
         view.renderData(trips);
+
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(context);
 
         for (int i = 0 ; i < trips.size() ; i++){
