@@ -151,11 +151,11 @@ public class HistoryMapActivity extends AppCompatActivity implements OnMapReadyC
 
     }
 
-
-    @Override
-    public void setAdapter(RecyclerView.Adapter myAdapter) {
-
-    }
+//
+//    @Override
+//    public void setAdapter(RecyclerView.Adapter myAdapter) {
+//
+//    }
 
     @Override
     public void renderData(List<Trip> trips) {
