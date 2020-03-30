@@ -234,7 +234,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         name.setText(intent.getStringExtra("Name"));
         String imageUri = intent.getStringExtra("imgUri");
         if (pass == null) {
-            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+//            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
         }else {
             imageView.setImageURI(Uri.parse(imageUri));
         }

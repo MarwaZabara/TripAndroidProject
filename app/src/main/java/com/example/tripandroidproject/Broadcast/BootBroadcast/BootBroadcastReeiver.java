@@ -9,7 +9,6 @@ import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
-import com.example.tripandroidproject.View.Login.LoginActivity;
 
 import java.util.Calendar;
 import java.util.List;
