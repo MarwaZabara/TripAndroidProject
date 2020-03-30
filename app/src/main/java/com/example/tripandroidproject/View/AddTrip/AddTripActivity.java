@@ -253,8 +253,8 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             public void onClick(View v) {
 
 
-//                Intent intent = new Intent(AddTripActivity.this,HistoryMapActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(AddTripActivity.this,HistoryMapActivity.class);
+                startActivity(intent);
 
 
                 if(isRound == 1){
@@ -279,20 +279,20 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                // trip.setId(testTxt.getText().toString());
                 trip.setName(TripName);
                 trip.setDescription(TripDesc);
-               // trip.setIsRound(isRound);
+                trip.setIsRound(isRound);
                 trip.setDate(TripDate);
                 trip.setTime(TripTime);
                 //trip.setRequestCodeHome(requestCode++);
                 trip.setStatus(status);
-                //trip.setRoundDate(RoundDate);
-               // trip.setRoundTime(RoundTime);
-               // trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
+                trip.setRoundDate(RoundDate);
+                trip.setRoundTime(RoundTime);
+                trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
                 trip.setEndLatitude(EndLat);
                 trip.setEndLongitude(EndLong);
                 trip.setStartLatitude(StartLat);
                 trip.setStartLongitude(StartLong);
                 trip.setRepeatEvery(RepeatEvery);
-                //trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
+                trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
                 for (int i=0;i<NotesAL.size();i++){
                     Note note = new Note();
                     note.setName(NotesAL.get(i));
