@@ -32,7 +32,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
         FirebaseRepeatedTripHistory firebaseRepeatedTripHistory = new FirebaseRepeatedTripHistory();
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel();
         Trip trip = roomTripModel.getTripForSpecificID(tripID);
-        trip.setStatus("upcoming");
+        trip.setStatus("repeated");
         if (trip.getRepeatEvery() > 0)
         {
 
