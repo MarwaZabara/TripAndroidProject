@@ -9,7 +9,6 @@ import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
-import com.example.tripandroidproject.View.Login.LoginActivity;
 
 import java.util.Calendar;
 import java.util.List;
@@ -29,11 +28,11 @@ public class BootBroadcastReeiver extends BroadcastReceiver {
                     Calendar calendar = GenerateCalendarObject.generateCalendar(trips.get(i).getDate(), trips.get(i).getTime());
                     reminderPresenter.startReminderService(calendar, trips.get(i).getRequestCodeHome());
                     Log.i("AfterReboot","Save"+trips.get(i).getName());
-                    if(trips.get(i).getIsRound() == 1) {
+                    /*if(trips.get(i).getIsRound() == 1) {
                         calendar = GenerateCalendarObject.generateCalendar(trips.get(i).getRoundDate(), trips.get(i).getRoundTime());
                         reminderPresenter.startReminderService(calendar, trips.get(i).getRequestCodeAway());
                         Log.i("AfterReboot","Save Round "+trips.get(i).getName());
-                    }
+                    }*/
 
                 }
 

@@ -9,6 +9,7 @@ public class GetOfflineTripContract {
     public interface IGetOfflineTripPresenter extends IBase,ITripPresenter {
         void getOfflineTrip();
         List<Trip> getOfflineFilteredTrip(String filter);
+        List<Trip> getOfflineFilteredTrip(String filter1,String filter2);
         Trip getTripInfo(int requestCode);
         void getOfflineNoteWithSpecificTrip(String tripID);
     }
@@ -16,6 +17,7 @@ public class GetOfflineTripContract {
         public List<Trip> getTrips();
         public List<Trip> getOfflineTrip();
         List<Trip> getOfflineFilteredTrip(String filter);
+        List<Trip> getOfflineFilteredTrip(String filter1,String filter2);
         public Trip getTripForSpecificCode(int requsetCode);
 //        public List<Note> getOfflineNote(String tripID);
     }

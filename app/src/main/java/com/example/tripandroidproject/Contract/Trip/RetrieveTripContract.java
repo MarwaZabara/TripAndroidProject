@@ -9,20 +9,21 @@ import java.util.List;
 
 public class RetrieveTripContract {
     public interface IRetrieveTripView{
-        void setAdapter(RecyclerView.Adapter myAdapter);
         void renderData(List<Trip> trips);
     }
     public interface IRetrieveTripPresenter extends IBase {
         List<Trip> getTripList ();
         void retrieveUpcomingTrips();
         void retrieveFilteredTrips(String filter);
+        void fetchData(String filter1,String filter2);
         void onSuccessGetUpcomingTrips(List<Trip> trips);
     }
     public interface IRetrieveTripModel{
         void fetchData();
         void fetchFilteredData(String filter);
+        void fetchData(String filter1,String filter2);
         List<Trip> returnData();
-        List<Trip> returnRepeatedData();
-        List<Trip> returnNonRepeatedData();
+//        List<Trip> returnRepeatedData();
+//        List<Trip> returnNonRepeatedData();
     }
 }

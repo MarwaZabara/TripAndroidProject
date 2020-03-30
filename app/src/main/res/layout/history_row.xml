@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/historyrow"
+    android:id="@+id/historyRow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <androidx.cardview.widget.CardView
@@ -22,7 +22,7 @@
             android:padding="8dp">
 
             <TextView
-                android:id="@+id/historydate"
+                android:id="@+id/historyDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -34,78 +34,90 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/historytime"
+                android:id="@+id/historyTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/historydate"
+                android:layout_below="@+id/historyDate"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/historydate" />
+                app:layout_constraintTop_toBottomOf="@+id/historyDate" />
 
             <View
-                android:id="@+id/historyview"
+                android:id="@+id/historyView"
                 android:layout_width="5dp"
                 android:layout_height="60dp"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_toEndOf="@+id/historydate"
+                android:layout_toEndOf="@+id/historyDate"
                 android:background="#a40404"
-                app:layout_constraintStart_toEndOf="@+id/historytime"
+                app:layout_constraintStart_toEndOf="@+id/historyTime"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/historylocation1"
+                android:id="@+id/historyLocation1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_toEndOf="@+id/historyview"
+                android:layout_toEndOf="@+id/historyView"
                 android:text="TextView"
-                app:layout_constraintStart_toEndOf="@+id/historyview"
+                app:layout_constraintStart_toEndOf="@+id/historyView"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/historylocation2"
+                android:id="@+id/historyLocation2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/historylocation1"
+                android:layout_below="@+id/historyLocation1"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
-                android:layout_toEndOf="@+id/historyview"
+                android:layout_toEndOf="@+id/historyView"
                 android:text="TextView"
-                app:layout_constraintStart_toEndOf="@+id/historyview"
-                app:layout_constraintTop_toBottomOf="@+id/historylocation1" />
+                app:layout_constraintStart_toEndOf="@+id/historyView"
+                app:layout_constraintTop_toBottomOf="@+id/historyLocation1" />
 
             <TextView
-                android:id="@+id/historystatus"
+                android:id="@+id/historyStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/historylocation2"
+                android:layout_below="@+id/historyLocation2"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="100dp"
                 android:text="TextView"
-                app:layout_constraintTop_toBottomOf="@+id/historylocation2" />
+                app:layout_constraintTop_toBottomOf="@+id/historyLocation2" />
 
             <TextView
-                android:id="@+id/historytripName"
+                android:id="@+id/historyTripName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/historytime"
+                android:layout_below="@+id/historyTime"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="TextView"
-                app:layout_constraintEnd_toStartOf="@+id/historystatus"
+                app:layout_constraintEnd_toStartOf="@+id/historyStatus"
                 app:layout_constraintHorizontal_bias="0.186"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/historytime" />
+                app:layout_constraintTop_toBottomOf="@+id/historyTime" />
+
+            <ImageView
+                android:id="@+id/historyImage"
+                android:layout_width="387dp"
+                android:layout_height="134dp"
+                android:layout_below="@+id/historyStatus"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="0dp"
+                app:srcCompat="@drawable/quantum_ic_cloud_off_vd_theme_24" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

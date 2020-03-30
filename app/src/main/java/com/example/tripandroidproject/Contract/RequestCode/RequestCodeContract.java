@@ -9,7 +9,7 @@ import java.util.List;
 
 public class RequestCodeContract {
     public interface IRequestCodeView {
-        public void retrieveRequestCode(int requestCode);
+        public void setRequestCodeInSharedPreference(int requestCode);
     }
     public interface IRequestCodePresenter {
         public void getRequestCode();

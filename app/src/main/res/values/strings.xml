@@ -40,6 +40,9 @@
     <string name="Time">Time</string>
     <string name="close">close</string>
     <string name="map_key" translatable="false">AIzaSyCVOvMSNN18_AJKQjfKfoWKxsYNF5GNxK0</string>
+    <string name="save">Save</string>
+    <string name="finishTrip">Finish</string>
+
     <string-array name="RepeatEvery">
         <item>Daily</item>
         <item>Weekly</item>

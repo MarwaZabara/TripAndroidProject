@@ -26,12 +26,13 @@ public class FirebaseUserPresenter implements FirebaseUserContract.IUserPresente
 
     @Override
     public void onSuccess(UserDetails user) {
-        setUserData(user);
+//        setUserData(user);
+        view.setUserData(user);
     }
 
     @Override
     public void setUserData(UserDetails user) {
-        view.setUserData(user);
+//        view.setUserData(user);
     }
 
 }
