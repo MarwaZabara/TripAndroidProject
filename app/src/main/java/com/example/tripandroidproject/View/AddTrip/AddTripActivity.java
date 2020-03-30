@@ -136,7 +136,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                     case "Never":
                         RepeatEvery = 0;
                 }
-               // Toast.makeText(getApplicationContext(),""+RepeatEvery,Toast.LENGTH_LONG).show();
+                // Toast.makeText(getApplicationContext(),""+RepeatEvery,Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -257,9 +257,9 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     }
 
     public void showDialogListView() {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            View dialogLayout = getLayoutInflater().inflate(R.layout.notes_dialog,null);
-            lv = (ListView) dialogLayout.findViewById(R.id.NotesListView);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogLayout = getLayoutInflater().inflate(R.layout.notes_dialog,null);
+        lv = (ListView) dialogLayout.findViewById(R.id.NotesListView);
         adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,NotesAL);
         lv.setAdapter(adapter);
         SwipeDismissListViewTouchListener touchListener =
@@ -309,14 +309,14 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         final Button AddNoteBtn = dialogLayout.findViewById(R.id.AddNoteBtn);
         final EditText AddNoteTxt= dialogLayout.findViewById(R.id.AddNoteTxt);
         AddNoteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!AddNoteTxt.getText().toString().equals("")){
+            @Override
+            public void onClick(View v) {
+                if(!AddNoteTxt.getText().toString().equals("")){
                     NotesAL.add(AddNoteTxt.getText().toString());
                     AddNoteTxt.setText("");
                     adapter.notifyDataSetChanged();
                 }}
-            });
+        });
         Button DismissBtn = dialogLayout.findViewById(R.id.DismissBtn);
         DismissBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -355,7 +355,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     }
     // AutoComplete starts
     public void StartAutoCompleteActivity() {
-       // Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
         Intent i = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY,
                 Arrays.asList(Place.Field.ID,Place.Field.NAME,Place.Field.LAT_LNG))
                 .setTypeFilter(TypeFilter.ADDRESS)
@@ -379,9 +379,9 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         return TimeUnit.MILLISECONDS.toDays(Math.abs(end - start));
 
     }
-// after a place is selected or autocomplete cancelled
+    // after a place is selected or autocomplete cancelled
     @Override
-   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Toast.makeText(getApplicationContext(), "in activity result", Toast.LENGTH_LONG).show();
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
@@ -399,9 +399,9 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                     DestinationTxt.setText(place.getName());
 
                 }
-              //  Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-              //  Log.i(TAG, "longLat =  " + place.getLatLng().latitude);
-               // Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
+                //  Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                //  Log.i(TAG, "longLat =  " + place.getLatLng().latitude);
+                // Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
 //                Toast.makeText(getApplicationContext(), "Place: " + place.getName() , Toast.LENGTH_LONG).show();
 //
 //                Toast.makeText(getApplicationContext(), "LAT = " + place.getLatLng().latitude, Toast.LENGTH_LONG).show();
@@ -433,23 +433,23 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
 //                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-                    if (Date.equals("Round")){
+                if (Date.equals("Round")){
                     //RoundDate = simpleDateFormat.format(calendarRound.getTime());
                     //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                        //  Date Round = simpleDateFormat.parse(RoundDate);
-                        //Date Trip = simpleDateFormat.parse(TripDate);
-                        //RepeatRound = TimeUnit.DAYS.convert((Round.getTime() - Trip.getTime()),TimeUnit.MILLISECONDS)+"";
-                        // Toast.makeText(getApplicationContext(), RepeatRound, Toast.LENGTH_LONG).show();
+                    //  Date Round = simpleDateFormat.parse(RoundDate);
+                    //Date Trip = simpleDateFormat.parse(TripDate);
+                    //RepeatRound = TimeUnit.DAYS.convert((Round.getTime() - Trip.getTime()),TimeUnit.MILLISECONDS)+"";
+                    // Toast.makeText(getApplicationContext(), RepeatRound, Toast.LENGTH_LONG).show();
 
-                        semiCalendarRound.year = year;
-                        semiCalendarRound.month = month;
-                        semiCalendarRound.dayOfMonth = dayOfMonth;
-                        if(semiCalendarRound.hourOfDay > 0 && semiCalendarRound.minute > 0) {
-                            fillCalenderObj(calendarRound,semiCalendarRound);
-                        }
-                        RoundDate = String.valueOf(calendarRound.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendarRound.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendarRound.get(Calendar.YEAR));
-                        Txt.setText(RoundDate);
+                    semiCalendarRound.year = year;
+                    semiCalendarRound.month = month;
+                    semiCalendarRound.dayOfMonth = dayOfMonth;
+                    if(semiCalendarRound.hourOfDay > 0 && semiCalendarRound.minute > 0) {
+                        fillCalenderObj(calendarRound,semiCalendarRound);
                     }
+                    RoundDate = String.valueOf(calendarRound.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendarRound.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendarRound.get(Calendar.YEAR));
+                    Txt.setText(RoundDate);
+                }
                 else if (Date.equals("Trip")) {
 
                     semiCalendarHome.year = year;
@@ -541,66 +541,66 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         ReminderPresenter reminderPresenter = new ReminderPresenter(this);
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
         if (RepeatEvery == 0)
-            {
-                status = "upcoming";
-            }
-            else {
-                status = "repeated";
-            }
-            TripName = NameTxt.getText().toString();
-            TripDesc = DescTxt.getText().toString();
-            Trip trip = new Trip();
-            trip.setName(TripName);
-            trip.setDescription(TripDesc);
-            //trip.setIsRound(isRound);
-            trip.setDate(TripDate);
-            trip.setTime(TripTime);
-            trip.setStatus(status);
+        {
+            status = "upcoming";
+        }
+        else {
+            status = "repeated";
+        }
+        TripName = NameTxt.getText().toString();
+        TripDesc = DescTxt.getText().toString();
+        Trip trip = new Trip();
+        trip.setName(TripName);
+        trip.setDescription(TripDesc);
+        //trip.setIsRound(isRound);
+        trip.setDate(TripDate);
+        trip.setTime(TripTime);
+        trip.setStatus(status);
                 /*trip.setRoundDate(RoundDate);
                 trip.setRoundTime(RoundTime);
                 trip.setRoundRepeatEvery(String.valueOf(RepeatRound));*/
-            trip.setEndLatitude(EndLat);
-            trip.setEndLongitude(EndLong);
-            trip.setStartLatitude(StartLat);
-            trip.setStartLongitude(StartLong);
-            trip.setRepeatEvery(RepeatEvery);
-            trip.setRequestCodeHome(requestCode++);
-            reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
+        trip.setEndLatitude(EndLat);
+        trip.setEndLongitude(EndLong);
+        trip.setStartLatitude(StartLat);
+        trip.setStartLongitude(StartLong);
+        trip.setRepeatEvery(RepeatEvery);
+        trip.setRequestCodeHome(requestCode++);
+        reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
         //trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
-            List<Note> notes = new ArrayList<>();
-            for (int i=0;i<NotesAL.size();i++){
-                Note note = new Note();
-                note.setName(NotesAL.get(i));
-                note.setStatus("unchecked");
-                notes.add(note);
+        List<Note> notes = new ArrayList<>();
+        for (int i=0;i<NotesAL.size();i++){
+            Note note = new Note();
+            note.setName(NotesAL.get(i));
+            note.setStatus("unchecked");
+            notes.add(note);
 //                    note.setTripID();
-                //note.setId();
+            //note.setId();
 //                    Toast.makeText(getApplicationContext(),note.getName(),Toast.LENGTH_LONG).show();
-            }
-            trip.setNotes(notes);
+        }
+        trip.setNotes(notes);
         saveTripPresenter.saveTrip(trip,false);
         if(isRound == 1){
-                RepeatRound = daysBetween(calendarMain,calendarRound);
-                Trip tripRound = new Trip();
-                tripRound.setName(TripName);
-                tripRound.setDescription(TripDesc);
-                //trip.setIsRound(isRound);
-                tripRound.setDate(RoundDate);
-                tripRound.setTime(RoundTime);
-                tripRound.setStatus(status);
-                tripRound.setEndLatitude(StartLat);
-                tripRound.setEndLongitude(StartLong);
-                tripRound.setStartLatitude(EndLat);
-                tripRound.setStartLongitude(EndLong);
-                tripRound.setRepeatEvery(RepeatRound);
-                tripRound.setRequestCodeHome(requestCode++);
-                reminderPresenter.startReminderService(calendarRound,tripRound.getRequestCodeHome());
-                tripRound.setNotes(notes);
-                saveTripPresenter.saveTrip(tripRound,false);
-            }
-            setRequestCodeInSharedPreference(requestCode);
-            if(Internetonnection.isNetworkAvailable(this))
-                requestCodePresenter.updateRequestCode(requestCode);
+            RepeatRound = daysBetween(calendarMain,calendarRound);
+            Trip tripRound = new Trip();
+            tripRound.setName(TripName);
+            tripRound.setDescription(TripDesc);
+            //trip.setIsRound(isRound);
+            tripRound.setDate(RoundDate);
+            tripRound.setTime(RoundTime);
+            tripRound.setStatus(status);
+            tripRound.setEndLatitude(StartLat);
+            tripRound.setEndLongitude(StartLong);
+            tripRound.setStartLatitude(EndLat);
+            tripRound.setStartLongitude(EndLong);
+            tripRound.setRepeatEvery(RepeatRound);
+            tripRound.setRequestCodeHome(requestCode++);
+            reminderPresenter.startReminderService(calendarRound,tripRound.getRequestCodeHome());
+            tripRound.setNotes(notes);
+            saveTripPresenter.saveTrip(tripRound,false);
+        }
+        setRequestCodeInSharedPreference(requestCode);
+        if(Internetonnection.isNetworkAvailable(this))
+            requestCodePresenter.updateRequestCode(requestCode);
 
     }
     @Override
