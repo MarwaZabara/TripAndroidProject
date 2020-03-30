@@ -32,8 +32,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
         FirebaseRepeatedTripHistory firebaseRepeatedTripHistory = new FirebaseRepeatedTripHistory();
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel();
         Trip trip = roomTripModel.getTripForSpecificID(tripID);
-        ;
-        trip.setStatus("finished");
+        trip.setStatus("upcoming");
         if (trip.getRepeatEvery() > 0)
         {
 
@@ -41,18 +40,23 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
             if(Internetonnection.isNetworkAvailable(context))
             {
                 trip.setIsSync(1);
+                repeatedTripHistory.setIsSync(1);
+                repeatedTripHistory.setId(firebaseRepeatedTripHistory.generateKey());
                 firebaseRepeatedTripHistory.saveTrip(repeatedTripHistory);
             }
             else {
+                trip.setIsSync(0);
                 repeatedTripHistory.setIsSync(0);
                 roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory);
             }
             Calendar calendarHome = GenerateCalendarObject.generateCalendar(trip.getDate(),"0-0");
-            calendarHome.add(Calendar.DAY_OF_MONTH, (int) trip.getRepeatEvery());
-            calendarHome.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip.getTime().split("-")[0]));
-            calendarHome.set(Calendar.MINUTE, Integer.parseInt(trip.getTime().split("-")[1]));
+//            calendarHome.add(Calendar.DAY_OF_YEAR, (int) trip.getRepeatEvery());
+            calendarHome.set(Calendar.DAY_OF_YEAR,GenerateCalendarObject.dayOfYear + (int) trip.getRepeatEvery());
+//            calendarHome.set(Calendar.HOUR_OF_DAY, Integer.parseInt(trip.getTime().split("-")[0]));
+//            calendarHome.set(Calendar.MINUTE, Integer.parseInt(trip.getTime().split("-")[1]));
             trip.setDate(GenerateCalendarObject.generateStringDate(calendarHome));
-            trip.setTime(GenerateCalendarObject.generateStringTme(calendarHome));
+//            trip.setTime(GenerateCalendarObject.generateStringTme(calendarHome));
+            reminderModel.startAlarmService(GenerateCalendarObject.generateCalendar(trip.getDate(),trip.getTime()),trip.getRequestCodeHome());
 
 //                if(trip.getIsRound() == 1)
 //                {
@@ -80,7 +84,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
 
     private RepeatedTripHistory setObject(Trip trip) {
         RepeatedTripHistory repeatedTripHistory = new RepeatedTripHistory(trip.getId(), trip.getUserID(), trip.getName(),
-                trip.getDescription(), trip.getStatus(), trip.getDate(), trip.getTime(),
+                trip.getDescription(), "finished", trip.getDate(), trip.getTime(),
                 trip.getRepeatEvery(), trip.getRequestCodeHome(), trip.getStartLongitude(),
                 trip.getStartLatitude(), trip.getEndLongitude(), trip.getEndLatitude(), trip.getIsSync(),
                 trip.getNotes());
