@@ -225,9 +225,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         List<Address> addresses;
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
-            addresses = geocoder.getFromLocation(lat, lon, 1);
-            String address = addresses.get(0).getAddressLine(0);
-            region = addresses.get(0).getLocality();
+            if (lat>0 & lon>0) {
+                addresses = geocoder.getFromLocation(lat, lon, 1);
+                String address = addresses.get(0).getAddressLine(0);
+                region = addresses.get(0).getLocality();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

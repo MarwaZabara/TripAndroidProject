@@ -73,8 +73,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         super.onStart();
         saveUserLogIn = new SaveUserLogIn(this);
         if (saveUserLogIn.getLoggedInUser() == null) {
-            //////////////if user is coming from sign up///////////
             Intent intent = getIntent();
+            //////////////if user is coming from sign up///////////
             if (intent.getStringExtra("fromSignUp")!=null){
                 userDetails.setName(intent.getStringExtra("name"));
                 userDetails.setEmail(intent.getStringExtra("email"));
@@ -92,11 +92,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
             /////////////////////get user information to sent it to nav drawer/////////////////////////
             userDetails = saveUserLogIn.getLoggedInUser();
             presenter.onSendData(userDetails);
-//            if (userDetails.getName()==null){       ///////userData doesn't store in room
-//                getUserData();          //////get from firebase
-//            }else {
-//                /////data will be get from room
-//            }
             if (userDetails.getName()!=null) {
                 Intent intent = new Intent(this, NavDrawer.class);
                 intent.putExtra("Email", userDetails.getEmail());
@@ -132,6 +127,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
             userDetails.setEmail(loginEmail.getText().toString());
             userDetails.setPassword(loginPassword.getText().toString());
             presenter.onSendData(userDetails);
+        }else {
+            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -141,7 +138,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
 //            Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
             if (userDetails.getName()==null){       ///////userData doesn't store in room
                 getUserData();          //////get from firebase
-
             }else  {
                 Intent intent = new Intent(this, NavDrawer.class);
                 intent.putExtra("Email", userDetails.getEmail());
