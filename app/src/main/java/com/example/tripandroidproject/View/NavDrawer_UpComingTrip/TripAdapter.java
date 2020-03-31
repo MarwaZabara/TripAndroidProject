@@ -2,6 +2,7 @@ package com.example.tripandroidproject.View.NavDrawer_UpComingTrip;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,18 +24,14 @@ import com.example.tripandroidproject.Contract.Trip.UpdateTripContract;
 import com.example.tripandroidproject.Contract.Trip.UpdateTripOfflineContract;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
-import com.example.tripandroidproject.Contract.Trip.SaveTripContract;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
-import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
-import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.UpdateTripOfflinePresenter;
-import com.example.tripandroidproject.Presenter.Trip.UpdateTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.CancelTripPresenter;
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,19 +42,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     private String tripName;
     private View view;
-    private DeleteTripPresenter presenter;
-    private DeleteOfflineTripPresenter deleteOfflineTripPresenter;
+    private DeleteTripPresenter deleteTripPresenter;
+//    private DeleteOfflineTripPresenter deleteOfflineTripPresenter;
     private CheckInternetConnection checkInternetConnection;
-    private UpdateTripContract.IUpdateTripPresenter updateTripPresenter;
+    private UpdateTripContract.IUpdateTripPresenter cancelTripPresenter;
     private UpdateTripOfflineContract.IUpdateTripOfflinePresenter updateTripOfflinePresenter;
     String location2;
     public TripAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
         upComingTripList = myDataSet;
         this.context = context;
-        presenter = new DeleteTripPresenter();
-        updateTripPresenter = new UpdateTripPresenter(context);
-        updateTripOfflinePresenter = new UpdateTripOfflinePresenter(context);
-        deleteOfflineTripPresenter = new DeleteOfflineTripPresenter(context);
+        deleteTripPresenter = new DeleteTripPresenter(context);
+        cancelTripPresenter = new CancelTripPresenter(context);
+//        updateTripOfflinePresenter = new UpdateTripOfflinePresenter(context);
+//        deleteOfflineTripPresenter = new DeleteOfflineTripPresenter(context);
         checkInternetConnection = new CheckInternetConnection();
     }
 
@@ -105,7 +102,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
                 startTripPresenter.startTrip(destination,upComingTripList.get(position).getId(),upComingTripList.get(position).getRequestCodeHome());
             }
         });
-        if(upComingTripList.get(position).getStatus().equals("finished"))
+        if(upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel") )
         {
             holder.startTrip.setVisibility(View.INVISIBLE);
         }
@@ -157,20 +154,22 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Edit Trip")) {
-
-
+                    Intent editIntent = new Intent(context, AddTripActivity.class);
+                    editIntent.putExtra("isEdit",true);
+                    editIntent.putExtra("trip",upComingTripList.get(position));
+                    context.startActivity(editIntent);
 
                 } else if (options[item].equals("Delete Trip")) {
-                    Trip trip = upComingTripList.get(position);
-                    trip.setStatus("delete");     ///////change status of trip
-                    updateTripOfflinePresenter.updateTrip(trip);
-                    notifyItemRemoved(position);
+//                    Trip trip = upComingTripList.get(position);
+//                    trip.setStatus("delete");     ///////change status of trip
+//                    updateTripOfflinePresenter.updateTrip(trip);
+//                    notifyItemRemoved(position);
                     confirmation(position);
 
                 } else if (options[item].equals("Cancel Trip")) {
                     Trip trip = upComingTripList.get(position);
 //                    trip.setStatus("Cancel");     ///////change status of trip
-                    updateTripPresenter.updateTrip(trip);
+                    cancelTripPresenter.cancelTrip(trip);
 //                    updateTripOfflinePresenter.updateTrip(trip);
                     upComingTripList.remove(position);
                     notifyItemRemoved(position);
@@ -210,25 +209,28 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 
     public void removeItem(int position) {
         Trip trip = upComingTripList.get(position);
-        if (checkInternetConnection.getConnectivityStatusString(context)) {
-            presenter.deleteTrip(trip);    ///////////delete from firebase
-            deleteOfflineTripPresenter.deleteOfflineTrip(trip); /////delete from room
-            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==1){
-            //////// isSync = 1 mean it stored in firebase allready and need to delete it from firebase & room
-            trip.setIsSync(0);
-            updateTripPresenter.updateTrip(trip);
-            /////// -> here send trip to Hassan
-            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-
-        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==0){
-            //////// isSync = 0 mean it didn't store in firebase so need to delete it from room only
-            trip.setIsSync(1);
-            updateTripPresenter.updateTrip(trip);
-            /////// -> here send trip to Hassan
-            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-        }
-
+        deleteTripPresenter.deleteTrip(trip);
+//        if (checkInternetConnection.getConnectivityStatusString(context)) {
+//            presenter.deleteTrip(trip);    ///////////delete from firebase
+//            deleteOfflineTripPresenter.deleteOfflineTrip(trip); /////delete from room
+//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
+//        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==1){
+//            //////// isSync = 1 mean it stored in firebase allready and need to delete it from firebase & room
+//            trip.setIsSync(0);
+//            trip.setStatus("delete");
+//            updateTripPresenter.updateTrip(trip);
+//            /////// -> here send trip to Hassan
+//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
+//
+//        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==0){
+//            //////// isSync = 0 mean it didn't store in firebase so need to delete it from room only
+////            trip.setIsSync(1);
+////            updateTripPresenter.updateTrip(trip);
+//            deleteOfflineTripPresenter.deleteOfflineTrip(trip); /////delete from room
+//            /////// -> here send trip to Hassan
+//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
+//        }
+        upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
         notifyItemRemoved(position);
     }
 

@@ -40,7 +40,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public HistoryAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
         values = myDataSet;
         this.context = context;
-        presenter = new DeleteTripPresenter();
+        presenter = new DeleteTripPresenter(context);
     }
 
     @NonNull

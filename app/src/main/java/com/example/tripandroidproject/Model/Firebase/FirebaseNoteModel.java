@@ -53,7 +53,10 @@ public class FirebaseNoteModel implements SaveNoteContract.ISaveNoteOnlineModel 
     public void saveNote(Note note) {
         myRef.child(note.getId()).setValue(note);
     }
-
+    @Override
+    public void deleteNote() {
+        myRef.removeValue();
+    }
     @Override
     public String generateKey() {
         return myRef.push().getKey();

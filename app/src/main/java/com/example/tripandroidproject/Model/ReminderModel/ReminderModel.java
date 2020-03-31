@@ -41,7 +41,7 @@ public class ReminderModel implements Reminder.IReminderModel {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 //        requestCode++;
     }
-    public void stopAlarmService(int requestCode) {
+    public void stopAlarmService( int requestCode) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, ReminderReceiver.class);
         //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

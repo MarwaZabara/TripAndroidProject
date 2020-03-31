@@ -30,13 +30,13 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
         tripDAO = database.getTripDAO();
     }
 
-    public RoomTripModel(Context context, UpdateTripOfflinePresenter presenter) {    //////// this constructor for update offline
-        this.updateTripOfflinePresenter =  presenter;
-        database = Room.databaseBuilder(context, AppDatabase.class, "db-trips")
-                .allowMainThreadQueries()   //Allows room to do operation on main thread
-                .build();
-        tripDAO = database.getTripDAO();
-    }
+//    public RoomTripModel(Context context, UpdateTripOfflinePresenter presenter) {    //////// this constructor for update offline
+//        this.updateTripOfflinePresenter =  presenter;
+//        database = Room.databaseBuilder(context, AppDatabase.class, "db-trips")
+//                .allowMainThreadQueries()   //Allows room to do operation on main thread
+//                .build();
+//        tripDAO = database.getTripDAO();
+//    }
 
     public RoomTripModel(ITripPresenter tripPresenter, Context context) {
         this.tripPresenter = tripPresenter;
