@@ -50,12 +50,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
     private CheckInternetConnection checkInternetConnection;
     private UpdateTripContract.IUpdateTripPresenter updateTripPresenter;
     private UpdateTripOfflineContract.IUpdateTripOfflinePresenter updateTripOfflinePresenter;
-
+    String location2;
     public TripAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
         upComingTripList = myDataSet;
         this.context = context;
         presenter = new DeleteTripPresenter();
-        updateTripPresenter = new UpdateTripPresenter();
+        updateTripPresenter = new UpdateTripPresenter(context);
         updateTripOfflinePresenter = new UpdateTripOfflinePresenter(context);
         deleteOfflineTripPresenter = new DeleteOfflineTripPresenter(context);
         checkInternetConnection = new CheckInternetConnection();
@@ -80,7 +80,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 //        double lat1 = 31.2554761; double long1 = 30.001308899999998;
 //        double lat2 = 31.2554761; double long2 = 30.001308899999998;
         String location1 = getRegionName(lat1,long1);
-        String location2 = getRegionName(lat2,long2);
+        location2 = getRegionName(lat2,long2);
         holder.date.setText(upComingTripList.get(position).getDate());
         holder.time.setText(upComingTripList.get(position).getTime());
         holder.status.setText(upComingTripList.get(position).getStatus());
@@ -97,6 +97,18 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         takeAction(tripName,position);
             }
         });
+        holder.startTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartTripPresenter startTripPresenter = new StartTripPresenter(context);
+                String destination = location2;
+                startTripPresenter.startTrip(destination,upComingTripList.get(position).getId(),upComingTripList.get(position).getRequestCodeHome());
+            }
+        });
+        if(upComingTripList.get(position).getStatus().equals("finished"))
+        {
+            holder.startTrip.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -123,14 +135,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
             constraintLayout = itemView.findViewById(R.id.row);
             cardView = itemView.findViewById(R.id.myCardView);
 
-            startTrip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    StartTripPresenter startTripPresenter = new StartTripPresenter(context);
-                    String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
-                    startTripPresenter.startTrip(destination,"trip1",1);
-                }
-            });
+//            startTrip.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    StartTripPresenter startTripPresenter = new StartTripPresenter(context);
+//                    String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
+//                    startTripPresenter.startTrip(destination,"trip1",1);
+//                }
+//            });
         }
     }
 
@@ -157,9 +169,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 
                 } else if (options[item].equals("Cancel Trip")) {
                     Trip trip = upComingTripList.get(position);
-                    trip.setStatus("Cancel");     ///////change status of trip
+//                    trip.setStatus("Cancel");     ///////change status of trip
                     updateTripPresenter.updateTrip(trip);
-                    updateTripOfflinePresenter.updateTrip(trip);
+//                    updateTripOfflinePresenter.updateTrip(trip);
                     upComingTripList.remove(position);
                     notifyItemRemoved(position);
 //                  communicatorFrag.cancelTrip(trip);

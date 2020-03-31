@@ -447,7 +447,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                     if(semiCalendarRound.hourOfDay > 0 && semiCalendarRound.minute > 0) {
                         fillCalenderObj(calendarRound,semiCalendarRound);
                     }
-                    RoundDate = String.valueOf(calendarRound.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendarRound.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendarRound.get(Calendar.YEAR));
+                    RoundDate = String.valueOf(semiCalendarRound.dayOfMonth) + "-" + String.valueOf(semiCalendarRound.month + 1) + "-" + String.valueOf(semiCalendarRound.year);
                     Txt.setText(RoundDate);
                 }
                 else if (Date.equals("Trip")) {
@@ -458,11 +458,12 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                     if(semiCalendarHome.hourOfDay > 0 && semiCalendarHome.minute > 0) {
 
                         fillCalenderObj(calendarMain,semiCalendarHome);
+                        chosenTripDate = calendarMain.getTimeInMillis();
                     }
-                    TripDate = String.valueOf(calendarMain.get(Calendar.DAY_OF_MONTH)) + "-" + String.valueOf(calendarMain.get(Calendar.MONTH) + 1) + "-" + String.valueOf(calendarMain.get(Calendar.YEAR));
-                    Txt.setText(simpleDateFormat.format(calendar.getTime()));
-                    chosenTripDate = calendar.getTimeInMillis();
-                    TripDate = simpleDateFormat.format(chosenTripDate);
+                    TripDate = String.valueOf(semiCalendarHome.dayOfMonth) + "-" + String.valueOf(semiCalendarHome.month + 1) + "-" + String.valueOf(semiCalendarHome.year);
+                    Txt.setText(TripDate);
+
+//                    TripDate = simpleDateFormat.format(chosenTripDate);
 //                    Toast.makeText(getApplicationContext(), "Trip data = "+TripDate, Toast.LENGTH_LONG).show();
                 }
 
@@ -510,6 +511,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             semiCalendarHome.minute = minute;
             if(semiCalendarHome.month > 0) {
                 fillCalenderObj(calendarMain,semiCalendarHome);
+                chosenTripDate = calendarMain.getTimeInMillis();
             }
             TripTime = String.valueOf(calendarMain.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendarMain.get(Calendar.MINUTE));
             TripTimetxt.setText(TripTime);
@@ -580,9 +582,12 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         trip.setNotes(notes);
         saveTripPresenter.saveTrip(trip,false);
         if(isRound == 1){
-            RepeatRound = daysBetween(calendarMain,calendarRound);
+            if(RepeatEvery == 0)
+                RepeatRound = 0;
+            else
+                RepeatRound = daysBetween(calendarMain,calendarRound);
             Trip tripRound = new Trip();
-            tripRound.setName(TripName);
+            tripRound.setName(TripName + "- Round");
             tripRound.setDescription(TripDesc);
             //trip.setIsRound(isRound);
             tripRound.setDate(RoundDate);

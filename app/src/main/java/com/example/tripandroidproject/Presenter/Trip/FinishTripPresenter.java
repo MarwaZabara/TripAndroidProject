@@ -28,6 +28,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
     public void finishTrip(String tripID) {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
         RoomRepeatedTripHistoryModel roomRepeatedTripHistoryModel = new RoomRepeatedTripHistoryModel(this,context);
+//        ReminderModel reminderModel = new ReminderModel(this,context);
 
         FirebaseRepeatedTripHistory firebaseRepeatedTripHistory = new FirebaseRepeatedTripHistory();
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel();
@@ -76,7 +77,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
 
         }
         else {
-            trip.setStatus("finished"); 
+            trip.setStatus("finished");
         }
         if(Internetonnection.isNetworkAvailable(context))
         {
@@ -87,7 +88,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
             trip.setIsSync(0);
         }
         roomTripModel.updateTrip(trip);
-
+        reminderModel.stopService();
 
     }
 

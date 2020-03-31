@@ -37,6 +37,9 @@ public class FloatAdapter extends RecyclerView.Adapter<FloatAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final FloatAdapter.ViewHolder holder, final int position) {
         holder.checkBox.setText(notes.get(position).getName());
+        if(notes.get(position).getStatus().equals("checked")) {
+            holder.checkBox.setChecked(true);
+        }
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

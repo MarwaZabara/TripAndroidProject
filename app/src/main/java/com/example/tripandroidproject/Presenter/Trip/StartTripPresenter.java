@@ -24,6 +24,7 @@ public class StartTripPresenter implements StartTripContract.IStartTripPresenter
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
         reminderModel.startTrip(destinationPlaceName,tripID,requestCode);
+
         if(Internetonnection.isNetworkAvailable(context))
         {
             Trip trip = roomTripModel.startTrip(tripID);
