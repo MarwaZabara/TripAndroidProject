@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,19 +31,27 @@ import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.Login.LoginActivity;
 import com.example.tripandroidproject.View.UserDetails;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity implements SignUpContract.ISignUpView {
-
+    FirebaseStorage storage;
+    StorageReference storageReference;
     private CheckInternetConnection checkInternetConnection;
     private UserDetails userDetails;
     private SignUpPresenter presenter;
@@ -57,6 +66,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                     "(?=.*[a-zA-Z])" +      //any letter
                     ".{6,}" +               //at least 6 characters
                     "$");
+    private Uri selectedImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +80,8 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
         userDetails = new UserDetails();
         presenter = new SignUpPresenter(this,this);
         checkInternetConnection = new CheckInternetConnection();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
     }
 
     public void ChooseImg(View view) {
@@ -84,6 +96,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                 userDetails.setName(usrName.getText().toString());
                 userDetails.setImgUri(usrImgUri);
                 presenter.onSendData(userDetails);
+                uploadImage();
             }else {
                 Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
@@ -124,13 +137,13 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
             switch (requestCode) {
                 case 0:
                     if (resultCode == RESULT_OK && data != null) {
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        usrImg.setImageBitmap(selectedImage);
+                        Bitmap selectedImage1 = (Bitmap) data.getExtras().get("data");
+                        usrImg.setImageBitmap(selectedImage1);
                     }
                     break;
                 case 1:
                     if (resultCode == RESULT_OK && data != null && data.getData()!=null) {
-                        Uri selectedImage = data.getData();
+                        selectedImage = data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
 
@@ -231,6 +244,40 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
             startActivity(loginIntent);
         }else{
             Toast.makeText(this, "Register Failed", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void uploadImage() {
+
+        if(selectedImage != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            ref.putFile(selectedImage)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(SignupActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(SignupActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
         }
     }
 }

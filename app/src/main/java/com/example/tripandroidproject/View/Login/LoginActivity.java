@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         if (saveUserLogIn.getLoggedInUser() == null) {
             Intent intent = getIntent();
             //////////////if user is coming from sign up///////////
-            if (intent.getStringExtra("fromSignUp")!=null){
+            if (intent.getStringExtra("fromSignUp")!=null && intent.getStringExtra("password") !=null){
                 userDetails.setName(intent.getStringExtra("name"));
                 userDetails.setEmail(intent.getStringExtra("email"));
                 userDetails.setImgUri(intent.getStringExtra("imgUri"));
@@ -96,6 +96,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 loginEmail.setText(intent.getStringExtra("email"));
                 loginPassword.setText(intent.getStringExtra("password"));
                 Toast.makeText(this, userDetails.getEmail(), Toast.LENGTH_SHORT).show();
+            }
+            else if(intent.getStringExtra("fromSignUp")!=null){
+                signInGoogle();
             }
 //            Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
         }else {
@@ -110,8 +113,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 intent.putExtra("imgUri", userDetails.getImgUri());
                 startActivity(intent);
             }
+            userPresenter = new FirebaseUserPresenter(this);
         }
-        userPresenter = new FirebaseUserPresenter(this);
+
     }
 
     @Override
