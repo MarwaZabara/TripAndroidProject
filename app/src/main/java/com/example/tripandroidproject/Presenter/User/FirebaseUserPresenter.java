@@ -9,6 +9,9 @@ public class FirebaseUserPresenter implements FirebaseUserContract.IUserPresente
     FirebaseUserContract.IUserModel model;
     FirebaseUserContract.IUserView view;
 
+    public FirebaseUserPresenter(){
+        model = new FirebaseUserModel(this);
+    }
     public FirebaseUserPresenter(FirebaseUserContract.IUserView view){
         this.view = view;
         model = new FirebaseUserModel(this);
@@ -25,14 +28,14 @@ public class FirebaseUserPresenter implements FirebaseUserContract.IUserPresente
     }
 
     @Override
-    public void onSuccess(UserDetails user) {
-//        setUserData(user);
-        view.setUserData(user);
+    public void updateUser(UserDetails user) {
+        model.updateUser(user);
     }
 
     @Override
-    public void setUserData(UserDetails user) {
-//        view.setUserData(user);
+    public void onSuccess(UserDetails user) {
+//        setUserData(user);
+        view.setUserData(user);
     }
 
 }
