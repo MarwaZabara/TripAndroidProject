@@ -41,6 +41,7 @@ public class SaveUserLogIn {
         String name = localDB.getString("name","");
         String imgUri = localDB.getString("imgUri","");
         String pass = localDB.getString("password","");
+        String imgPath = localDB.getString("imgPath","");
         UserDetails userDetails = new UserDetails();
         userDetails.setName(name);
         userDetails.setPassword(pass);

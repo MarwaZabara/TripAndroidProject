@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -76,12 +77,16 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
     }
 
     public void CreateAccount(View view) {
-        if (ValidateName() & ValidatePassword() & ValidateConfirmePass() & ValidateEmail()){
-            userDetails.setEmail(usrEmail.getText().toString());
-            userDetails.setPassword(usrPass.getText().toString());
-            userDetails.setName(usrName.getText().toString());
-            userDetails.setImgUri(usrImgUri);
-            presenter.onSendData(userDetails);
+        if (checkInternetConnection.getConnectivityStatusString(this)) {
+            if (ValidateName() & ValidatePassword() & ValidateConfirmePass() & ValidateEmail()) {
+                userDetails.setEmail(usrEmail.getText().toString());
+                userDetails.setPassword(usrPass.getText().toString());
+                userDetails.setName(usrName.getText().toString());
+                userDetails.setImgUri(usrImgUri);
+                presenter.onSendData(userDetails);
+            }else {
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
         }
     }
     private void selectImage(Context context) {
@@ -99,7 +104,9 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                     startActivityForResult(takePicture, 0);
 
                 } else if (options[item].equals("Choose from Gallery")) {
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent pickPhoto = new Intent(Intent.ACTION_GET_CONTENT);
+                    pickPhoto.setType("image/*");
                     startActivityForResult(pickPhoto , 1);
 
                 } else if (options[item].equals("Cancel")) {
@@ -122,14 +129,23 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                     }
                     break;
                 case 1:
-                    if (resultCode == RESULT_OK && data != null) {
+                    if (resultCode == RESULT_OK && data != null && data.getData()!=null) {
                         Uri selectedImage = data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
+
                             try {
                                 usrImgUri = selectedImage.toString();
                                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                                 usrImg.setImageBitmap(bitmap.createScaledBitmap(bitmap, 120, 120, false));
+//                                ////////////////////////////////////////////////////////////////////////////
+//                                Cursor cursor = getContentResolver().query(selectedImage,
+//                                        filePathColumn, null, null, null);
+//                                cursor.moveToFirst();
+//                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                                imgDecodableString = cursor.getString(columnIndex);
+//                                cursor.close();
+//                                ////////////////////////////////////////////////////////////////////////
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
@@ -141,6 +157,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
             }
         }
     }
+
 /////////////////////////////////////Validation//////////////////////////////////////////////////
     private boolean ValidateEmail(){
         boolean result;

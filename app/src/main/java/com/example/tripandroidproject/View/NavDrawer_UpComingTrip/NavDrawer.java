@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -172,7 +173,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(1);
                 drawerLayout.closeDrawers();
-//                startActivity(new Intent(NavDrawer.this, HistoryActivity.class));
                 break;
             case R.id.synch:
                 Intent intent = new Intent(this, TestReminder.class);
@@ -188,7 +188,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                                 // ...
                             }
                         });
-//                saveUserLogIn.clearUserData();
                 saveUserLogIn.setUserLoggedIn(false);
                 Intent intentLoginActivity = new Intent(this, LoginActivity.class);
                 startActivity(intentLoginActivity);
@@ -233,10 +232,17 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         email.setText(intent.getStringExtra("Email"));
         name.setText(intent.getStringExtra("Name"));
         String imageUri = intent.getStringExtra("imgUri");
-        if (pass == null) {
-//            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
-        }else {
-            imageView.setImageURI(Uri.parse(imageUri));
+        String imgPath = intent.getStringExtra("imgPath");
+//        String userImageUri = intent.getStringExtra("userImgUri");
+        if (pass == null & imageUri!=null) {
+            ///// it's image url
+            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+        }else if(imageUri != null) {
+
+
+//            imageView.setImageURI(Uri.parse(imageUri));
+//            imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+//            imageView.setImageURI(Uri.parse(imgPath));
         }
     }
 
