@@ -80,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 userDetails.setEmail(intent.getStringExtra("email"));
                 userDetails.setImgUri(intent.getStringExtra("imgUri"));
                 userDetails.setPassword(intent.getStringExtra("password"));
+//                userDetails.setUsrImgUri(intent.getStringExtra("userImgUri"));
 
                 userPresenter.saveUserData(userDetails);            /////////save data in firebase
 
@@ -87,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 loginPassword.setText(intent.getStringExtra("password"));
                 Toast.makeText(this, userDetails.getEmail(), Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
         }else {
             /////////////////////get user information to sent it to nav drawer/////////////////////////
             userDetails = saveUserLogIn.getLoggedInUser();

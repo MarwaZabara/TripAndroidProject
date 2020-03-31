@@ -30,8 +30,8 @@ public interface TripDAO {
     @Query("SELECT * FROM Trip WHERE status = :filter")
     public List<Trip> getOfflineFilteredTrips(String filter);
 
-    @Query("SELECT * FROM Trip WHERE status IN (:filter1,:filter2)")
-    public List<Trip> getOfflineFilteredTrips(String filter1,String filter2);
+    @Query("SELECT * FROM Trip WHERE userID = :userId & status IN (:filter1,:filter2)")
+    public List<Trip> getOfflineFilteredTrips(String filter1,String filter2,String userId);
 
     @Query("SELECT * FROM Trip WHERE requestCodeHome = :requestCode")
     public Trip getTripForSpecificCode(int requestCode);
