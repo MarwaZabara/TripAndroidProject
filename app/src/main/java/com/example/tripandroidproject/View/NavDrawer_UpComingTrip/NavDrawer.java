@@ -32,6 +32,7 @@ import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.History.HistoryFragment;
 import com.example.tripandroidproject.View.Login.LoginActivity;
+import com.example.tripandroidproject.View.Profile.Profile;
 import com.example.tripandroidproject.View.Repeated_NonRepeated.Non_RepeatedFragment;
 import com.example.tripandroidproject.View.Repeated_NonRepeated.RepeatedFragment;
 import com.example.tripandroidproject.View.SaveUserLogIn;
@@ -162,6 +163,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         switch (menuItem.getItemId()){
             case R.id.profile:
                 Toast.makeText(NavDrawer.this, "Profile Selected", Toast.LENGTH_SHORT).show();
+                setViewPager(4);
                 drawerLayout.closeDrawers();
                 break;
             case R.id.upComingTrip:
@@ -238,9 +240,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
             ///// it's image url
 //            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
         }else if(imageUri != null) {
-
-
-//            imageView.setImageURI(Uri.parse(imageUri));
+            imageView.setImageURI(Uri.parse(imageUri));
 //            imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
 //            imageView.setImageURI(Uri.parse(imgPath));
         }
@@ -258,6 +258,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         adapter.addFragment(new HistoryFragment(),"History");          //// fragmentNum --> 1
         adapter.addFragment(new RepeatedFragment(),"RepeatedTrips");   //// fragmentNum --> 2
         adapter.addFragment(new Non_RepeatedFragment(),"NonRepeatedTrips");          //// fragmentNum --> 3
+        adapter.addFragment(new Profile(),"Profile");           //// fragmentNum --> 4
 
         viewPager1.setAdapter(adapter);
     }

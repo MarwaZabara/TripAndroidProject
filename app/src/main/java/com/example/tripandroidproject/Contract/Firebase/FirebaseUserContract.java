@@ -4,19 +4,20 @@ import com.example.tripandroidproject.View.UserDetails;
 public class FirebaseUserContract {
 
     public interface IUserView{
-        void getUserData();
+//        void getUserData();
         void setUserData(UserDetails user);
     }
 
     public interface IUserPresenter{
         void saveUserData(UserDetails user);
         void getUserData();
-        void setUserData(UserDetails user);
+        void updateUser(UserDetails user);
         void onSuccess(UserDetails user);
     }
 
     public interface IUserModel{
         void saveUserData(UserDetails user);
+        void updateUser(UserDetails user);
         void getUserData();
     }
 

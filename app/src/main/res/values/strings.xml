@@ -42,6 +42,8 @@
     <string name="map_key" translatable="false">AIzaSyCVOvMSNN18_AJKQjfKfoWKxsYNF5GNxK0</string>
     <string name="save">Save</string>
     <string name="finishTrip">Finish</string>
+    <string name="editimg">Edit Image</string>
+    <string name="edit">Edit</string>
 
     <string-array name="RepeatEvery">
         <item>Daily</item>
@@ -49,4 +51,10 @@
         <item>Monthly</item>
         <item>Never</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="forget">Forget Password?</string>
+    <string name="getpass">Get Password</string>
+    <string name="enter">Enter your email</string>
 </resources>

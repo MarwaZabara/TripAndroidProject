@@ -41,6 +41,13 @@ public class FirebaseUserModel implements FirebaseUserContract.IUserModel{
     }
 
     @Override
+    public void updateUser(UserDetails user) {
+        String userID = mAuth.getCurrentUser().getUid();
+        myRef = database.getReference("User").child(userID);
+        myRef.setValue(user);
+    }
+
+    @Override
     public void getUserData() {
         String userID = mAuth.getCurrentUser().getUid();
         myRef = database.getReference("User").child(userID);
