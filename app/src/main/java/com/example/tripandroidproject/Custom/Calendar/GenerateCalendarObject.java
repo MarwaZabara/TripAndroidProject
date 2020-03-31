@@ -6,6 +6,9 @@ import java.util.List;
 
 public class GenerateCalendarObject {
     public static int dayOfYear = 0;
+    public static int dayOfMonth = 0;
+    public static int month = 0;
+    public static int year = 0;
     public static Calendar generateCalendar(String date, String time) {
 
         List<String> dateSp = Arrays.asList(date.split("-"));
@@ -18,6 +21,9 @@ public class GenerateCalendarObject {
         calendar.set(Calendar.MINUTE, Integer.parseInt(timeSp.get(1)));
         calendar.set(Calendar.SECOND, 0);
         dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        month = calendar.get(Calendar.MONTH);
+        year = calendar.get(Calendar.YEAR);
         return calendar;
     }
     public static String generateStringDate(Calendar calendar) {
