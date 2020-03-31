@@ -1,14 +1,20 @@
 package com.example.tripandroidproject.View.NavDrawer_UpComingTrip;
 
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppAdapter extends FragmentStatePagerAdapter {
+
     private final List<Fragment> fragments = new ArrayList<>();
     private final List<String> fragmentsTitle = new ArrayList<>();
 

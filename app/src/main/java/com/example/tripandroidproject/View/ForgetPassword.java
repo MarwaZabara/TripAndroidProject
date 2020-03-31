@@ -15,6 +15,7 @@ import com.example.tripandroidproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.r0adkll.slidr.model.SlidrInterface;
 
 public class ForgetPassword extends AppCompatActivity implements ForgetPasswordContract.IForgetPassView {
 
