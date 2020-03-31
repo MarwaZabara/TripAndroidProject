@@ -1,6 +1,7 @@
 package com.example.tripandroidproject.View.NavDrawer_UpComingTrip;
 
 import android.app.Activity;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
     private RetrieveTripPresenter retrieveTripPresenter;
     private GetOfflineTripPresenter getOfflineTripPresenter;
     private SaveTripPresenter saveTripOfflinePresenter;
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
