@@ -19,7 +19,6 @@ public class FirebaseUserModel implements FirebaseUserContract.IUserModel{
     DatabaseReference myRef;
     private FirebaseAuth mAuth;
     FirebaseUserContract.IUserPresenter userPresenter;
-
     public static String getUserID()
     {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
