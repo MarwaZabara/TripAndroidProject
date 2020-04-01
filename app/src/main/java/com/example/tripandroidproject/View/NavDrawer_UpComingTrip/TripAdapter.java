@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -91,17 +92,27 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         holder.location2.setText(location2);
         holder.tripName.setText(upComingTripList.get(position).getName());
         holder.cardView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_transition_animation));
-
-        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+        holder.constraintLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-//        Toast.makeText(context, values.get(position).getName(), Toast.LENGTH_SHORT).show();
-        tripName = upComingTripList.get(position).getName();
-        status =  upComingTripList.get(position).getStatus();
-        TID = upComingTripList.get(position).getId();
-        takeAction(tripName,status,position,TID);
+            public boolean onLongClick(View v) {
+                tripName = upComingTripList.get(position).getName();
+                status =  upComingTripList.get(position).getStatus();
+                TID = upComingTripList.get(position).getId();
+                takeAction(tripName,status,position,TID);
+                return true;
             }
         });
+//        holder.constraintLayout.setOnHoverListener();
+//        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////        Toast.makeText(context, values.get(position).getName(), Toast.LENGTH_SHORT).show();
+////                tripName = upComingTripList.get(position).getName();
+////                status =  upComingTripList.get(position).getStatus();
+////                TID = upComingTripList.get(position).getId();
+////                takeAction(tripName,status,position,TID);
+//            }
+//        });
         holder.startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +122,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
                     startTripPresenter.startTrip(destination, upComingTripList.get(position).getId(), upComingTripList.get(position).getRequestCodeHome());
                 }
                 else if (upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel")){
-
+                    Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();
+                    showDialogListView(TID);
                 }
 
             }
@@ -168,7 +180,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
             options = new CharSequence[]{"Edit Trip", "Delete Trip", "Cancel Trip"};
         }
         else {
-             options = new CharSequence[]{"Notes", "Delete Trip", "Cancel Trip"};
+             options = new CharSequence[]{"Delete Trip"};
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -201,10 +213,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 //                  communicatorFrag.cancelTrip(trip);
 //                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
                 }
-                else if (options[item].equals("Notes")) {
-                    Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();
-                    showDialogListView(TID);
-                }
+//                else if (options[item].equals("Notes")) {
+//                    Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();
+//                    showDialogListView(TID);
+//                }
             }
         });
         builder.show();

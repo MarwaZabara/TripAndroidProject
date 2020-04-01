@@ -70,7 +70,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     private SaveUserLogIn saveUserLogIn;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private NetworkChangeBroadcastReceiver networkChangeBroadcastReceiver;
     Person person;
     UserPresenter userPresenter;
@@ -88,8 +88,10 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         ControlNetworkChangeBroadcast.registerBroadcast(this);
         setContentView(R.layout.activity_nav_drawer);
 //////////////////////////////////////////////////////////////////
-        viewPager = (ViewPager) findViewById(R.id.container);
+        viewPager = (CustomViewPager) findViewById(R.id.container);
         setupViewPager(viewPager);
+        viewPager.setPagingEnabled(false);
+
 /////////////////////////////////////////////////////////////////
         mAuth = FirebaseAuth.getInstance();
         saveUserLogIn = new SaveUserLogIn(this);
@@ -170,6 +172,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
             AlertDialog mDialog = mBuilder.create();
             mDialog.show();
         }
+
     }
 
     @Override
@@ -322,7 +325,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         adapter.addFragment(new HistoryFragment(),"History");          //// fragmentNum --> 1
         adapter.addFragment(new RepeatedFragment(),"RepeatedTrips");   //// fragmentNum --> 2
         adapter.addFragment(new Non_RepeatedFragment(),"NonRepeatedTrips");          //// fragmentNum --> 3
-//        adapter.addFragment(new Profile(),"Profile");           //// fragmentNum --> 4
+        adapter.addFragment(new Profile(),"Profile");           //// fragmentNum --> 4
 
         viewPager1.setAdapter(adapter);
     }
