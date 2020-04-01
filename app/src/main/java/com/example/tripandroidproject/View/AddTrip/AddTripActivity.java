@@ -1,4 +1,5 @@
 package com.example.tripandroidproject.View.AddTrip;
+
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -172,7 +173,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
 
                     // The toggle is enabled
                 } else {
-                 //   Toast.makeText(getApplicationContext(), " NOT Rounded",Toast.LENGTH_LONG).show();
+                    //   Toast.makeText(getApplicationContext(), " NOT Rounded",Toast.LENGTH_LONG).show();
                     isRound = 0;
                     RepeatRound = 0;
 
@@ -230,7 +231,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             public void onClick(View v) {
                 SelectedLocation = "Dest";
                 StartAutoCompleteActivity();
-             //   Toast.makeText(getApplicationContext(),"lat="+ EndLat,Toast.LENGTH_LONG).show();
+                //   Toast.makeText(getApplicationContext(),"lat="+ EndLat,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -360,7 +361,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         lv.setOnTouchListener(touchListener);
 
         if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-           // Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
 
             ViewGroup.LayoutParams params = lv.getLayoutParams();
             params.height = 100 ;
@@ -369,7 +370,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         }
         else if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             ViewGroup.LayoutParams params = lv.getLayoutParams();
-           // Toast.makeText(getApplicationContext(),"portrait",Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),"portrait",Toast.LENGTH_LONG).show();
 
             params.height = 1000;
             lv.setLayoutParams(params);
