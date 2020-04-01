@@ -1,6 +1,7 @@
 package com.example.tripandroidproject.View.History;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,8 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
 
     private RecyclerView.Adapter myAdapter;
     private RecyclerView recyclerView;
-    private List<Trip> trips;
+    private List<Trip> trips ;
+    private List<Trip> hTrips ;
     private Trip trip;
     RetrieveTripContract.IRetrieveTripPresenter retrieveTripPresenter;
 
@@ -39,12 +41,13 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         trips = new ArrayList<>();
+        hTrips = new ArrayList<>();
         myAdapter = new HistoryAdapter(getContext(),trips);
-        retrieveTripPresenter = new RetrieveTripPresenter(getContext(),this);
+        retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);
         retrieveTripPresenter.fetchData("Cancel","finished");
 //        retrieveTripPresenter.retrieveFilteredTrips("Cancel");
-        myAdapter.notifyDataSetChanged();
-        renderData(trips);
+//        myAdapter.notifyDataSetChanged();
+//        renderData(trips);
 
         return view;
     }
@@ -62,8 +65,61 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
 
     @Override
     public void renderData(List<Trip> trips) {
-        myAdapter = new TripAdapter(this.getContext(),trips);
+        //////////get from table trips
+        hTrips = trips;
+        Log.d("History","------------------1-hTrips-before2ndTable-----------------");
+        for (int i=0 ; i<hTrips.size(); i++){
+            Log.d("History",hTrips.get(i).getName());
+            Log.d("History",hTrips.get(i).getStatus());
+        }
+        Log.d("History","------------------2-trips-before2ndTable-----------------");
+        for (int i=0 ; i<this.trips.size(); i++){
+            Log.d("History",this.trips.get(i).getName());
+            Log.d("History",this.trips.get(i).getStatus());
+        }
+        myAdapter = new TripAdapter(this.getContext(),hTrips);
         setAdapter(myAdapter);
+        myAdapter.notifyDataSetChanged();
+        retrieveTripPresenter.retrieveRepeatedHistoryTrips();
     }
 
+
+    public void returnAllHistory(List<Trip> historyTrips) {
+        //////////get from table repeated history trips
+        Log.d("History","------------------3-trips-after2ndTable------------------");
+        for (int i=0 ; i<trips.size(); i++){
+            Log.d("History",trips.get(i).getName());
+            Log.d("History",trips.get(i).getStatus());
+        }
+        Log.d("History","------------------4-hTrips-after2ndTable------------------");
+        for (int i=0 ; i<hTrips.size(); i++){
+            Log.d("History",hTrips.get(i).getName());
+            Log.d("History",hTrips.get(i).getStatus());
+//        }
+        Log.d("History","------------------5-comingData-after2ndTable------------------");
+        for (int j=0 ; j<historyTrips.size(); j++){
+            Log.d("History",historyTrips.get(j).getName());
+            Log.d("History",historyTrips.get(j).getStatus());
+        }
+        trips = historyTrips;
+        setMyAdapterAfterAllHistory();
+        myAdapter = new TripAdapter(this.getContext(),trips);
+        setAdapter(myAdapter);
+        myAdapter.notifyDataSetChanged();
+    }
+
+}
+    private void setMyAdapterAfterAllHistory() {
+
+        Log.d("History","------------------6-htrips-All-----------------");
+        for (int i=0 ; i<hTrips.size(); i++){
+            Log.d("History",hTrips.get(i).getName());
+            Log.d("History",hTrips.get(i).getStatus());
+        }
+        Log.d("History","------------------7-trips-All-----------------");
+        for (int i=0 ; i<trips.size(); i++){
+            Log.d("History",trips.get(i).getName());
+            Log.d("History",trips.get(i).getStatus());
+        }
+    }
 }

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.AddNote.AddNote">
 
-
     <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColor="@color/primaryTextColor"
         android:text="Add Note"
-        android:textSize="35dp"
+        android:textSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,25 +61,27 @@
         android:layout_height="47dp"
         android:layout_margin="10dp"
         android:text="@string/Add"
+        android:background="@drawable/choose_img_btn_bk"
+        android:textColor="@color/white"
+        android:textSize="16sp
+"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/NotesListView"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/AddNoteTxt"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toEndOf="@+id/AddNoteTxt" />
 
     <Button
         android:id="@+id/DismissBtn"
-        android:layout_width="59dp"
-        android:layout_height="58dp"
+        android:layout_width="38dp"
+        android:layout_height="43dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
-        android:drawableBottom="@drawable/close50"
-        android:textColorHint="#F4F4F4"
+        android:drawableBottom="@drawable/ic_close_black"
         app:layout_constraintBottom_toBottomOf="@+id/textView18"
         app:layout_constraintEnd_toStartOf="@+id/textView18"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.265" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

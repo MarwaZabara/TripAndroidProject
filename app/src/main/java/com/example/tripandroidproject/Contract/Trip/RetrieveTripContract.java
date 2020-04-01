@@ -10,6 +10,7 @@ import java.util.List;
 public class RetrieveTripContract {
     public interface IRetrieveTripView{
         void renderData(List<Trip> trips);
+        void returnAllHistory(List<Trip> historyTrips);
     }
     public interface IRetrieveTripPresenter extends IBase {
         List<Trip> getTripList ();
@@ -17,10 +18,13 @@ public class RetrieveTripContract {
         void retrieveFilteredTrips(String filter);
         void fetchData(String filter1,String filter2);
         void onSuccessGetUpcomingTrips(List<Trip> trips);
+        void retrieveRepeatedHistoryTrips();
+        void returnAllHistory(List<Trip> historyTrips);
     }
     public interface IRetrieveTripModel{
         void fetchData();
         void fetchFilteredData(String filter);
+        void fetchRepeatedHistoryData(String filter);
         void fetchData(String filter1,String filter2);
         List<Trip> returnData();
 //        List<Trip> returnRepeatedData();

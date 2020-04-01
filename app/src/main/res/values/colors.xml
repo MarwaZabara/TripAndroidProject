@@ -4,9 +4,14 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="background_color">#27978C</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="white_greyish">#EEEEEE</color>
-    <color name="button_selectorcolor">#9E9E9E</color>
+
+    <!--colors for modern ui-->
+    <color name="whiteTextColor">#fff</color>
+    <color name="primaryTextColor">#00a5ff</color>
+    <color name="loginBkColor">#f0f0f0</color>
+
+    <!--colros for card-->
+    <color name="whiteCardColor">#fff</color>
 </resources>

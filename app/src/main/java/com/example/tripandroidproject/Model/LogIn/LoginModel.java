@@ -56,7 +56,6 @@ public class LoginModel implements LoginContract.ISignInModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-//                            FirebaseUser user = mAuth.getCurrentUser();
                             UserDetails user = roomPersonModel.getCurrentPerson(userDetails.getEmail());
                             personPresenter.setCurrentPerson(user);
                             presenter.onSucess();

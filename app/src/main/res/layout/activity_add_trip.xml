@@ -1,263 +1,495 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:fillViewport="true">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:fillViewport="true"
+    style="@style/parent"
     tools:context=".View.AddTrip.AddTripActivity">
 
 
-<!--    <fragment android:id="@+id/autocomplete_fragment"-->
-<!--        android:layout_width="match_parent"-->
+    <ScrollView
+        style="@style/parent">
+
+        <RelativeLayout
+            style="@style/parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:weightSum="12">
+
+                <LinearLayout
+                    style="@style/parent"
+                    android:background="@drawable/login_button_bk"
+                    android:orientation="vertical"
+                    android:layout_weight="3">
+
+                    <ImageView
+                        style="@style/parent"
+                        android:background="@drawable/ic_login_bk"
+                        android:contentDescription="login background" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp">
+
+
+                <TextView
+                    style="@style/headerText"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:text="Add Trip" />
+
+
+                <androidx.cardview.widget.CardView
+                    style="@style/loginCard"
+                    app:cardCornerRadius="@dimen/loginCardRadius"
+                    android:elevation="5dp"
+                    android:layout_gravity="center"
+                    android:background="@color/whiteCardColor">
+
+
+
+                    <LinearLayout
+                        style="@style/linearParent"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/loginViewsMargin">
+
+                        <TextView
+                            style="@style/viewParent"
+                            android:text="@string/TripName"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/newsMoreTextSize"
+                            android:layout_marginTop="10dp"/>
+
+                        <EditText
+                            android:id="@+id/NameTxt"
+                            android:hint="@string/TripName"
+                            style="@style/modifiedEditText"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            />
+
+                        <TextView
+                            style="@style/viewParent"
+                            android:text="@string/Description"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/newsMoreTextSize"
+                            android:layout_marginTop="10dp"/>
+
+                        <EditText
+                            android:id="@+id/DescTxt"
+                            android:hint="@string/Description"
+                            style="@style/modifiedEditText"
+                            android:maxLines="1"
+                            android:inputType="text"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center_horizontal">
+                            <EditText
+                                style="@style/viewParent"
+                                android:id="@+id/TripDateTxt"
+                                android:focusable="false"
+                                android:hint="@string/Date"
+                                android:maxLines="1"
+                                android:inputType="text"
+                                android:gravity="start"
+                                android:layout_marginEnd="10dp"/>
+
+                            <EditText
+                                style="@style/viewParent"
+                                android:id="@+id/TripTimeTxt"
+                                android:focusable="false"
+                                android:hint="@string/Time"
+                                android:maxLines="1"
+                                android:layout_marginStart="40dp"
+                                android:inputType="text"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            style="@style/viewParent"
+                            android:text="@string/StartLocation"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/newsMoreTextSize"
+                            android:layout_marginTop="10dp"/>
+
+                        <EditText
+                            android:id="@+id/StartLocationTxt"
+                            android:hint="@string/StartLocation"
+                            android:focusable="false"
+                            style="@style/modifiedEditText"
+                            android:textSize="12sp"
+                            android:width="15dp"
+                            android:maxLines="1"
+                            android:inputType="text"/>
+                        <TextView
+                            style="@style/viewParent"
+                            android:text="@string/Destination"
+                            android:focusable="false"
+                            android:textColor="@color/primaryTextColor"
+                            android:textSize="@dimen/newsMoreTextSize"
+                            android:layout_marginTop="10dp"/>
+
+                        <EditText
+                            android:id="@+id/DestinationTxt"
+                            android:hint="@string/Destination"
+                            style="@style/modifiedEditText"
+                            android:textSize="12sp"
+                            android:width="15dp"
+                            android:maxLines="1"
+                            android:inputType="text"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center_horizontal">
+                            <TextView
+                                style="@style/viewParent"
+                                android:text="@string/Repeat"
+                                android:textColor="@color/primaryTextColor"
+                                android:textSize="@dimen/newsMoreTextSize"
+                                android:layout_marginBottom="15dp"
+                                android:layout_marginTop="10dp" />
+                            <Spinner
+                                android:id="@+id/Repeatspinner"
+                                android:entries="@array/RepeatEvery"
+                                android:gravity="end"
+                                android:layout_marginTop="12sp"
+                                android:layout_marginStart="30dp"
+                                android:layout_width="125dp"
+                                android:layout_height="28dp" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                style="@style/viewParent"
+                                android:text="@string/Round"
+                                android:textColor="@color/primaryTextColor"
+                                android:textSize="@dimen/newsMoreTextSize"
+                                android:gravity="start"
+                                android:layout_marginTop="10dp"/>
+                            <Switch
+                                android:id="@+id/RoundSwitch"
+                                android:layout_width="135dp"
+                                android:layout_height="24dp"
+                                android:layout_marginTop="15dp" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center_horizontal">
+
+                            <EditText
+                                style="@style/viewParent"
+                                android:id="@+id/RoundDateTxt"
+                                android:hint="@string/Date"
+                                android:focusable="false"
+                                android:maxLines="1"
+                                android:inputType="text"/>
+                            <EditText
+                                style="@style/viewParent"
+                                android:id="@+id/RoundTimeTxt"
+                                android:hint="@string/Time"
+                                android:focusable="false"
+                                android:maxLines="1"
+                                android:inputType="text"
+                                android:layout_marginStart="40dp"
+                                android:layout_marginEnd="10dp"/>
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/NextBtn"
+                            android:onClick="saveTrip"
+                            style="@style/loginButton"
+                            android:text="@string/save"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/loginViewsMargin"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/ShowAddNoteDialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="end"
+                    android:clickable="true"
+                    android:background="@color/primaryTextColor"
+                    app:srcCompat="@drawable/add2" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+
+<!--    <Button-->
+<!--        android:id="@+id/NextBtn"-->
+<!--        android:onClick="saveTrip"-->
+<!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
-<!--        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
-<!--        tools:ignore="MissingConstraints" />-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:text="@string/save"-->
+<!--        android:textSize="22dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/RoundTimeTxt"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
 
+<!--    <TextView-->
+<!--        android:id="@+id/textView13"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="@string/TripDetails"-->
+<!--        android:textSize="35dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <Button
-        android:id="@+id/NextBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="saveTrip"
-        android:text="@string/save"
-        android:textSize="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RoundTimeTxt"
-        app:layout_constraintVertical_bias="0.0" />
+<!--    <View-->
+<!--        android:id="@+id/divider"-->
+<!--        android:layout_width="310dp"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:background="?android:attr/listDivider"-->
+<!--        android:backgroundTint="#1E1D1D"-->
+<!--        android:foregroundTint="#131212"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.495"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView13" />-->
 
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/TripDetails"
-        android:textSize="35dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView11"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="92dp"-->
+<!--        android:text="@string/TripName"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.275"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="310dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:attr/listDivider"
-        android:backgroundTint="#1E1D1D"
-        android:foregroundTint="#131212"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+<!--    <EditText-->
+<!--        android:id="@+id/TripDateTxt"-->
+<!--        android:hint="@string/Date"-->
+<!--        android:layout_width="100dp"-->
+<!--        android:layout_height="49dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:ems="10"-->
+<!--        android:focusable="false"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textView12"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/DescTxt" />-->
 
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:text="@string/TripName"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.275"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView16"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:text="@string/StartLocation"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/TripDateTxt"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/TripDateTxt" />-->
 
-    <EditText
-        android:id="@+id/TripDateTxt"
-        android:layout_width="100dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/Date"
-        android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/DescTxt" />
+<!--    <EditText-->
+<!--        android:id="@+id/StartLocationTxt"-->
+<!--        android:hint="@string/StartLocation"-->
+<!--        android:layout_width="248dp"-->
+<!--        android:layout_height="49dp"-->
+<!--        android:ems="10"-->
+<!--        android:focusable="false"-->
+<!--        -->
+<!--        android:inputType="textPersonName"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/TripTimeTxt"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textView16"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView16" />-->
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/StartLocation"
-        android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="@+id/TripDateTxt"
-        app:layout_constraintTop_toBottomOf="@+id/TripDateTxt" />
+<!--    <EditText-->
+<!--        android:id="@+id/TripTimeTxt"-->
+<!--        android:hint="@string/Time"-->
+<!--        android:layout_width="113dp"-->
+<!--        android:layout_height="49dp"-->
+<!--        android:layout_marginStart="44dp"-->
+<!--        android:ems="10"-->
+<!--        android:focusable="false"-->
+<!--        -->
+<!--        android:inputType="textPersonName"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/TripDateTxt"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/DescTxt"-->
+<!--        app:layout_constraintHorizontal_bias="1.0"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/TripDateTxt"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/TripDateTxt"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
 
-    <EditText
-        android:id="@+id/StartLocationTxt"
-        android:layout_width="248dp"
-        android:layout_height="49dp"
+<!--    <EditText-->
+<!--        android:id="@+id/NameTxt"-->
+<!--        android:hint="@string/TripName"-->
+<!--        android:layout_width="254dp"-->
+<!--        android:layout_height="54dp"-->
+<!--        android:layout_marginEnd="128dp"-->
+<!--        android:ems="10"-->
+<!--        -->
+<!--        android:inputType="textPersonName"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textView11"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView11" />-->
 
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/StartLocation"
-        android:inputType="textPersonName"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/TripTimeTxt"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView12"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:text="@string/Description"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/textView11"-->
+<!--        app:layout_constraintHorizontal_bias="0.666"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/NameTxt"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/NameTxt" />-->
 
-    <EditText
-        android:id="@+id/TripTimeTxt"
-        android:layout_width="113dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="44dp"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/Time"
-        android:inputType="textPersonName"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@+id/TripDateTxt"
-        app:layout_constraintEnd_toEndOf="@+id/DescTxt"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/TripDateTxt"
-        app:layout_constraintTop_toTopOf="@+id/TripDateTxt"
-        app:layout_constraintVertical_bias="0.0" />
+<!--    <EditText-->
+<!--        android:id="@+id/DescTxt"-->
+<!--        android:hint="@string/Description"-->
+<!--        android:layout_width="247dp"-->
+<!--        android:layout_height="55dp"-->
+<!--        android:ems="10"-->
+<!--        android:gravity="start|top"-->
+<!--        android:inputType="textMultiLine"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/NameTxt"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textView12"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView12" />-->
 
-    <EditText
-        android:id="@+id/NameTxt"
-        android:layout_width="254dp"
-        android:layout_height="54dp"
-        android:layout_marginEnd="128dp"
-        android:ems="10"
-        android:hint="@string/TripName"
-        android:inputType="textPersonName"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView17"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:text="@string/Destination"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/StartLocationTxt"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/StartLocationTxt" />-->
 
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/Description"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView11"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="@+id/NameTxt"
-        app:layout_constraintTop_toBottomOf="@+id/NameTxt" />
+<!--    <EditText-->
+<!--        android:id="@+id/DestinationTxt"-->
+<!--        android:hint="@string/Destination"-->
+<!--        android:layout_width="252dp"-->
+<!--        android:layout_height="52dp"-->
+<!--        android:ems="10"-->
+<!--        android:focusable="false"-->
+<!--        -->
+<!--        android:inputType="textPersonName"-->
+<!--        android:textSize="22sp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/StartLocationTxt"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textView17"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView17" />-->
 
-    <EditText
-        android:id="@+id/DescTxt"
-        android:layout_width="247dp"
-        android:layout_height="55dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/Description"
-        android:inputType="textMultiLine"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/NameTxt"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView12"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+<!--    <EditText-->
+<!--        android:id="@+id/RoundTimeTxt"-->
+<!--        android:hint="@string/Time"-->
+<!--        android:layout_width="104dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:ems="10"-->
+<!--        android:focusable="false"-->
+<!--        android:inputType="textPersonName"-->
+<!--        android:textSize="22dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/RoundDateTxt"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/TripTimeTxt"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/TripTimeTxt"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/RoundDateTxt"-->
+<!--        app:layout_constraintVertical_bias="0.0" />-->
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/Destination"
-        android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="@+id/StartLocationTxt"
-        app:layout_constraintTop_toBottomOf="@+id/StartLocationTxt" />
+<!--    <Spinner-->
+<!--        android:id="@+id/Repeatspinner"-->
+<!--        android:entries="@array/RepeatEvery"-->
+<!--        android:layout_width="125dp"-->
+<!--        android:layout_height="28dp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/DestinationTxt"-->
+<!--        app:layout_constraintHorizontal_bias="1.0"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/RoundDateTxt"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/textView14" />-->
 
-    <EditText
-        android:id="@+id/DestinationTxt"
-        android:layout_width="252dp"
-        android:layout_height="52dp"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/Destination"
-        android:inputType="textPersonName"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="@+id/StartLocationTxt"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/textView17"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+<!--    <Switch-->
+<!--        android:id="@+id/RoundSwitch"-->
+<!--        android:layout_width="135dp"-->
+<!--        android:layout_height="24dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:text="@string/Round"-->
+<!--        android:textSize="22dp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/textView14"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView14" />-->
 
-    <EditText
-        android:id="@+id/RoundTimeTxt"
-        android:layout_width="104dp"
-        android:layout_height="50dp"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="@string/Time"
-        android:inputType="textPersonName"
-        android:textSize="22dp"
-        app:layout_constraintBottom_toBottomOf="@+id/RoundDateTxt"
-        app:layout_constraintEnd_toEndOf="@+id/TripTimeTxt"
-        app:layout_constraintStart_toStartOf="@+id/TripTimeTxt"
-        app:layout_constraintTop_toTopOf="@+id/RoundDateTxt"
-        app:layout_constraintVertical_bias="0.0" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView14"-->
+<!--        android:layout_width="91dp"-->
+<!--        android:layout_height="26dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:text="Repeat Trip"-->
+<!--        android:textSize="22dp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/DestinationTxt"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/DestinationTxt" />-->
 
-    <Spinner
-        android:id="@+id/Repeatspinner"
-        android:layout_width="125dp"
-        android:layout_height="28dp"
-        android:entries="@array/RepeatEvery"
-        app:layout_constraintEnd_toEndOf="@+id/DestinationTxt"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/RoundDateTxt"
-        app:layout_constraintTop_toTopOf="@+id/textView14" />
+<!--    <EditText-->
+<!--        android:id="@+id/RoundDateTxt"-->
+<!--        android:hint="@string/Date"-->
+<!--        android:focusable="false"-->
+<!--        android:layout_width="98dp"-->
+<!--        android:layout_height="46dp"-->
+<!--        android:ems="10"-->
+<!--        android:textSize="22dp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/TripDateTxt"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/RoundSwitch"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/RoundSwitch" />-->
 
-    <Switch
-        android:id="@+id/RoundSwitch"
-        android:layout_width="135dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/Round"
-        android:textSize="22dp"
-        app:layout_constraintStart_toStartOf="@+id/textView14"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/ShowAddNoteDialog"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="25dp"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:clickable="true"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:srcCompat="@drawable/add2" />-->
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="91dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="15dp"
-        android:text="Repeat Trip"
-        android:textSize="22dp"
-        app:layout_constraintStart_toStartOf="@+id/DestinationTxt"
-        app:layout_constraintTop_toBottomOf="@+id/DestinationTxt" />
-
-    <EditText
-        android:id="@+id/RoundDateTxt"
-        android:layout_width="98dp"
-        android:layout_height="46dp"
-        android:ems="10"
-
-        android:focusable="false"
-        android:hint="@string/Date"
-        android:textSize="22dp"
-        app:layout_constraintEnd_toEndOf="@+id/TripDateTxt"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/RoundSwitch"
-        app:layout_constraintTop_toBottomOf="@+id/RoundSwitch" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/ShowAddNoteDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/add2" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</RelativeLayout>

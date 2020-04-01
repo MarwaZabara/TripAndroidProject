@@ -20,6 +20,7 @@
             android:layout_gravity="bottom|right"
             android:layout_margin="25dp"
             android:onClick="GoToAddTrip"
+
             android:src="@drawable/add2" />
 
     </com.google.android.material.circularreveal.CircularRevealFrameLayout>

@@ -85,4 +85,9 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
 
     }
 
+    @Override
+    public void returnAllHistory(List<Trip> historyTrips) {
+        ///for history only
+    }
+
 }

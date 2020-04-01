@@ -66,4 +66,9 @@ public class RepeatedFragment extends Fragment implements RetrieveTripContract.I
         myAdapter = new TripAdapter(this.getContext(),trips);
         setAdapter(myAdapter);
     }
+
+    @Override
+    public void returnAllHistory(List<Trip> historyTrips) {
+        //// for history only
+    }
 }

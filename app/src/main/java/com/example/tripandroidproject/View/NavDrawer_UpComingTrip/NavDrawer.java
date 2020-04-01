@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.ControlNetworkChangeBroadcast;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
@@ -48,6 +50,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -192,6 +195,13 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                             }
                         });
                 saveUserLogIn.setUserLoggedIn(false);
+                saveUserLogIn.clearUserData();
+                GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(this);
+                DeleteOfflineTripPresenter deleteOfflineTripPresenter = new DeleteOfflineTripPresenter(this);
+                List<Trip> trips = getOfflineTripPresenter.getAllOfflineTrips();
+                for (int i= 0;i<trips.size();i++){
+                    deleteOfflineTripPresenter.deleteOfflineTrip(trips.get(i));
+                }
                 Intent intentLoginActivity = new Intent(this, LoginActivity.class);
                 startActivity(intentLoginActivity);
                 break;

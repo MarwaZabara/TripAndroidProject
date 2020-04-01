@@ -61,6 +61,13 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
         List<Trip> trips = roomTripModel.getTrips();
         return trips;
     }
+
+    public List<Trip> getAllOfflineTrips() {
+        RoomTripModel roomTripModel = new RoomTripModel(this,context);
+        List<Trip> trips = roomTripModel.getAllOfflineTrip();
+        return trips;
+    }
+
     @Override
     public Trip getTripInfo(int requestCode) {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);

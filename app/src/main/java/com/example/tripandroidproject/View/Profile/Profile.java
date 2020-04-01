@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.tripandroidproject.Contract.Firebase.FirebaseUserContract;
 import com.example.tripandroidproject.Presenter.User.FirebaseUserPresenter;
@@ -21,7 +22,8 @@ import com.example.tripandroidproject.View.UserDetails;
 
 public class Profile extends Fragment implements FirebaseUserContract.IUserView {
 
-    private EditText name,email;
+    private EditText name;
+    private TextView email;
     private ImageView imageView;
     private Button save,edit,editImg;
     private FirebaseUserPresenter firebaseUserPresenter;
@@ -49,8 +51,9 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
             @Override
             public void onClick(View v) {
                 name.setFocusableInTouchMode(true);
-                email.setFocusableInTouchMode(true);
                 editImg.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+                edit.setVisibility(View.GONE);
             }
         });
 
@@ -63,6 +66,7 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
                 user.setImgUri(" ");
                 getUserLogIn.storeUserData(user);
                 firebaseUserPresenter.updateUser(user);
+                edit.setVisibility(View.VISIBLE);
                 beforeEdit();
             }
         });
@@ -92,8 +96,8 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
 
     void beforeEdit(){
         name.setFocusable(false);
-        email.setFocusable(false);
         editImg.setVisibility(View.GONE);
+        save.setVisibility(View.GONE);
     }
 
 }

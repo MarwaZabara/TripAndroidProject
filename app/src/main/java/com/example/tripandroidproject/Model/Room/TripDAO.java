@@ -27,6 +27,9 @@ public interface TripDAO {
     @Query("SELECT * FROM Trip WHERE isSync = 0")
     public List<Trip> getOfflineTrips();
 
+    @Query("SELECT * FROM Trip")
+    public List<Trip> getAllOfflineTrips();
+
     @Query("SELECT * FROM Trip WHERE status = :filter")
     public List<Trip> getOfflineFilteredTrips(String filter);
 

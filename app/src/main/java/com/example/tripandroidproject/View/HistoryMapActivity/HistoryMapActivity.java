@@ -157,6 +157,11 @@ public class HistoryMapActivity extends AppCompatActivity implements OnMapReadyC
         for (int i = 0; i < trips.size(); i++){
             Toast.makeText(getApplicationContext(), trips.get(i).getName(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void returnAllHistory(List<Trip> historyTrips) {
 
     }
+
 }
