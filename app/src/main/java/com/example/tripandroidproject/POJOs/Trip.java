@@ -7,10 +7,11 @@ import androidx.room.PrimaryKey;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Trip { // any attribute not need set it NULL (Capital letters)
+public class Trip implements Serializable { // any attribute not need set it NULL (Capital letters)
 
     @PrimaryKey
     @NonNull
