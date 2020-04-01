@@ -115,25 +115,25 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
         });
     }
 
-    @Override
-    public void fetchRepeatedHistoryData(String filter) {
-        myRef = database.getReference("RepeatedTripHistory").child(mAuth.getCurrentUser().getUid());
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                input.clear();
-                for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
-                    Trip trip = tripSnapShot.getValue(Trip.class);
-                    input.add(trip);
-                }
-                retrieveTripPresenter.returnAllHistory(input);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
+//    @Override
+//    public void fetchRepeatedHistoryData(String filter) {
+//        myRef = database.getReference("RepeatedTripHistory").child(mAuth.getCurrentUser().getUid());
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                input.clear();
+//                for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
+//                    Trip trip = tripSnapShot.getValue(Trip.class);
+//                    input.add(trip);
+//                }
+//                retrieveTripPresenter.returnAllHistory(input);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//            }
+//        });
+//    }
 
     @Override
     public void fetchData(final String filter1, final String filter2) {

@@ -50,7 +50,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
     private String TID;
     private View view;
     private DeleteTripPresenter deleteTripPresenter;
-//    private DeleteOfflineTripPresenter deleteOfflineTripPresenter;
     private CheckInternetConnection checkInternetConnection;
     private UpdateTripContract.IUpdateTripPresenter cancelTripPresenter;
     private UpdateTripOfflineContract.IUpdateTripOfflinePresenter updateTripOfflinePresenter;
@@ -60,8 +59,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         this.context = context;
         deleteTripPresenter = new DeleteTripPresenter(context);
         cancelTripPresenter = new CancelTripPresenter(context);
-//        updateTripOfflinePresenter = new UpdateTripOfflinePresenter(context);
-//        deleteOfflineTripPresenter = new DeleteOfflineTripPresenter(context);
         checkInternetConnection = new CheckInternetConnection();
     }
 
@@ -81,8 +78,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         double long1 = upComingTripList.get(position).getStartLongitude();
         double lat2 = upComingTripList.get(position).getEndLatitude();
         double long2 = upComingTripList.get(position).getEndLongitude();
-//        double lat1 = 31.2554761; double long1 = 30.001308899999998;
-//        double lat2 = 31.2554761; double long2 = 30.001308899999998;
         String location1 = getRegionName(lat1,long1);
         location2 = getRegionName(lat2,long2);
         holder.date.setText(upComingTripList.get(position).getDate());
@@ -163,14 +158,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
             constraintLayout = itemView.findViewById(R.id.row);
             cardView = itemView.findViewById(R.id.myCardView);
 
-//            startTrip.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    StartTripPresenter startTripPresenter = new StartTripPresenter(context);
-//                    String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
-//                    startTripPresenter.startTrip(destination,"trip1",1);
-//                }
-//            });
         }
     }
 

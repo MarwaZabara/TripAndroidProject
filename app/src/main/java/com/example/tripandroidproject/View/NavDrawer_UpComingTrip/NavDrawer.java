@@ -193,6 +193,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
             case R.id.history:
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(1);
+                this.setTitle("History");
                 drawerLayout.closeDrawers();
                 break;
             case R.id.synch:
@@ -210,9 +211,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                                 // ...
                             }
                         });
-
-//               saveUserLogIn.setUserLoggedIn(false);
-               
                 Intent intentLoginActivity = new Intent(this, LoginActivity.class);
                 startActivity(intentLoginActivity);
                 break;

@@ -23,7 +23,7 @@ public class CheckInternetConnection {
             }
         } else {
             status = false;
-            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_LONG).show();
             return status;
         }
         return status;

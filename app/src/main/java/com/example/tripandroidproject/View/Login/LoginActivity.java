@@ -71,8 +71,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 startActivity(intent);
             }
         });
-        // userPresenter = new FirebaseUserPresenter(this);
-        // userDetails = new UserDetails();
         relativeLayout = findViewById(R.id.login_layout);
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
@@ -95,55 +93,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     protected void onStart() {
         super.onStart();
         person = userPresenter.getUser();
-//        if(person!= null && person.getPassword() == null)
-//        {
-//            signInGoogle();
-//        }
-//        else
             if(person!= null){
             Intent intent = new Intent(this, NavDrawer.class);
-//            intent.putExtra("Email", person.getEmail());
-//            intent.putExtra("Name", person.getName());
-//            intent.putExtra("imgUri", person.getImgUri());
-//            intent.putExtra("firebasePhotoPath", person.getFirebasePhotoPath());
-//        intent.putExtra("password", userDetails.getPassword());
             startActivity(intent);
         }
-//        saveUserLogIn = new SaveUserLogIn(this);
-//        if (saveUserLogIn.getLoggedInUser() == null) {
-//            Intent intent = getIntent();
-//            //////////////if user is coming from sign up///////////
-//            if (intent.getStringExtra("fromSignUp")!=null && intent.getStringExtra("password") !=null){
-//                userDetails.setName(intent.getStringExtra("name"));
-//                userDetails.setEmail(intent.getStringExtra("email"));
-//                userDetails.setImgUri(intent.getStringExtra("imgUri"));
-//                userDetails.setPassword(intent.getStringExtra("password"));
-////                userDetails.setUsrImgUri(intent.getStringExtra("userImgUri"));
-//
-//                firebaseUserPresenter.saveUserData(userDetails);            /////////save data in firebase
-//
-//                loginEmail.setText(intent.getStringExtra("email"));
-//                loginPassword.setText(intent.getStringExtra("password"));
-//                Toast.makeText(this, userDetails.getEmail(), Toast.LENGTH_SHORT).show();
-//            }
-//            else if(intent.getStringExtra("fromSignUp")!=null){
-//                signInGoogle();
-//            }
-////            Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
-//        }else {
-//            /////////////////////get user information to sent it to nav drawer/////////////////////////
-//            userDetails = saveUserLogIn.getLoggedInUser();
-//            presenter.onSendData(userDetails);
-//            if (userDetails.getName()!=null) {
-//                Intent intent = new Intent(this, NavDrawer.class);
-//                intent.putExtra("Email", userDetails.getEmail());
-//                intent.putExtra("Password", userDetails.getPassword());
-//                intent.putExtra("Name", userDetails.getName());
-//                intent.putExtra("imgUri", userDetails.getImgUri());
-//                startActivity(intent);
-//            }
-//            firebaseUserPresenter = new FirebaseUserPresenter(this);
-//        }
 
     }
 
@@ -160,7 +113,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
             startActivityForResult(signInIntent, RC_SIGN_IN);
         }
         else {
-            Toast.makeText(this,"There is no internet connection",Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,"There is no internet connection",Toast.LENGTH_LONG).show();
+            new CustomToast().Show_Toast(this, this.getCurrentFocus(),"No Internet Connection.");
         }
     }
 
@@ -171,17 +125,18 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
 
     public void LogIn_Btn(View view) {
         if (checkInternetConnection.getConnectivityStatusString(this)) {
+            if (loginPassword.getText().toString().isEmpty() || loginEmail.getText().toString().isEmpty()){
+                relativeLayout.startAnimation(shakeAnimation);
+                new CustomToast().Show_Toast(this, view,"Please enter both credentials.");
+            }else {
             person = new Person();
             person.setEmail(loginEmail.getText().toString());
             person.setPassword(loginPassword.getText().toString());
             presenter = new LoginPresenter(this,this,this);
             presenter.onSendData(person);
+            }
         }else {
-            relativeLayout.startAnimation(shakeAnimation);
             new CustomToast().Show_Toast(this, view,"No Internet Connection.");
-//            new CustomToast().Show_Toast(this, view,"Enter both credentials.");
-
-//            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -100,20 +100,9 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
     public void renderData(List<Trip> trips) {
         //////////get from table trips
         hTrips = trips;
-        Log.d("History","------------------1-hTrips-before2ndTable-----------------");
-        for (int i=0 ; i<hTrips.size(); i++){
-            Log.d("History",hTrips.get(i).getName());
-            Log.d("History",hTrips.get(i).getStatus());
-        }
-        Log.d("History","------------------2-trips-before2ndTable-----------------");
-        for (int i=0 ; i<this.trips.size(); i++){
-            Log.d("History",this.trips.get(i).getName());
-            Log.d("History",this.trips.get(i).getStatus());
-        }
         myAdapter = new TripAdapter(this.getContext(),hTrips);
         setAdapter(myAdapter);
-        myAdapter.notifyDataSetChanged();
-        retrieveTripPresenter.retrieveRepeatedHistoryTrips();
+//        retrieveTripPresenter.retrieveRepeatedHistoryTrips();
     }
 
 

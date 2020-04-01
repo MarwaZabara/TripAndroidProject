@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Contract.SignUp.SignUpContract;
+import com.example.tripandroidproject.Custom.Toast.CustomToast;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
 import com.example.tripandroidproject.Presenter.SignUp.SignUpPresenter;
 import com.example.tripandroidproject.Presenter.User.UserPresenter;
@@ -95,7 +96,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                 uploadImage(userDetails.getFirebasePhotoPath());
 
             }else {
-                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                new CustomToast().Show_Toast(this, view,"No Internet Connection.");
             }
         }
     }
@@ -231,16 +232,6 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
     @Override
     public void showMessage(Boolean result) {
         if (result){
-
-//            Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show();
-//            Intent loginIntent = new Intent(this, LoginActivity.class);
-//            loginIntent.putExtra("fromSignUp","signUp");
-//            loginIntent.putExtra("name",userDetails.getName());
-//            loginIntent.putExtra("email",userDetails.getEmail());
-//            loginIntent.putExtra("password",userDetails.getPassword());
-//            loginIntent.putExtra("imgUri",userDetails.getImgUri());
-//            loginIntent.putExtra("firebasePhotoPath",userDetails.getFirebasePhotoPath());
-//            startActivity(loginIntent);
             Intent navDrawer = new Intent(this, NavDrawer.class);
             startActivity(navDrawer);
 

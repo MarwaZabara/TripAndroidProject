@@ -67,8 +67,8 @@ public class RepeatedFragment extends Fragment implements RetrieveTripContract.I
         setAdapter(myAdapter);
     }
 
-    @Override
-    public void returnAllHistory(List<Trip> historyTrips) {
-        //// for history only
-    }
+//    @Override
+//    public void returnAllHistory(List<Trip> historyTrips) {
+//        //// for history only
+//    }
 }

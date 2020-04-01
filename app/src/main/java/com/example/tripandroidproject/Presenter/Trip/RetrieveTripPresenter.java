@@ -57,15 +57,15 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
         view.renderData(trips);
     }
 
-    @Override
-    public void retrieveRepeatedHistoryTrips() {
-        model.fetchRepeatedHistoryData("repeatedHistory");
-    }
-
-    @Override
-    public void returnAllHistory(List<Trip> historyTrips) {
-        view.returnAllHistory(historyTrips);
-    }
+//    @Override
+//    public void retrieveRepeatedHistoryTrips() {
+//        model.fetchRepeatedHistoryData("repeatedHistory");
+//    }
+//
+//    @Override
+//    public void returnAllHistory(List<Trip> historyTrips) {
+//        view.returnAllHistory(historyTrips);
+//    }
 
     @Override
     public void onSucess() {

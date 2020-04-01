@@ -63,8 +63,8 @@ public class Non_RepeatedFragment extends Fragment implements RetrieveTripContra
         setAdapter(myAdapter);
     }
 
-    @Override
-    public void returnAllHistory(List<Trip> historyTrips) {
-        ///////////for history only
-    }
+//    @Override
+//    public void returnAllHistory(List<Trip> historyTrips) {
+//        ///////////for history only
+//    }
 }
