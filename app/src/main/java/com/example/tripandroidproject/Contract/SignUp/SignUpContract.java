@@ -1,16 +1,16 @@
 package com.example.tripandroidproject.Contract.SignUp;
 
 import com.example.tripandroidproject.Contract.Base.IBase;
-import com.example.tripandroidproject.View.UserDetails;
+import com.example.tripandroidproject.POJOs.Person;
 
 public class SignUpContract {
     public interface ISignUpView{
         void showMessage(Boolean result);
     }
     public interface ISignUpPresenter extends IBase {
-        void onSendData(UserDetails userDetails);
+        void onSendData(Person userDetails);
     }
     public interface ISignUpModel{
-        void signUp(UserDetails userDetails);
+        void signUp(Person userDetails);
     }
 }

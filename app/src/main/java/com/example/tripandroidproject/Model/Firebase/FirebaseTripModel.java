@@ -37,8 +37,10 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
     public FirebaseTripModel(){
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        String userID = mAuth.getCurrentUser().getUid();
-        myRef = database.getReference("Trip").child(userID);
+        if ( mAuth.getCurrentUser().getUid() != null) {
+            String userID = mAuth.getCurrentUser().getUid();
+            myRef = database.getReference("Trip").child(userID);
+        }
     }
 
     public FirebaseTripModel(ITripPresenter tripPresenter) {

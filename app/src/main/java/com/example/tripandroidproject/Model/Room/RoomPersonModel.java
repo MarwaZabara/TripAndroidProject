@@ -6,7 +6,7 @@ import androidx.room.Room;
 
 import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
 import com.example.tripandroidproject.POJOs.Person;
-import com.example.tripandroidproject.View.UserDetails;
+import com.example.tripandroidproject.POJOs.Person;
 import java.util.List;
 
 public class RoomPersonModel implements RoomPersonContract.IRoomPersonModel {
@@ -28,30 +28,37 @@ public class RoomPersonModel implements RoomPersonContract.IRoomPersonModel {
     }
 
     @Override
-    public void savePerson(UserDetails userDetails) {
-        person.setUserName(userDetails.getName());
-        person.setEmail(userDetails.getEmail());
-        person.setPassword(userDetails.getPassword());
-        person.setPhotoPath(userDetails.getImgUri());
+    public void savePerson(Person person) {
+//        person.setEmail(userDetails.getName());
+//        person.setEmail(userDetails.getEmail());
+//        person.setPassword(userDetails.getPassword());
+//        person.setPhotoPath(userDetails.getImgUri());
         personDAO.insert(person);
     }
 
     @Override
-    public void updatePerson(UserDetails userDetails) {
-
+    public void updatePerson(Person person) {
+        personDAO.update(person);
     }
 
     @Override
-    public UserDetails getCurrentPerson(String email) {
+    public Person getCurrentPerson(String email) {
         Person person = personDAO.getPerson(email);
-        UserDetails user = new UserDetails();
-        if(person!=null) {
-            user.setName(person.getUserName());
-            user.setEmail(person.getEmail());
-            user.setPassword(person.getPassword());
-            user.setImgUri(person.getPhotoPath());
-        }
+        Person user = new Person();
+//        if(person!=null) {
+//            user.setName(person.getUserName());
+//            user.setEmail(person.getEmail());
+//            user.setPassword(person.getPassword());
+//            user.setImgUri(person.getPhotoPath());
+//        }
         return user;
     }
 
+    public Person getUser() {
+        return personDAO.getUser();
+    }
+
+    public void delete(Person person) {
+        personDAO.delete(person);
+    }
 }

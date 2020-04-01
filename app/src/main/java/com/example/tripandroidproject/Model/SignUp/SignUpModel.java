@@ -7,8 +7,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.tripandroidproject.Contract.SignUp.SignUpContract;
+import com.example.tripandroidproject.Model.Firebase.FirebaseUserModel;
 import com.example.tripandroidproject.Model.Room.RoomPersonModel;
-import com.example.tripandroidproject.View.UserDetails;
+import com.example.tripandroidproject.POJOs.Person;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,7 +31,7 @@ public class SignUpModel implements SignUpContract.ISignUpModel {
         roomPersonModel = new RoomPersonModel(this.context);
     }
     @Override
-    public void signUp(final UserDetails userDetails) {
+    public void signUp(final Person userDetails) {
         Log.d(TAG, "createAccount:" + userDetails.getEmail());
         mAuth.createUserWithEmailAndPassword(userDetails.getEmail(), userDetails.getPassword()).addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
             @Override
@@ -38,8 +39,13 @@ public class SignUpModel implements SignUpContract.ISignUpModel {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
+                    mAuth = FirebaseAuth.getInstance();
                     roomPersonModel.savePerson(userDetails);
+                    FirebaseUserModel firebaseUserModel = new FirebaseUserModel();
+                    firebaseUserModel.saveUserData(userDetails);
+//                    presenter.onSucess();
                     presenter.onSucess();
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());

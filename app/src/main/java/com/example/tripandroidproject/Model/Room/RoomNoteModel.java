@@ -15,10 +15,8 @@ import java.util.List;
 public class RoomNoteModel implements SaveNoteContract.ISaveNoteOfflineModel, GetNoteContract.IGetNoteModel, UpdateNoteContract.IUpdateNoteOfflineModel {
     private final AppDatabase database;
     private final NoteDAO noteDAO;
-    private final INotePresenter notePresenter;
 
-    public RoomNoteModel(INotePresenter notePresenter, Context context) {
-        this.notePresenter = notePresenter;
+    public RoomNoteModel(Context context) {
         database = Room.databaseBuilder(context, AppDatabase.class, "db-trips")
                 .allowMainThreadQueries()   //Allows room to do operation on main thread
                 .build();
@@ -39,5 +37,8 @@ public class RoomNoteModel implements SaveNoteContract.ISaveNoteOfflineModel, Ge
     @Override
     public void updateNote(Note note) {
         noteDAO.update(note);
+    }
+    public void deleteNote(Note note) {
+        noteDAO.delete(note);
     }
 }

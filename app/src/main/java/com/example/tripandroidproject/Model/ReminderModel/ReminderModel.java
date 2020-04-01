@@ -38,6 +38,9 @@ public class ReminderModel implements Reminder.IReminderModel {
         //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
          intent.putExtra("requestCode", requestCode);
          PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
+         if (calendar.before(Calendar.getInstance())) {
+             calendar.add(Calendar.DATE, 1);
+         }
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 //        requestCode++;
     }

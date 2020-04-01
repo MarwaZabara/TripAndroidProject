@@ -25,7 +25,7 @@ public class GetNotePresenter implements GetNoteContract.IGetNotePresenter {
 
     @Override
     public List<Note> getNotes(String tripID) {
-        RoomNoteModel roomNoteModel = new RoomNoteModel(this,context);
+        RoomNoteModel roomNoteModel = new RoomNoteModel(context);
         return roomNoteModel.getNotes(tripID);
     }
 

@@ -10,6 +10,13 @@
             android:id="@+id/recycleViewHistory"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/OpenMapBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="25dp"
+            android:src="@drawable/map25" />
 
     </com.google.android.material.circularreveal.CircularRevealFrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

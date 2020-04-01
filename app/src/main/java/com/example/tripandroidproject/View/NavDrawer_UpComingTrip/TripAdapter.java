@@ -1,8 +1,10 @@
 package com.example.tripandroidproject.View.NavDrawer_UpComingTrip;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -14,20 +16,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.tripandroidproject.Contract.Trip.UpdateTripContract;
 import com.example.tripandroidproject.Contract.Trip.UpdateTripOfflineContract;
-import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
-import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
-import com.example.tripandroidproject.Presenter.Trip.UpdateTripOfflinePresenter;
+import com.example.tripandroidproject.POJOs.Note;
+import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Trip.CancelTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 
@@ -35,12 +32,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 
     private final Context context;
     private List<Trip> upComingTripList;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
     private String tripName;
+    private String status;
+    private String TID;
     private View view;
     private DeleteTripPresenter deleteTripPresenter;
 //    private DeleteOfflineTripPresenter deleteOfflineTripPresenter;
@@ -91,20 +97,33 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
             public void onClick(View v) {
 //        Toast.makeText(context, values.get(position).getName(), Toast.LENGTH_SHORT).show();
         tripName = upComingTripList.get(position).getName();
-        takeAction(tripName,position);
+        status =  upComingTripList.get(position).getStatus();
+        TID = upComingTripList.get(position).getId();
+        takeAction(tripName,status,position,TID);
             }
         });
         holder.startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartTripPresenter startTripPresenter = new StartTripPresenter(context);
-                String destination = location2;
-                startTripPresenter.startTrip(destination,upComingTripList.get(position).getId(),upComingTripList.get(position).getRequestCodeHome());
+                if (upComingTripList.get(position).getStatus().equals("upcoming") && upComingTripList.get(position).getStatus().equals("repeated")){
+                    StartTripPresenter startTripPresenter = new StartTripPresenter(context);
+                    String destination = location2;
+                    startTripPresenter.startTrip(destination, upComingTripList.get(position).getId(), upComingTripList.get(position).getRequestCodeHome());
+                }
+                else if (upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel")){
+
+                }
+
             }
         });
         if(upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel") )
         {
-            holder.startTrip.setVisibility(View.INVISIBLE);
+//            holder.startTrip.setVisibility(View.INVISIBLE);
+            holder.startTrip.setText("Show Notes");
+        }
+        else if(upComingTripList.get(position).getStatus().equals("start") || upComingTripList.get(position).getStatus().equals("repeated_Start"))
+        {
+            holder.startTrip.setText("Show Details");
         }
     }
 
@@ -143,8 +162,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         }
     }
 
-    private void takeAction(final String tripName, final int position) {
-        final CharSequence[] options = { "Edit Trip", "Delete Trip","Cancel Trip" };
+    private void takeAction(final String tripName, final String status, final int position, final String TID) {
+        final CharSequence[] options;
+        if(status.equalsIgnoreCase("upcoming")) {
+            options = new CharSequence[]{"Edit Trip", "Delete Trip", "Cancel Trip"};
+        }
+        else {
+             options = new CharSequence[]{"Notes", "Delete Trip", "Cancel Trip"};
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Take Action on " + tripName);
@@ -176,10 +201,51 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 //                  communicatorFrag.cancelTrip(trip);
 //                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
                 }
+                else if (options[item].equals("Notes")) {
+                    Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();
+                    showDialogListView(TID);
+                }
             }
         });
         builder.show();
     }
+
+    public void showDialogListView(String TID) {
+        Dialog dialog = new Dialog(context);
+        List<Note> notes = getNotes(TID);
+        dialog.setContentView(R.layout.notes_recycler_view);
+        dialog.setCancelable(true);
+        RecyclerView recyclerView = dialog.findViewById(R.id.NotesRecycler);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        NotesAdapter adapter = new NotesAdapter(context,notes);
+        recyclerView.setAdapter(adapter);
+
+        if (this.context.getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            // Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
+            ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+            params.height = 100 ;
+            recyclerView.setLayoutParams(params);
+            recyclerView.requestLayout();
+        }
+        else if (this.context.getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+            // Toast.makeText(getApplicationContext(),"portrait",Toast.LENGTH_LONG).show();
+            params.height = 1000;
+            recyclerView.setLayoutParams(params);
+            recyclerView.requestLayout();
+        }
+        adapter.notifyDataSetChanged();
+        dialog.show();
+    }
+
+    private List<Note> getNotes(String tripID) {
+        GetNotePresenter getNotePresenter = new GetNotePresenter(context);
+        List<Note> notes= getNotePresenter.getNotes(tripID);
+        return notes;
+    }
+
 
     private void confirmation(final int position){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

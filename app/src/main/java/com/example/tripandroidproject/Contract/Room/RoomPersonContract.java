@@ -1,20 +1,21 @@
 package com.example.tripandroidproject.Contract.Room;
 
 import com.example.tripandroidproject.POJOs.Person;
-import com.example.tripandroidproject.View.UserDetails;
 
 public class RoomPersonContract {
     public interface IRoomPersonView{
-        UserDetails setCurrentPerson(UserDetails userDetails);
+        Person setCurrentPerson(Person userDetails);
+
+
     }
 
     public interface IRoomPersonPresenter{
-        void setCurrentPerson(UserDetails userDetails);
+        void setCurrentPerson(Person userDetails);
     }
 
     public interface IRoomPersonModel{
-        void savePerson(UserDetails userDetails);
-        void updatePerson(UserDetails userDetails);
-        UserDetails getCurrentPerson(String email);
+        void savePerson(Person userDetails);
+        void updatePerson(Person userDetails);
+        Person getCurrentPerson(String email);
     }
 }

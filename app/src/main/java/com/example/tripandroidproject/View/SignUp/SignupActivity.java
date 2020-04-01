@@ -8,44 +8,34 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.PatternMatcher;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Contract.SignUp.SignUpContract;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
-import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
 import com.example.tripandroidproject.Presenter.SignUp.SignUpPresenter;
+import com.example.tripandroidproject.Presenter.User.UserPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.Login.LoginActivity;
-import com.example.tripandroidproject.View.UserDetails;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.example.tripandroidproject.POJOs.Person;
+import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.NavDrawer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -53,7 +43,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
     FirebaseStorage storage;
     StorageReference storageReference;
     private CheckInternetConnection checkInternetConnection;
-    private UserDetails userDetails;
+    private Person userDetails;
     private SignUpPresenter presenter;
     private EditText usrName,usrEmail,usrPass,usrConfirmPass;
     private ImageView usrImg;
@@ -77,7 +67,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
         usrConfirmPass = findViewById(R.id.userConfirmPass);
         usrImg = findViewById(R.id.userImage);
 
-        userDetails = new UserDetails();
+        userDetails = new Person();
         presenter = new SignUpPresenter(this,this);
         checkInternetConnection = new CheckInternetConnection();
         storage = FirebaseStorage.getInstance();
@@ -91,12 +81,19 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
     public void CreateAccount(View view) {
         if (checkInternetConnection.getConnectivityStatusString(this)) {
             if (ValidateName() & ValidatePassword() & ValidateConfirmePass() & ValidateEmail()) {
+                if(selectedImage != null) {
+                    String imageUrl = UUID.randomUUID().toString();
+                    userDetails.setFirebasePhotoPath(imageUrl);
+                    UserPresenter userPresenter = new UserPresenter(this);
+                    userPresenter.updateUserInRoom(userDetails);
+                }
                 userDetails.setEmail(usrEmail.getText().toString());
                 userDetails.setPassword(usrPass.getText().toString());
                 userDetails.setName(usrName.getText().toString());
                 userDetails.setImgUri(usrImgUri);
                 presenter.onSendData(userDetails);
-                uploadImage();
+                uploadImage(userDetails.getFirebasePhotoPath());
+
             }else {
                 Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
@@ -234,19 +231,24 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
     @Override
     public void showMessage(Boolean result) {
         if (result){
-            Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show();
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            loginIntent.putExtra("fromSignUp","signUp");
-            loginIntent.putExtra("name",userDetails.getName());
-            loginIntent.putExtra("email",userDetails.getEmail());
-            loginIntent.putExtra("password",userDetails.getPassword());
-            loginIntent.putExtra("imgUri",userDetails.getImgUri());
-            startActivity(loginIntent);
+
+//            Toast.makeText(this, "Register Success", Toast.LENGTH_SHORT).show();
+//            Intent loginIntent = new Intent(this, LoginActivity.class);
+//            loginIntent.putExtra("fromSignUp","signUp");
+//            loginIntent.putExtra("name",userDetails.getName());
+//            loginIntent.putExtra("email",userDetails.getEmail());
+//            loginIntent.putExtra("password",userDetails.getPassword());
+//            loginIntent.putExtra("imgUri",userDetails.getImgUri());
+//            loginIntent.putExtra("firebasePhotoPath",userDetails.getFirebasePhotoPath());
+//            startActivity(loginIntent);
+            Intent navDrawer = new Intent(this, NavDrawer.class);
+            startActivity(navDrawer);
+
         }else{
             Toast.makeText(this, "Register Failed", Toast.LENGTH_SHORT).show();
         }
     }
-    private void uploadImage() {
+    private void uploadImage(String url) {
 
         if(selectedImage != null)
         {
@@ -254,7 +256,8 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+//            StorageReference ref = storageReference.child("images/"+FirebaseAuth.getInstance().getUid() + '/'+ url);
+            StorageReference ref = storageReference.child("images/"+ url);
             ref.putFile(selectedImage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override

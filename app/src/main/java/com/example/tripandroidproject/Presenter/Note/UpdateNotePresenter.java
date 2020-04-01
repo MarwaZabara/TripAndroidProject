@@ -17,7 +17,7 @@ public class UpdateNotePresenter implements UpdateNoteContract.IUpdateNotePresen
     RoomTripModel roomTripModel;
     public UpdateNotePresenter(Context context) {
         this.context = context;
-        roomNoteModel = new RoomNoteModel(this,context);
+        roomNoteModel = new RoomNoteModel(context);
     }
     @Override
     public void updateNote(Note note) {
