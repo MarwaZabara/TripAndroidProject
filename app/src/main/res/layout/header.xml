@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/primaryTextColor"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:background="@color/quantum_lightblueA700"
-    android:orientation="vertical">
+    android:layout_height="250dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profilePic"

@@ -58,6 +58,7 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
         myRef = database.getReference("Trip").child(mAuth.getCurrentUser().getUid());
     }
 
+
     @Override
     public void saveTrip(Trip trip) {
         trip.setUserID(FirebaseUserModel.getUserID());
@@ -106,6 +107,26 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
                     input.add(trip);
                 }
                 retrieveTripPresenter.onSuccessGetUpcomingTrips(input);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    @Override
+    public void fetchRepeatedHistoryData(String filter) {
+        myRef = database.getReference("RepeatedTripHistory").child(mAuth.getCurrentUser().getUid());
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                input.clear();
+                for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
+                    Trip trip = tripSnapShot.getValue(Trip.class);
+                    input.add(trip);
+                }
+                retrieveTripPresenter.returnAllHistory(input);
             }
 
             @Override

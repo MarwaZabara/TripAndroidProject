@@ -16,6 +16,7 @@ public class GetOfflineTripContract {
     public interface IGetOfflineTripModel {
         public List<Trip> getTrips();
         public List<Trip> getOfflineTrip();
+        public List<Trip> getAllOfflineTrip();
         List<Trip> getOfflineFilteredTrip(String filter);
         List<Trip> getOfflineFilteredTrip(String filter1,String filter2);
         public Trip getTripForSpecificCode(int requsetCode);

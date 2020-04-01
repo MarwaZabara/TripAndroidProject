@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.ControlNetworkChangeBroadcast;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Model.Room.RoomNoteModel;
 import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Note;
@@ -208,7 +210,9 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                                 // ...
                             }
                         });
-//                saveUserLogIn.setUserLoggedIn(false);
+                clearRoom();
+               saveUserLogIn.setUserLoggedIn(false);
+               
                 Intent intentLoginActivity = new Intent(this, LoginActivity.class);
                 startActivity(intentLoginActivity);
                 break;
@@ -338,5 +342,27 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     protected void onDestroy() {
         super.onDestroy();
         ControlNetworkChangeBroadcast.unregisterReceiver(this);
+    }
+
+
+
+
+    private void clearRoom() {
+        if(person == null)
+        {
+            person = userPresenter.getUser();
+        }
+        userPresenter.deleteUser(person);
+        RoomTripModel roomTripModel = new RoomTripModel(this);
+        RoomNoteModel roomNoteModel = new RoomNoteModel(this);
+        List<Trip> trips = roomTripModel.getOfflineTrip();
+        for (int i = 0 ; i<trips.size();i++)
+        {
+            roomTripModel.deleteOfflineTrip(trips.get(i));
+            List<Note> notes = roomNoteModel.getNotes(trips.get(i).getId());
+            for (int j=0;j<notes.size();j++) {
+                roomNoteModel.deleteNote(notes.get(j));
+            }
+        }
     }
 }

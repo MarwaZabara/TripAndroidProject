@@ -29,11 +29,11 @@ public class SaveUserLogIn {
 //        editor.commit();
 //    }
 
-//    public void clearUserData() {
-//        SharedPreferences.Editor editor = localDB.edit();
-//        editor.clear();
-//        editor.commit();
-//    }
+    public void clearUserData() {
+        SharedPreferences.Editor editor = localDB.edit();
+        editor.clear();
+        editor.commit();
+    }
 
     public Person getLoggedInUser() {
         if (localDB.getBoolean("loggedIn", false) == false) {

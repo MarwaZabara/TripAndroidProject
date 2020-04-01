@@ -44,10 +44,8 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
 
     @Override
     public void onSuccessGetUpcomingTrips(List<Trip> trips) {
-        view.renderData(trips);
 
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(context);
-
         for (int i = 0 ; i < trips.size() ; i++){
             Trip trip = roomTripModel.getTripForSpecificID(trips.get(i).getId());
             if(trip == null) {
@@ -56,6 +54,17 @@ public class RetrieveTripPresenter implements RetrieveTripContract.IRetrieveTrip
                 getNotePresenter.getUpComingNotes(trips.get(i).getId(),context);
             }
         }
+        view.renderData(trips);
+    }
+
+    @Override
+    public void retrieveRepeatedHistoryTrips() {
+        model.fetchRepeatedHistoryData("repeatedHistory");
+    }
+
+    @Override
+    public void returnAllHistory(List<Trip> historyTrips) {
+        view.returnAllHistory(historyTrips);
     }
 
     @Override

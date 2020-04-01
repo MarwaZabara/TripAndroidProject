@@ -6,13 +6,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Contract.Firebase.FirebaseUserContract;
 import com.example.tripandroidproject.Contract.Login.LoginContract;
 import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
+import com.example.tripandroidproject.Custom.Toast.CustomToast;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
 import com.example.tripandroidproject.Model.Room.RoomPersonModel;
 import com.example.tripandroidproject.POJOs.Person;
@@ -41,12 +47,19 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     private LoginPresenter presenter;
     private SaveUserLogIn saveUserLogIn;
     private CheckInternetConnection checkInternetConnection;
+    private static Animation shakeAnimation;
+    private static RelativeLayout relativeLayout;
+
     private FirebaseUserPresenter firebaseUserPresenter;
     private UserPresenter userPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        shakeAnimation = AnimationUtils.loadAnimation(this,
+                R.anim.shake_anim);
+        presenter = new LoginPresenter(this,this,this);
         userPresenter = new UserPresenter(this);
         checkInternetConnection = new CheckInternetConnection();
         loginEmail = findViewById(R.id.loginEmail);
@@ -58,8 +71,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 startActivity(intent);
             }
         });
-
-
+        // userPresenter = new FirebaseUserPresenter(this);
+        // userDetails = new UserDetails();
+        relativeLayout = findViewById(R.id.login_layout);
         signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +177,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
             presenter = new LoginPresenter(this,this,this);
             presenter.onSendData(person);
         }else {
-            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            relativeLayout.startAnimation(shakeAnimation);
+            new CustomToast().Show_Toast(this, view,"No Internet Connection.");
+//            new CustomToast().Show_Toast(this, view,"Enter both credentials.");
+
+//            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -183,7 +201,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 startActivity(intent);
             }
         }else{
-            Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();
+
         }
     }
 

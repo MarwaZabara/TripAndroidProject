@@ -56,6 +56,11 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
     }
 
     @Override
+    public List<Trip> getAllOfflineTrip() {
+        return tripDAO.getAllOfflineTrips();
+    }
+
+    @Override
     public List<Trip> getOfflineFilteredTrip(String filter) {
         return tripDAO.getOfflineFilteredTrips(filter);
     }
