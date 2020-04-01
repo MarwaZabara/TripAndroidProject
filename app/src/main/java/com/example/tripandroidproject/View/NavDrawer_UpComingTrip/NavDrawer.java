@@ -227,10 +227,10 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         {
             person = userPresenter.getUser();
         }
-        userPresenter.deleteUser(person);
+
         RoomTripModel roomTripModel = new RoomTripModel(this);
         RoomNoteModel roomNoteModel = new RoomNoteModel(this);
-        List<Trip> trips = roomTripModel.getOfflineTrip();
+        List<Trip> trips = roomTripModel.getAllOfflineTrip();
         for (int i = 0 ; i<trips.size();i++)
         {
             roomTripModel.deleteOfflineTrip(trips.get(i));
@@ -239,6 +239,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 roomNoteModel.deleteNote(notes.get(j));
             }
         }
+        userPresenter.deleteUser(person);
     }
 
     @Override
