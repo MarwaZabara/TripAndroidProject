@@ -2,7 +2,9 @@ package com.example.tripandroidproject.View.HistoryMapActivity;
 
 import android.graphics.Point;
 import android.os.Bundle;
+import android.widget.Toast;
 
+//import com.ahmadrosid.lib.drawroutemap.DrawRouteMaps;
 import com.ahmadrosid.lib.drawroutemap.DrawRouteMaps;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.R;
@@ -83,18 +85,18 @@ public class HistoryMapActivity extends AppCompatActivity implements OnMapReadyC
         }
 
     }
-
-    @Override
-    public void renderData(List<Trip> trips) {
-        finishedTrips = trips;
-        for (int i = 0; i < trips.size(); i++){
-            Toast.makeText(getApplicationContext(), trips.get(i).getName(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void returnAllHistory(List<Trip> historyTrips) {
-
-    }
+//
+//    @Override
+//    public void renderData(List<Trip> trips) {
+//        finishedTrips = trips;
+//        for (int i = 0; i < trips.size(); i++){
+//            Toast.makeText(getApplicationContext(), trips.get(i).getName(), Toast.LENGTH_LONG).show();
+//        }
+//    }
+//
+//    @Override
+//    public void returnAllHistory(List<Trip> historyTrips) {
+//
+//    }
 
 }

@@ -210,8 +210,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                                 // ...
                             }
                         });
-                clearRoom();
-               saveUserLogIn.setUserLoggedIn(false);
+
+//               saveUserLogIn.setUserLoggedIn(false);
                
                 Intent intentLoginActivity = new Intent(this, LoginActivity.class);
                 startActivity(intentLoginActivity);
@@ -342,27 +342,5 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     protected void onDestroy() {
         super.onDestroy();
         ControlNetworkChangeBroadcast.unregisterReceiver(this);
-    }
-
-
-
-
-    private void clearRoom() {
-        if(person == null)
-        {
-            person = userPresenter.getUser();
-        }
-        userPresenter.deleteUser(person);
-        RoomTripModel roomTripModel = new RoomTripModel(this);
-        RoomNoteModel roomNoteModel = new RoomNoteModel(this);
-        List<Trip> trips = roomTripModel.getOfflineTrip();
-        for (int i = 0 ; i<trips.size();i++)
-        {
-            roomTripModel.deleteOfflineTrip(trips.get(i));
-            List<Note> notes = roomNoteModel.getNotes(trips.get(i).getId());
-            for (int j=0;j<notes.size();j++) {
-                roomNoteModel.deleteNote(notes.get(j));
-            }
-        }
     }
 }
