@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.ControlNetworkChangeBroadcast;
 import com.example.tripandroidproject.Contract.RequestCode.RequestCodeContract;
@@ -54,7 +53,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -167,7 +165,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         IsRound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Toast.makeText(getApplicationContext(), "Rounded",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Rounded",Toast.LENGTH_LONG).show();
                     isRound =1;
 
                     RoundDateTxt.setEnabled(true);
@@ -175,7 +173,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
 
                     // The toggle is enabled
                 } else {
-                    Toast.makeText(getApplicationContext(), " NOT Rounded",Toast.LENGTH_LONG).show();
+                    //   Toast.makeText(getApplicationContext(), " NOT Rounded",Toast.LENGTH_LONG).show();
                     isRound = 0;
                     RepeatRound = 0;
 
@@ -233,7 +231,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             public void onClick(View v) {
                 SelectedLocation = "Dest";
                 StartAutoCompleteActivity();
-//                Toast.makeText(getApplicationContext(),"lat="+ EndLat,Toast.LENGTH_LONG).show();
+                //   Toast.makeText(getApplicationContext(),"lat="+ EndLat,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -363,7 +361,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         lv.setOnTouchListener(touchListener);
 
         if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),"in startAutoComplete",Toast.LENGTH_LONG).show();
 
             ViewGroup.LayoutParams params = lv.getLayoutParams();
             params.height = 100 ;
@@ -372,7 +370,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         }
         else if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             ViewGroup.LayoutParams params = lv.getLayoutParams();
-            Toast.makeText(getApplicationContext(),"portrait",Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(),"portrait",Toast.LENGTH_LONG).show();
 
             params.height = 1000;
             lv.setLayoutParams(params);
@@ -460,7 +458,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(getApplicationContext(), "in activity result", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "in activity result", Toast.LENGTH_LONG).show();
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
@@ -483,6 +481,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                 // Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_LONG).show();
 //                Toast.makeText(getApplicationContext(), "Place: " + place.getName() , Toast.LENGTH_LONG).show();
 //
+
 //                Toast.makeText(getApplicationContext(), "LAT = " + place.getLatLng().latitude, Toast.LENGTH_LONG).show();
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // TODO: Handle the error.

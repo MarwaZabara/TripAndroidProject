@@ -104,7 +104,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         navigationView = findViewById(R.id.navigationView);
         setPersonInfo();
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
