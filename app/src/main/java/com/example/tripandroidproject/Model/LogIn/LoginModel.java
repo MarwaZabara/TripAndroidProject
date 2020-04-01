@@ -81,6 +81,17 @@ public class LoginModel implements LoginContract.ISignInModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            UserDetails userDetails = new UserDetails();
+                            userDetails.setEmail(acct.getEmail());
+                            userDetails.setName(acct.getGivenName());
+                            userDetails.setImgUri(acct.getPhotoUrl().toString());
+
+                            //// in case of sign in by gmail user needs internet cann't sign in offline
+
+                            personPresenter.setCurrentPerson(userDetails);
+                            saveUserLogIn.storeUserData(userDetails);
+                            saveUserLogIn.setUserLoggedIn(true);
+                            presenter.onSucess();
                             Log.d("TAG", "signInWithCredential:success");
                         } else {
                             Log.d("TAG", "signInWithCredential:failure", task.getException());
@@ -96,17 +107,7 @@ public class LoginModel implements LoginContract.ISignInModel {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                UserDetails userDetails = new UserDetails();
-                userDetails.setEmail(account.getEmail());
-                userDetails.setName(account.getGivenName());
-                userDetails.setImgUri(account.getPhotoUrl().toString());
 
-                //// in case of sign in by gmail user needs internet cann't sign in offline
-
-                personPresenter.setCurrentPerson(userDetails);
-                saveUserLogIn.storeUserData(userDetails);
-                saveUserLogIn.setUserLoggedIn(true);
-                presenter.onSucess();
 
             } catch (ApiException e) {
                 Log.d("TAG", "Google sign in failed", e);

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Contract.Firebase.FirebaseUserContract;
@@ -15,6 +17,7 @@ import com.example.tripandroidproject.InternetConnection.CheckInternetConnection
 import com.example.tripandroidproject.Presenter.Login.LoginPresenter;
 import com.example.tripandroidproject.Presenter.User.FirebaseUserPresenter;
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.View.ForgetPassword;
 import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.NavDrawer;
 import com.example.tripandroidproject.View.SaveUserLogIn;
 import com.example.tripandroidproject.View.SignUp.SignupActivity;
@@ -28,6 +31,7 @@ import com.google.android.gms.common.SignInButton;
 public class LoginActivity extends AppCompatActivity implements LoginContract.ISignInView , RoomPersonContract.IRoomPersonView , FirebaseUserContract.IUserView {
 
     private EditText loginEmail,loginPassword;
+    private TextView forgetPass;
     private SignInButton signInButton;
     private UserDetails userDetails;
     private GoogleSignInClient mGoogleSignInClient;
@@ -46,9 +50,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         checkInternetConnection = new CheckInternetConnection();
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
-
+        forgetPass = findViewById(R.id.forgetPass);
+        forgetPass.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent = new Intent(LoginActivity.this, ForgetPassword.class);
+                startActivity(intent);
+            }
+        });
         userPresenter = new FirebaseUserPresenter(this);
-
         userDetails = new UserDetails();
 
         signInButton = findViewById(R.id.sign_in_button);
@@ -75,11 +84,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         if (saveUserLogIn.getLoggedInUser() == null) {
             Intent intent = getIntent();
             //////////////if user is coming from sign up///////////
-            if (intent.getStringExtra("fromSignUp")!=null){
+            if (intent.getStringExtra("fromSignUp")!=null && intent.getStringExtra("password") !=null){
                 userDetails.setName(intent.getStringExtra("name"));
                 userDetails.setEmail(intent.getStringExtra("email"));
                 userDetails.setImgUri(intent.getStringExtra("imgUri"));
                 userDetails.setPassword(intent.getStringExtra("password"));
+//                userDetails.setUsrImgUri(intent.getStringExtra("userImgUri"));
 
                 userPresenter.saveUserData(userDetails);            /////////save data in firebase
 
@@ -87,7 +97,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 loginPassword.setText(intent.getStringExtra("password"));
                 Toast.makeText(this, userDetails.getEmail(), Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
+            else if(intent.getStringExtra("fromSignUp")!=null){
+                signInGoogle();
+            }
+//            Toast.makeText(this, "no_user_Login", Toast.LENGTH_SHORT).show();
         }else {
             /////////////////////get user information to sent it to nav drawer/////////////////////////
             userDetails = saveUserLogIn.getLoggedInUser();
@@ -100,8 +113,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 intent.putExtra("imgUri", userDetails.getImgUri());
                 startActivity(intent);
             }
+            userPresenter = new FirebaseUserPresenter(this);
         }
-        userPresenter = new FirebaseUserPresenter(this);
+
     }
 
     @Override
@@ -137,7 +151,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         if (result){
 //            Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
             if (userDetails.getName()==null){       ///////userData doesn't store in room
-                getUserData();          //////get from firebase
+//                getUserData();
+                userPresenter.getUserData();   //////get from firebase
             }else  {
                 Intent intent = new Intent(this, NavDrawer.class);
                 intent.putExtra("Email", userDetails.getEmail());
@@ -157,10 +172,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         return userDetails;
     }
 
-    @Override
-    public void getUserData() {
-        userPresenter.getUserData();
-    }
+//    @Override
+//    public void getUserData() {
+//
+//    }
 
     @Override
     public void setUserData(UserDetails user) {

@@ -23,6 +23,7 @@ import java.util.Calendar;
 
 public class ReminderModel implements Reminder.IReminderModel {
     Context context;
+    Intent intent;
 //    int requestCode;
     Reminder.IBaseReminder reminderPresenter;
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
@@ -38,10 +39,18 @@ public class ReminderModel implements Reminder.IReminderModel {
          intent.putExtra("requestCode", requestCode);
          PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
 //        requestCode++;
     }
-
+    public void stopAlarmService( int requestCode) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, ReminderReceiver.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("requestCode", requestCode);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
+        pendingIntent.cancel();
+        alarmManager.cancel(pendingIntent);
+//        requestCode++;
+    }
     @Override
     public void startTrip(String destinationPlaceName, String tripID,int requestCode) {
         Intent intent1 = new Intent(context, TestReminder.class);
@@ -67,10 +76,15 @@ public class ReminderModel implements Reminder.IReminderModel {
         }
     }
     public void initializeView(String tripID) {
-        Intent intent = new Intent(context, FloatingIconService.class);
+        intent = new Intent(context, FloatingIconService.class);
         intent.putExtra("tripID",tripID);
         context.startService(intent);
 
+    }
+    public void stopService()
+    {
+        intent = new Intent(context, FloatingIconService.class);
+        context.stopService(intent);
     }
 
 }

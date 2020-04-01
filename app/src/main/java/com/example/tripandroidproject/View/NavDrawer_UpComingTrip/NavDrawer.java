@@ -11,11 +11,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.History.HistoryFragment;
 import com.example.tripandroidproject.View.Login.LoginActivity;
+import com.example.tripandroidproject.View.Profile.Profile;
 import com.example.tripandroidproject.View.Repeated_NonRepeated.Non_RepeatedFragment;
 import com.example.tripandroidproject.View.Repeated_NonRepeated.RepeatedFragment;
 import com.example.tripandroidproject.View.SaveUserLogIn;
@@ -89,7 +92,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         navigationView = findViewById(R.id.navigationView);
         setPersonInfo();
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawerOpen,R.string.drawerClose);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -161,6 +164,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         switch (menuItem.getItemId()){
             case R.id.profile:
                 Toast.makeText(NavDrawer.this, "Profile Selected", Toast.LENGTH_SHORT).show();
+                setViewPager(4);
                 drawerLayout.closeDrawers();
                 break;
             case R.id.upComingTrip:
@@ -172,7 +176,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(1);
                 drawerLayout.closeDrawers();
-//                startActivity(new Intent(NavDrawer.this, HistoryActivity.class));
                 break;
             case R.id.synch:
                 Intent intent = new Intent(this, TestReminder.class);
@@ -188,7 +191,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                                 // ...
                             }
                         });
-//                saveUserLogIn.clearUserData();
                 saveUserLogIn.setUserLoggedIn(false);
                 Intent intentLoginActivity = new Intent(this, LoginActivity.class);
                 startActivity(intentLoginActivity);
@@ -233,10 +235,15 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         email.setText(intent.getStringExtra("Email"));
         name.setText(intent.getStringExtra("Name"));
         String imageUri = intent.getStringExtra("imgUri");
-        if (pass == null) {
+        String imgPath = intent.getStringExtra("imgPath");
+//        String userImageUri = intent.getStringExtra("userImgUri");
+        if (pass == null & imageUri!=null) {
+            ///// it's image url
 //            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
-        }else {
+        }else if(imageUri != null) {
             imageView.setImageURI(Uri.parse(imageUri));
+//            imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+//            imageView.setImageURI(Uri.parse(imgPath));
         }
     }
 
@@ -252,6 +259,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         adapter.addFragment(new HistoryFragment(),"History");          //// fragmentNum --> 1
         adapter.addFragment(new RepeatedFragment(),"RepeatedTrips");   //// fragmentNum --> 2
         adapter.addFragment(new Non_RepeatedFragment(),"NonRepeatedTrips");          //// fragmentNum --> 3
+        adapter.addFragment(new Profile(),"Profile");           //// fragmentNum --> 4
 
         viewPager1.setAdapter(adapter);
     }

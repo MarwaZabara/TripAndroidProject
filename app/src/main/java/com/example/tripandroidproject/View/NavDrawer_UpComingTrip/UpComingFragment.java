@@ -1,6 +1,7 @@
 package com.example.tripandroidproject.View.NavDrawer_UpComingTrip;
 
 import android.app.Activity;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
 import com.example.tripandroidproject.R;
 
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
     private RecyclerView recyclerView;
     private RetrieveTripPresenter retrieveTripPresenter;
     private GetOfflineTripPresenter getOfflineTripPresenter;
+    private SaveTripPresenter saveTripOfflinePresenter;
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -54,8 +58,14 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
 //        List<Trip> trips = getOfflineTripPresenter.getTrips();
         List<Trip> trips = getOfflineTripPresenter.getOfflineFilteredTrip("upcoming","repeated");
         if(trips.size() == 0){
+            saveTripOfflinePresenter = new SaveTripPresenter(this.getContext());
             retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);
             retrieveTripPresenter.fetchData("upcoming","repeated");
+            int i=0;
+            for(i=0; i<trips.size();i++){
+                Trip trip = trips.get(i);
+                saveTripOfflinePresenter.saveTrip(trip, false);
+            }
 //            retrieveTripPresenter.retrieveUpcomingTrips();
         }
 ////////////////////////////////////////////////////////////////////////////////

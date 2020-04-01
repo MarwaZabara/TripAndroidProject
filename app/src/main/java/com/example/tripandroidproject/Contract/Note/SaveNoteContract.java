@@ -15,6 +15,7 @@ public class SaveNoteContract {
     }
     public interface ISaveNoteOnlineModel extends IFirebaseBase {
         public void saveNote(Note note);
+        void deleteNote();
     }
     public interface ISaveNoteOfflineModel {
         public void saveNote(Note note);

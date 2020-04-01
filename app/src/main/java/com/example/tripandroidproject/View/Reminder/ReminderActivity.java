@@ -13,17 +13,24 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Trip.CancelTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.Service.SnoozeNotification.SnoozeNotificationForegroundService;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class ReminderActivity extends AppCompatActivity {
     private final String CHANNEL_ID = "ForegroundServiceChannel";
@@ -84,11 +91,11 @@ public class ReminderActivity extends AppCompatActivity {
                 }
         );
         builder1.setNegativeButton(
-                "No",
+                "Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
-
+                        cancelTrip();
                         mp.stop();
                         finish();
 
@@ -98,6 +105,11 @@ public class ReminderActivity extends AppCompatActivity {
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+
+    private void cancelTrip() {
+        CancelTripPresenter cancelTripPresenter = new CancelTripPresenter(this);
+        cancelTripPresenter.cancelTrip(trip);
     }
 
     private void getTripInfoUsingRequestCode() {
@@ -111,7 +123,8 @@ public class ReminderActivity extends AppCompatActivity {
     }
 
     private void StartTrip() {
-        String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
+        String destination = getRegionName(trip.getEndLatitude(),trip.getEndLongitude());
+//        String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
         startTripPresenter = new StartTripPresenter(this);
         startTripPresenter.startTrip(destination,trip.getId(),tripRequestCode);
     }
@@ -177,5 +190,19 @@ public class ReminderActivity extends AppCompatActivity {
 
 //        startForeground(1, notification);
     }
-
+    private String getRegionName(Double lat,Double lon) {
+        String region = "";
+        List<Address> addresses;
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            if (lat>0 & lon>0) {
+                addresses = geocoder.getFromLocation(lat, lon, 1);
+                String address = addresses.get(0).getAddressLine(0);
+                region = addresses.get(0).getLocality();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return region;
+    }
 }
