@@ -97,14 +97,25 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         holder.startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartTripPresenter startTripPresenter = new StartTripPresenter(context);
-                String destination = location2;
-                startTripPresenter.startTrip(destination,upComingTripList.get(position).getId(),upComingTripList.get(position).getRequestCodeHome());
+                if (upComingTripList.get(position).getStatus().equals("upcoming") && upComingTripList.get(position).getStatus().equals("repeated")){
+                    StartTripPresenter startTripPresenter = new StartTripPresenter(context);
+                    String destination = location2;
+                    startTripPresenter.startTrip(destination, upComingTripList.get(position).getId(), upComingTripList.get(position).getRequestCodeHome());
+                }
+                else if (upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel")){
+
+                }
+
             }
         });
         if(upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel") )
         {
-            holder.startTrip.setVisibility(View.INVISIBLE);
+//            holder.startTrip.setVisibility(View.INVISIBLE);
+            holder.startTrip.setText("Show Notes");
+        }
+        else if(upComingTripList.get(position).getStatus().equals("start") || upComingTripList.get(position).getStatus().equals("repeated_Start"))
+        {
+            holder.startTrip.setText("Show Details");
         }
     }
 

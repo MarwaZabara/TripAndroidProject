@@ -26,6 +26,11 @@ import android.widget.Toast;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.ControlNetworkChangeBroadcast;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.Model.Room.RoomNoteModel;
+import com.example.tripandroidproject.Model.Room.RoomTripModel;
+import com.example.tripandroidproject.POJOs.Note;
+import com.example.tripandroidproject.POJOs.Person;
+import com.example.tripandroidproject.Presenter.User.UserPresenter;
 import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
@@ -42,12 +47,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -62,13 +72,15 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 
     private ViewPager viewPager;
     private NetworkChangeBroadcastReceiver networkChangeBroadcastReceiver;
-
+    Person person;
+    UserPresenter userPresenter;
 
     TextView mItemSelected;
 
     String[] listItems =  {"dfsd","fsdfds"};
     boolean[] checkedItems;
     ArrayList<Integer> mUserItems = new ArrayList<>();
+    private StorageReference mStorageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +109,8 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-
+        userPresenter = new UserPresenter(this);
+        person = userPresenter.getUser();
 
         if(getIntent().getBooleanExtra("isFloatingService",false)){
             checkedItems  = new boolean[listItems.length];
@@ -184,6 +197,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
             case R.id.logout:
                 Toast.makeText(NavDrawer.this, "Logout Selected", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
+                clearRoom();
                 mGoogleSignInClient.signOut()
                         .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                             @Override
@@ -191,7 +205,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                                 // ...
                             }
                         });
-                saveUserLogIn.setUserLoggedIn(false);
+//                saveUserLogIn.setUserLoggedIn(false);
                 Intent intentLoginActivity = new Intent(this, LoginActivity.class);
                 startActivity(intentLoginActivity);
                 break;
@@ -199,6 +213,25 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 break;
         }
         return false;
+    }
+
+    private void clearRoom() {
+        if(person == null)
+        {
+            person = userPresenter.getUser();
+        }
+        userPresenter.deleteUser(person);
+        RoomTripModel roomTripModel = new RoomTripModel(this);
+        RoomNoteModel roomNoteModel = new RoomNoteModel(this);
+        List<Trip> trips = roomTripModel.getOfflineTrip();
+        for (int i = 0 ; i<trips.size();i++)
+        {
+            roomTripModel.deleteOfflineTrip(trips.get(i));
+            List<Note> notes = roomNoteModel.getNotes(trips.get(i).getId());
+            for (int j=0;j<notes.size();j++) {
+                roomNoteModel.deleteNote(notes.get(j));
+            }
+        }
     }
 
     @Override
@@ -228,16 +261,46 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         View hView =  navigationView.getHeaderView(0);
         email = (TextView)hView.findViewById(R.id.navEmail);
         name  = (TextView) hView.findViewById(R.id.navName);
-        ImageView imageView = (ImageView) hView.findViewById(R.id.profilePic);
-
+        final ImageView imageView = (ImageView) hView.findViewById(R.id.profilePic);
+        UserPresenter userPresenter = new UserPresenter(this);
+        Person person = userPresenter.getUser();
         Intent intent = getIntent();
         String pass = intent.getStringExtra("password");
-        email.setText(intent.getStringExtra("Email"));
-        name.setText(intent.getStringExtra("Name"));
-        String imageUri = intent.getStringExtra("imgUri");
+        email.setText(person.getEmail());
+        name.setText(person.getName());
+        String imageUri = person.getImgUri();
         String imgPath = intent.getStringExtra("imgPath");
 //        String userImageUri = intent.getStringExtra("userImgUri");
-        if (pass == null & imageUri!=null) {
+//        if (pass == null & imageUri!=null) {
+        if(person.getFirebasePhotoPath() != null){
+            mStorageRef = FirebaseStorage.getInstance().getReference();
+            Uri uri = Uri.parse(person.getFirebasePhotoPath());
+//            StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/"+FirebaseAuth.getInstance().getUid() + '/'+ person.getFirebasePhotoPath());
+            StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/" + person.getFirebasePhotoPath());
+            /*Glide.with(imageView.getContext())
+                    .load(ref)
+                    .into(imageView);*/
+//            Glide.with(this)
+//                    .using(new FirebaseImageLoader())
+//                    .load(mStorageRef + "/imager/" + person.getFirebasePhotoPath())
+//                    .error(R.drawable.close)
+//                    .into(imageView);
+//            StorageReference referenseLcl = FirebaseStorage.getInstance().getReference();
+//            StorageReference islandRefLcl = referenseLcl.child("images/"+FirebaseAuth.getInstance().getUid() + '/'+ person.getFirebasePhotoPath());
+            final long ONE_MEGABYTE = 1024 * 1024;
+            ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytesPrm) {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytesPrm, 0, bytesPrm.length);
+                    imageView.setImageBitmap(bmp);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    imageView.setImageResource(R.mipmap.ic_launcher);
+                }
+            });
+
             ///// it's image url
 //            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
         }else if(imageUri != null) {
@@ -259,7 +322,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         adapter.addFragment(new HistoryFragment(),"History");          //// fragmentNum --> 1
         adapter.addFragment(new RepeatedFragment(),"RepeatedTrips");   //// fragmentNum --> 2
         adapter.addFragment(new Non_RepeatedFragment(),"NonRepeatedTrips");          //// fragmentNum --> 3
-        adapter.addFragment(new Profile(),"Profile");           //// fragmentNum --> 4
+//        adapter.addFragment(new Profile(),"Profile");           //// fragmentNum --> 4
 
         viewPager1.setAdapter(adapter);
     }
@@ -271,6 +334,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        ControlNetworkChangeBroadcast.unregisterReceiver(this);
+        ControlNetworkChangeBroadcast.unregisterReceiver(this);
     }
 }

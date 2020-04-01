@@ -5,7 +5,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.tripandroidproject.Contract.Firebase.FirebaseUserContract;
-import com.example.tripandroidproject.View.UserDetails;
+import com.example.tripandroidproject.Model.SignUp.SignUpModel;
+import com.example.tripandroidproject.POJOs.Person;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,6 +22,15 @@ public class FirebaseUserModel implements FirebaseUserContract.IUserModel{
     DatabaseReference myRef;
     private FirebaseAuth mAuth;
     FirebaseUserContract.IUserPresenter userPresenter;
+
+    public FirebaseUserModel() {
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        String userID = mAuth.getCurrentUser().getUid();
+        myRef = database.getReference("User").child(userID);
+    }
+
+
     public static String getUserID()
     {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -35,12 +47,12 @@ public class FirebaseUserModel implements FirebaseUserContract.IUserModel{
     }
 
     @Override
-    public void saveUserData(UserDetails person) {
+    public void saveUserData(Person person) {
         myRef.setValue(person);
     }
 
     @Override
-    public void updateUser(UserDetails user) {
+    public void updateUser(Person user) {
         String userID = mAuth.getCurrentUser().getUid();
         myRef = database.getReference("User").child(userID);
         myRef.setValue(user);
@@ -54,11 +66,12 @@ public class FirebaseUserModel implements FirebaseUserContract.IUserModel{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()){
-                    UserDetails userDetails = new UserDetails();
-                    userDetails.setName(dataSnapshot.getValue(UserDetails.class).getName());
-                    userDetails.setPassword(dataSnapshot.getValue(UserDetails.class).getPassword());
-                    userDetails.setEmail(dataSnapshot.getValue(UserDetails.class).getEmail());
-                    userDetails.setImgUri(dataSnapshot.getValue(UserDetails.class).getImgUri());
+                    Person userDetails = new Person();
+                    userDetails.setName(dataSnapshot.getValue(Person.class).getName());
+                    userDetails.setPassword(dataSnapshot.getValue(Person.class).getPassword());
+                    userDetails.setEmail(dataSnapshot.getValue(Person.class).getEmail());
+                    userDetails.setImgUri(dataSnapshot.getValue(Person.class).getImgUri());
+                    userDetails.setFirebasePhotoPath(dataSnapshot.getValue(Person.class).getFirebasePhotoPath());
                     userPresenter.onSuccess(userDetails);
                     Log.d("TAG", userDetails.getName());
                 }

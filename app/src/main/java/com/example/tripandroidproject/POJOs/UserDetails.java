@@ -1,12 +1,13 @@
-package com.example.tripandroidproject.View;
+package com.example.tripandroidproject.POJOs;
 
 import android.net.Uri;
 
 public class UserDetails {
-    String email;
-    String password;
-    String name;
-    String imgUri;
+    private String email;
+    private String password;
+    private String name;
+    private String imgUri;
+    private String firebasePhotoPath;
 
     public String getImgUri() {
         return imgUri;
@@ -28,6 +29,14 @@ public class UserDetails {
         this.email = email;
         this.password = password;
         this.name = name;
+    }
+
+    public String getFirebasePhotoPath() {
+        return firebasePhotoPath;
+    }
+
+    public void setFirebasePhotoPath(String firebasePhotoPath) {
+        this.firebasePhotoPath = firebasePhotoPath;
     }
 
     public String getName() {

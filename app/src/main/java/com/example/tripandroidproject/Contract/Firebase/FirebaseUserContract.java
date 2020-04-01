@@ -1,23 +1,23 @@
 package com.example.tripandroidproject.Contract.Firebase;
-import com.example.tripandroidproject.View.UserDetails;
+import com.example.tripandroidproject.POJOs.Person;
 
 public class FirebaseUserContract {
 
     public interface IUserView{
 //        void getUserData();
-        void setUserData(UserDetails user);
+        void setUserData(Person user);
     }
 
     public interface IUserPresenter{
-        void saveUserData(UserDetails user);
+        void saveUserData(Person user);
         void getUserData();
-        void updateUser(UserDetails user);
-        void onSuccess(UserDetails user);
+        void updateUser(Person user);
+        void onSuccess(Person user);
     }
 
     public interface IUserModel{
-        void saveUserData(UserDetails user);
-        void updateUser(UserDetails user);
+        void saveUserData(Person user);
+        void updateUser(Person user);
         void getUserData();
     }
 

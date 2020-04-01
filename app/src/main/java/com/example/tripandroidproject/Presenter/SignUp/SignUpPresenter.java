@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.example.tripandroidproject.Contract.SignUp.SignUpContract;
 import com.example.tripandroidproject.Model.SignUp.SignUpModel;
-import com.example.tripandroidproject.View.UserDetails;
+import com.example.tripandroidproject.POJOs.Person;
 
 public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
 
@@ -18,10 +18,11 @@ public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
     public SignUpPresenter(SignUpContract.ISignUpView newView, Context context){
         this.context = context;
         view = newView;
-        model = new SignUpModel(context,this);
+
     }
     @Override
-    public void onSendData(UserDetails userDetails) {
+    public void onSendData(Person userDetails) {
+        model = new SignUpModel(context,this);
         model.signUp(userDetails);
     }
 
@@ -30,6 +31,7 @@ public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
         result = true;
         Log.d(TAG,"Success");
         view.showMessage(result);
+
     }
 
     @Override

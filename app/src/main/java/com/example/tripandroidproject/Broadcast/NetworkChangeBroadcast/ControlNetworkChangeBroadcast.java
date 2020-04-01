@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 public class ControlNetworkChangeBroadcast {
     static NetworkChangeBroadcastReceiver networkChangeBroadcastReceiver;
     public static void registerBroadcast(Context context) {
@@ -14,6 +16,6 @@ public class ControlNetworkChangeBroadcast {
         context.registerReceiver(networkChangeBroadcastReceiver,intentFilter);
     }
     public static void unregisterReceiver(Context context){
-        context.unregisterReceiver(networkChangeBroadcastReceiver);
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(networkChangeBroadcastReceiver);
     }
 }

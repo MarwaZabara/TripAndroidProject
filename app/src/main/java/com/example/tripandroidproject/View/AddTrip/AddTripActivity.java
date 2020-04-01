@@ -592,7 +592,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                 fillCalenderObj(calendarMain,semiCalendarHome);
                 chosenTripDate = calendarMain.getTimeInMillis();
             }
-            TripTime = String.valueOf(calendarMain.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendarMain.get(Calendar.MINUTE));
+            TripTime = String.valueOf(semiCalendarHome.hourOfDay) + "-" + String.valueOf(semiCalendarHome.minute);
             TripTimetxt.setText(TripTime);
         }
         else if (SelectedTime.equals("Round")){
@@ -603,7 +603,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             if(semiCalendarRound.month > 0) {
                 fillCalenderObj(calendarRound,semiCalendarRound);
             }
-            RoundTime = String.valueOf(calendarRound.get(Calendar.HOUR_OF_DAY)) + "-" + String.valueOf(calendarRound.get(Calendar.MINUTE));
+            RoundTime = String.valueOf(semiCalendarRound.hourOfDay) + "-" + String.valueOf(semiCalendarRound.minute);
             RoundTimeTxt.setText(RoundTime);
         }
 
@@ -646,7 +646,6 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         trip.setStartLongitude(StartLong);
         trip.setRepeatEvery(RepeatEvery);
 
-        reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
         //trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
         List<Note> notes = new ArrayList<>();
         for (int i=0;i<NotesAL.size();i++){
@@ -661,6 +660,8 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         trip.setNotes(notes);
         if(!isEdit) {
             trip.setRequestCodeHome(requestCode++);
+            reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
+            reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
             saveTripPresenter.saveTrip(trip, false);
             if (isRound == 1) {
                 if (RepeatEvery == 0)

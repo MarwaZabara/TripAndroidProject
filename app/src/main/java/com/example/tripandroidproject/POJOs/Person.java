@@ -6,36 +6,32 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Person {
-    private String userName;
+    private String name;
     @PrimaryKey
     @NonNull
     private String email;
     private String password;
-    private String photoPath;
+    private String imgUri;
+    private String firebasePhotoPath;
+
 
     public Person() {
     }
 
-    public Person(String userName, String email, String password, String photoPath) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.photoPath = photoPath;
+    public String getName() {
+        return name;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
+    @NonNull
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NonNull String email) {
         this.email = email;
     }
 
@@ -47,11 +43,19 @@ public class Person {
         this.password = password;
     }
 
-    public String getPhotoPath() {
-        return photoPath;
+    public String getImgUri() {
+        return imgUri;
     }
 
-    public void setPhotoPath(String photoPath) {
-        this.photoPath = photoPath;
+    public void setImgUri(String imgUri) {
+        this.imgUri = imgUri;
+    }
+
+    public String getFirebasePhotoPath() {
+        return firebasePhotoPath;
+    }
+
+    public void setFirebasePhotoPath(String firebasePhotoPath) {
+        this.firebasePhotoPath = firebasePhotoPath;
     }
 }

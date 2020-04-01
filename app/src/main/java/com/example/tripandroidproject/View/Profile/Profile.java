@@ -1,9 +1,7 @@
 package com.example.tripandroidproject.View.Profile;
 
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,10 +12,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.tripandroidproject.Contract.Firebase.FirebaseUserContract;
+import com.example.tripandroidproject.Model.Room.RoomPersonModel;
 import com.example.tripandroidproject.Presenter.User.FirebaseUserPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.SaveUserLogIn;
-import com.example.tripandroidproject.View.UserDetails;
+import com.example.tripandroidproject.POJOs.Person;
 
 public class Profile extends Fragment implements FirebaseUserContract.IUserView {
 
@@ -26,7 +25,7 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
     private Button save,edit,editImg;
     private FirebaseUserPresenter firebaseUserPresenter;
     private SaveUserLogIn getUserLogIn;
-    private UserDetails user;
+    private Person user;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,11 +56,11 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserDetails user = new UserDetails();
+                Person user = new Person();
                 user.setName(name.getText().toString());
                 user.setEmail(email.getText().toString());
                 user.setImgUri(" ");
-                getUserLogIn.storeUserData(user);
+//                getUserLogIn.storeUserData(user);
                 firebaseUserPresenter.updateUser(user);
                 beforeEdit();
             }
@@ -73,20 +72,22 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
             }
         });
 
-        user = new UserDetails();
-        if (getUserLogIn.getLoggedInUser()!=null)
-        {
-            user = getUserLogIn.getLoggedInUser();
-        }else {
-            firebaseUserPresenter.getUserData();
-        }
+//        user = new Person();
+//        if (getUserLogIn.getLoggedInUser()!=null)
+//        {
+//            user = getUserLogIn.getLoggedInUser();
+//        }else {
+//            firebaseUserPresenter.getUserData();
+//        }
+        RoomPersonModel roomPersonModel = new RoomPersonModel(getContext());
+        user = roomPersonModel.getUser();
         name.setText(user.getName());
         email.setText(user.getEmail());
         return view;
     }
 
     @Override
-    public void setUserData(UserDetails user) {
+    public void setUserData(Person user) {
             this.user = user;
     }
 

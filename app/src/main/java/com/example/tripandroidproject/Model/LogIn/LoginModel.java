@@ -9,9 +9,10 @@ import androidx.annotation.NonNull;
 
 import com.example.tripandroidproject.Contract.Login.LoginContract;
 import com.example.tripandroidproject.Contract.Room.RoomPersonContract;
+import com.example.tripandroidproject.Model.Firebase.FirebaseUserModel;
 import com.example.tripandroidproject.Model.Room.RoomPersonModel;
 import com.example.tripandroidproject.View.SaveUserLogIn;
-import com.example.tripandroidproject.View.UserDetails;
+import com.example.tripandroidproject.POJOs.Person;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
@@ -21,7 +22,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 
@@ -46,31 +46,43 @@ public class LoginModel implements LoginContract.ISignInModel {
     }
 
     @Override
-    public void signIn(final UserDetails userDetails) {
+    public void signIn(final Person userDetails) {
         if (userDetails.getEmail().matches("") | userDetails.getPassword().matches("")) {
             Log.d(TAG,"error from sign in");
             return;
         }
-        mAuth.signInWithEmailAndPassword(userDetails.getEmail(), userDetails.getPassword())
-                .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-//                            FirebaseUser user = mAuth.getCurrentUser();
-                            UserDetails user = roomPersonModel.getCurrentPerson(userDetails.getEmail());
-                            personPresenter.setCurrentPerson(user);
-                            presenter.onSucess();
-                            if (user.getName()!=null){
-                                saveUserLogIn.storeUserData(user);
-                                saveUserLogIn.setUserLoggedIn(true);
-                            }
+       // if(mAuth.getUid() == null) {
 
-                        } else {
-                            Log.d("TAG", "signInWithEmail:failure", task.getException());
-                            presenter.onFail();
+
+            mAuth.signInWithEmailAndPassword(userDetails.getEmail(), userDetails.getPassword())
+                    .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//
+//                                Person person = userDetails;
+////                                person.setEmail();
+//                                roomPersonModel.savePerson(person);
+//                                Person user = roomPersonModel.getCurrentPerson(userDetails.getEmail());
+//                                personPresenter.setCurrentPerson(user);
+                                presenter.onSucessLogin();
+//                                presenter.onSucess();
+//                                if (user.getName() != null) {
+//                                    saveUserLogIn.storeUserData(user);
+//                                    saveUserLogIn.setUserLoggedIn(true);
+//                                }
+
+                            } else {
+                                Log.d("TAG", "signInWithEmail:failure", task.getException());
+                                presenter.onFail();
+                            }
                         }
-                    }
-                });
+                    });
+//        }
+//        else {
+//            presenter.onSucessLogin();
+//        }
     }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
@@ -81,16 +93,21 @@ public class LoginModel implements LoginContract.ISignInModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            UserDetails userDetails = new UserDetails();
+                            Person userDetails = new Person();
                             userDetails.setEmail(acct.getEmail());
                             userDetails.setName(acct.getGivenName());
                             userDetails.setImgUri(acct.getPhotoUrl().toString());
-
+                            userDetails.setFirebasePhotoPath(acct.getPhotoUrl().toString());
+                            if(roomPersonModel.getUser() == null) {
+                                roomPersonModel.savePerson(userDetails);
+                            }
+//                            FirebaseUserModel firebaseUserModel = new FirebaseUserModel();
+//                            firebaseUserModel.saveUserData(userDetails);
                             //// in case of sign in by gmail user needs internet cann't sign in offline
 
-                            personPresenter.setCurrentPerson(userDetails);
-                            saveUserLogIn.storeUserData(userDetails);
-                            saveUserLogIn.setUserLoggedIn(true);
+                            //personPresenter.setCurrentPerson(userDetails);
+//                            saveUserLogIn.storeUserData(userDetails);
+//                            saveUserLogIn.setUserLoggedIn(true);
                             presenter.onSucess();
                             Log.d("TAG", "signInWithCredential:success");
                         } else {
