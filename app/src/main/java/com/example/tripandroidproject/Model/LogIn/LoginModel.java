@@ -26,22 +26,17 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 
 public class LoginModel implements LoginContract.ISignInModel {
-
     private static final String TAG = "State" ;
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 9001;
     private Context context;
     private LoginContract.ISignInPresenter presenter;
-    private SaveUserLogIn saveUserLogIn;
     private RoomPersonModel roomPersonModel;
-    private RoomPersonContract.IRoomPersonPresenter personPresenter;
 
     public LoginModel(Context context, LoginContract.ISignInPresenter presenter,RoomPersonContract.IRoomPersonPresenter personPresenter){
         mAuth = FirebaseAuth.getInstance();
         this.context = context;
         this.presenter = presenter;
-        this.personPresenter = personPresenter;
-        saveUserLogIn = new SaveUserLogIn(context);
         roomPersonModel = new RoomPersonModel(this.context);
     }
 
@@ -51,38 +46,20 @@ public class LoginModel implements LoginContract.ISignInModel {
             Log.d(TAG,"error from sign in");
             return;
         }
-       // if(mAuth.getUid() == null) {
 
-
-            mAuth.signInWithEmailAndPassword(userDetails.getEmail(), userDetails.getPassword())
+        mAuth.signInWithEmailAndPassword(userDetails.getEmail(), userDetails.getPassword())
                     .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//
-//                                Person person = userDetails;
-////                                person.setEmail();
-//                                roomPersonModel.savePerson(person);
-//                                Person user = roomPersonModel.getCurrentPerson(userDetails.getEmail());
-//                                personPresenter.setCurrentPerson(user);
                                 presenter.onSucessLogin();
-//                                presenter.onSucess();
-//                                if (user.getName() != null) {
-//                                    saveUserLogIn.storeUserData(user);
-//                                    saveUserLogIn.setUserLoggedIn(true);
-//                                }
-
                             } else {
                                 Log.d("TAG", "signInWithEmail:failure", task.getException());
                                 presenter.onFail();
                             }
                         }
                     });
-//        }
-//        else {
-//            presenter.onSucessLogin();
-//        }
+
     }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
@@ -101,17 +78,11 @@ public class LoginModel implements LoginContract.ISignInModel {
                             if(roomPersonModel.getUser() == null) {
                                 roomPersonModel.savePerson(userDetails);
                             }
-//                            FirebaseUserModel firebaseUserModel = new FirebaseUserModel();
-//                            firebaseUserModel.saveUserData(userDetails);
-                            //// in case of sign in by gmail user needs internet cann't sign in offline
-
-                            //personPresenter.setCurrentPerson(userDetails);
-//                            saveUserLogIn.storeUserData(userDetails);
-//                            saveUserLogIn.setUserLoggedIn(true);
                             presenter.onSucess();
                             Log.d("TAG", "signInWithCredential:success");
                         } else {
                             Log.d("TAG", "signInWithCredential:failure", task.getException());
+                            presenter.onFail();
                         }
                     }
                 });
@@ -124,8 +95,6 @@ public class LoginModel implements LoginContract.ISignInModel {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-
-
             } catch (ApiException e) {
                 Log.d("TAG", "Google sign in failed", e);
                 presenter.onFail();

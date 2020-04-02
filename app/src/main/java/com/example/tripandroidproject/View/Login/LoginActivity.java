@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -35,6 +36,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 
+import java.util.regex.Pattern;
+
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.ISignInView , RoomPersonContract.IRoomPersonView , FirebaseUserContract.IUserView {
 
@@ -52,6 +55,16 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
 
     private FirebaseUserPresenter firebaseUserPresenter;
     private UserPresenter userPresenter;
+
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^" +
+                    "(?=.*[0-9])" +         //at least 1 digit
+                    "(?=.*[a-z])" +         //at least 1 lower case letter
+                    "(?=.*[A-Z])" +         //at least 1 upper case letter
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    ".{6,}" +               //at least 6 characters
+                    "$");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,17 +138,27 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
 
     public void LogIn_Btn(View view) {
         if (checkInternetConnection.getConnectivityStatusString(this)) {
-            if (loginPassword.getText().toString().isEmpty() || loginEmail.getText().toString().isEmpty()){
+            String email =  loginEmail.getText().toString();
+            String pass =  loginPassword.getText().toString();
+            if (pass.isEmpty() || email.isEmpty()){
                 relativeLayout.startAnimation(shakeAnimation);
+                loginEmail.setError("Email field can't be empty");
+                loginPassword.setError("Password field can't be empty");
                 new CustomToast().Show_Toast(this, view,"Please enter both credentials.");
             }else {
-            person = new Person();
-            person.setEmail(loginEmail.getText().toString());
-            person.setPassword(loginPassword.getText().toString());
-            presenter = new LoginPresenter(this,this,this);
-            presenter.onSendData(person);
-            }
-        }else {
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    loginEmail.setError("Please Enter valid email address");
+                }else {
+                    loginPassword.setError(null);
+                    loginEmail.setError(null);
+                    person = new Person();
+                    person.setEmail(loginEmail.getText().toString());
+                    person.setPassword(loginPassword.getText().toString());
+                    presenter = new LoginPresenter(this, this, this);
+                    presenter.onSendData(person);
+                }
+                }
+            }else {
             new CustomToast().Show_Toast(this, view,"No Internet Connection.");
         }
     }
@@ -143,7 +166,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     @Override
     public void showMessage(Boolean result) {
         if (result){
-//            Toast.makeText(this, "signIn Success", Toast.LENGTH_SHORT).show();
             if (person.getName()==null){       ///////userData doesn't store in room
 //                getUserData();
                 firebaseUserPresenter.getUserData();   //////get from firebase
@@ -155,9 +177,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 intent.putExtra("password", person.getPassword());
                 startActivity(intent);
             }
-        }else{
-//            Toast.makeText(this, "signIn Failed", Toast.LENGTH_SHORT).show();
-
+        } else{
+            loginPassword.setError("Please Enter valid Password");
+            loginEmail.setError("Please Enter valid email address");
         }
     }
 
@@ -168,11 +190,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         return userDetails;
     }
 
-//    @Override
-//    public void getUserData() {
-//
-//    }
-
     @Override
     public void setUserData(Person user) {
         RoomPersonModel roomPersonModel = new RoomPersonModel(this);
@@ -180,15 +197,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         if (person == null) {
             roomPersonModel.savePerson(user);
         }
-//        saveUserLogIn.storeUserData(user);
-//        saveUserLogIn.setUserLoggedIn(true);
         Intent intent = new Intent(this, NavDrawer.class);
-//        intent.putExtra("Email", person.getEmail());
-//        intent.putExtra("Name", person.getName());
-//        intent.putExtra("imgUri", person.getImgUri());
-//        intent.putExtra("firebasePhotoPath", person.getFirebasePhotoPath());
-
-//        intent.putExtra("password", userDetails.getPassword());
         startActivity(intent);
     }
 
@@ -196,8 +205,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     public void successLogin() {
         firebaseUserPresenter = new FirebaseUserPresenter(this);
         firebaseUserPresenter.getUserData();
-//        Intent intent = new Intent(this, NavDrawer.class);
-//        startActivity(intent);
     }
     @Override
     public void successLoginGoogle() {

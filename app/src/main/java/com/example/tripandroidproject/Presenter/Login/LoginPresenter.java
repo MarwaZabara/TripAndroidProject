@@ -38,8 +38,6 @@ public class LoginPresenter implements LoginContract.ISignInPresenter, RoomPerso
     public void onSucess() {
         result = true;
         Log.d("TAG","Success");
-//        personView.setCurrentPerson(userDetails);
-//        view.showMessage(result);
         view.successLoginGoogle();
     }
 
@@ -56,8 +54,6 @@ public class LoginPresenter implements LoginContract.ISignInPresenter, RoomPerso
 
     @Override
     public void onSucessLogin() {
-//        FirebaseUserPresenter firebaseUserPresenter = new FirebaseUserPresenter();
-//        firebaseUserPresenter.getUserData();
         view.successLogin();
     }
 

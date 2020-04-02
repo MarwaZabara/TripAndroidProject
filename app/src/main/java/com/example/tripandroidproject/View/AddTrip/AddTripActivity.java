@@ -584,7 +584,6 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         if (SelectedTime.equals("Trip")){
 //            TripTime = hourOfDay + ":" + minute;
 //
-
             semiCalendarHome.hourOfDay = hourOfDay;
             semiCalendarHome.minute = minute;
             if(semiCalendarHome.month > 0) {
@@ -628,6 +627,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             status = "repeated";
         }
         TripName = NameTxt.getText().toString();
+
         TripDesc = DescTxt.getText().toString();
 
         trip.setName(TripName);
@@ -636,6 +636,12 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         trip.setDate(TripDate);
         trip.setTime(TripTime);
         trip.setStatus(status);
+        ValidateName(NameTxt);
+        ValidateName(DescTxt);
+//        ValidateName(TripDateTxt);
+//        ValidateName(TripTimetxt);
+//        ValidateName(StartLocationTxt);
+//        ValidateName(DestinationTxt);
                 /*trip.setRoundDate(RoundDate);
                 trip.setRoundTime(RoundTime);
                 trip.setRoundRepeatEvery(String.valueOf(RepeatRound));*/
@@ -719,5 +725,18 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         super.onDestroy();
         ControlNetworkChangeBroadcast.unregisterReceiver(this);
 
+    }
+
+    private boolean ValidateName(EditText editText){
+        boolean result;
+        String str = editText.getText().toString().trim();
+        if (str.isEmpty()){
+            editText.setError("Field can't be empty");
+            result = false;
+        } else {
+            editText.setError(null);
+            result = true;
+        }
+        return result;
     }
 }
