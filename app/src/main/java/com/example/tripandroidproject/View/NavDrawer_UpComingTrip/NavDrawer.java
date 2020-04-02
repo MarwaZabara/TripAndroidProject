@@ -91,7 +91,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_nav_drawer);
 //////////////////////////////////////////////////////////////////
         viewPager = (CustomViewPager) findViewById(R.id.container);
-        setupViewPager(viewPager);
+//        setupViewPager(viewPager);
         viewPager.setPagingEnabled(false);
 
 /////////////////////////////////////////////////////////////////
@@ -177,11 +177,11 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-//    @Override
-//    protected void onPostResume() {
-//        super.onPostResume();
-//        setupViewPager(viewPager);
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupViewPager(viewPager);
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

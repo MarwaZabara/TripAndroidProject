@@ -33,6 +33,9 @@ public class SnoozeNotificationForegroundService extends Service {
         //Build a notification
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(name)
+                .setContentText(description)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(description))
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentIntent(pendingIntent)
                 .build();

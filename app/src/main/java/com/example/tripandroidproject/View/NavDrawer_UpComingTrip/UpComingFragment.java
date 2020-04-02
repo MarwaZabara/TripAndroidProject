@@ -57,6 +57,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         getOfflineTripPresenter = new GetOfflineTripPresenter(this.getContext());
 //        List<Trip> trips = getOfflineTripPresenter.getTrips();
         List<Trip> trips = getOfflineTripPresenter.getOfflineFilteredTrip("upcoming","repeated");
+        trips.addAll(getOfflineTripPresenter.getOfflineFilteredTrip("start"));
         if(trips.size() == 0){
             saveTripOfflinePresenter = new SaveTripPresenter(this.getContext());
             retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);

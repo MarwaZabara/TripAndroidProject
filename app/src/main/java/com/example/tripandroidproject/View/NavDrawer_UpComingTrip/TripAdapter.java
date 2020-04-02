@@ -25,8 +25,10 @@ import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Trip.CancelTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.FinishTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.R;
+import com.example.tripandroidproject.Service.FloatIcon.FloatingIconService;
 import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 
 import java.io.IOException;
@@ -166,6 +168,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         if(status.equalsIgnoreCase("upcoming")||status.equalsIgnoreCase("repeated")) {
             options = new CharSequence[]{"Edit Trip", "Delete Trip", "Cancel Trip"};
         }
+        else if(status.equalsIgnoreCase("start")){
+            options = new CharSequence[]{"Finish Trip"};
+        }
         else {
              options = new CharSequence[]{"Delete Trip"};
         }
@@ -194,6 +199,17 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
                     Trip trip = upComingTripList.get(position);
 //                    trip.setStatus("Cancel");     ///////change status of trip
                     cancelTripPresenter.cancelTrip(trip);
+//                    updateTripOfflinePresenter.updateTrip(trip);
+                    upComingTripList.remove(position);
+                    notifyItemRemoved(position);
+//                  communicatorFrag.cancelTrip(trip);
+//                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
+                }
+                else if (options[item].equals("Finish Trip")) {
+                    Trip trip = upComingTripList.get(position);
+//                    trip.setStatus("Cancel");     ///////change status of trip
+                    FinishTripPresenter finishTripPresenter = new FinishTripPresenter(context);
+                    finishTripPresenter.finishTrip(trip.getId());
 //                    updateTripOfflinePresenter.updateTrip(trip);
                     upComingTripList.remove(position);
                     notifyItemRemoved(position);
