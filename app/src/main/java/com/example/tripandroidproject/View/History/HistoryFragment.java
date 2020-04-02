@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Trip;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.HistoryMapActivity.HistoryMapActivity;
@@ -59,10 +61,15 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
 //                          }
 //                      }
 //                  }).start();
+
+
+//                  RoomTripModel roomTripModel = new RoomTripModel(,);
+//                  roomTripModel.getOfflineFilteredTrip("Cancel","Finish");
+                  GetOfflineTripPresenter  getOfflineTripPresenter = new GetOfflineTripPresenter(getContext());
+                  trips = getOfflineTripPresenter.getOfflineFilteredTrip("Cancel","finished");
+                  //intent.putExtra("EndList",(Serializable)endList);
                   Intent intent = new Intent(getActivity(), HistoryMapActivity.class);
                   intent.putExtra("Trips",(Serializable)trips);
-                  //intent.putExtra("EndList",(Serializable)endList);
-
                   startActivity(intent);
 
               }

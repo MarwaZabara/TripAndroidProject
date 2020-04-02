@@ -652,7 +652,9 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         trip.setStartLatitude(StartLat);
         trip.setStartLongitude(StartLong);
         trip.setRepeatEvery(RepeatEvery);
-
+        trip.setRequestCodeHome(isEdit? requestCode: requestCode++);
+        calendarMain = GenerateCalendarObject.generateCalendar(TripDate,TripTime);
+        reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
         //trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
         List<Note> notes = new ArrayList<>();
         for (int i=0;i<NotesAL.size();i++){
@@ -666,9 +668,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         }
         trip.setNotes(notes);
         if(!isEdit) {
-            trip.setRequestCodeHome(requestCode++);
-            reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
-            reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
+
             saveTripPresenter.saveTrip(trip, false);
             if (isRound == 1) {
                 if (RepeatEvery == 0)
@@ -700,6 +700,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             UpdateTripPresenter updateTripPresenter = new UpdateTripPresenter(this);
             updateTripPresenter.updateTrip(trip);
         }
+        finish();
 
     }
     @Override
