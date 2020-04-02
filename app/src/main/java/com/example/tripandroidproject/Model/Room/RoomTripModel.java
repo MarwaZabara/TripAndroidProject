@@ -26,6 +26,7 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
     public RoomTripModel(Context context) {    //////// this constructor for delete offline
         database = Room.databaseBuilder(context, AppDatabase.class, "db-trips")
                 .allowMainThreadQueries()   //Allows room to do operation on main thread
+                .fallbackToDestructiveMigration()
                 .build();
         tripDAO = database.getTripDAO();
     }
@@ -42,6 +43,7 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
         this.tripPresenter = tripPresenter;
         database = Room.databaseBuilder(context, AppDatabase.class, "db-trips")
                 .allowMainThreadQueries()   //Allows room to do operation on main thread
+                .fallbackToDestructiveMigration()
                 .build();
         tripDAO = database.getTripDAO();
     }

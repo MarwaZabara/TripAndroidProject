@@ -21,6 +21,7 @@ public class RoomPersonModel implements RoomPersonContract.IRoomPersonModel {
         this.context = context;
         database = Room.databaseBuilder(context, AppDatabase.class, "db-persons")
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build();
         personDAO = database.getPersonDAO();
         person = new Person();

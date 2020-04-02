@@ -19,6 +19,7 @@ public class RoomNoteModel implements SaveNoteContract.ISaveNoteOfflineModel, Ge
     public RoomNoteModel(Context context) {
         database = Room.databaseBuilder(context, AppDatabase.class, "db-trips")
                 .allowMainThreadQueries()   //Allows room to do operation on main thread
+                .fallbackToDestructiveMigration()
                 .build();
         noteDAO = database.getNoteDAO();
     }
