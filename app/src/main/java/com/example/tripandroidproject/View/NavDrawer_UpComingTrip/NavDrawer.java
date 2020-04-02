@@ -79,7 +79,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 
     TextView mItemSelected;
 
-    String[] listItems =  {"dfsd","fsdfds"};
+    String[] listItems =  {"Item1","Item2"};
     boolean[] checkedItems;
     ArrayList<Integer> mUserItems = new ArrayList<>();
     private StorageReference mStorageRef;
@@ -176,6 +176,12 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         }
 
     }
+
+//    @Override
+//    protected void onPostResume() {
+//        super.onPostResume();
+//        setupViewPager(viewPager);
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

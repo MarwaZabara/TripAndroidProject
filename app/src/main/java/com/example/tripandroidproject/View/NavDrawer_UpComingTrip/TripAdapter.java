@@ -111,14 +111,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         holder.startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (upComingTripList.get(position).getStatus().equals("upcoming") && upComingTripList.get(position).getStatus().equals("repeated")){
+                if (upComingTripList.get(position).getStatus().equals("upcoming") || upComingTripList.get(position).getStatus().equals("repeated")){
                     StartTripPresenter startTripPresenter = new StartTripPresenter(context);
                     String destination = location2;
                     startTripPresenter.startTrip(destination, upComingTripList.get(position).getId(), upComingTripList.get(position).getRequestCodeHome());
                 }
                 else if (upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel")){
                     Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();
-                    showDialogListView(TID);
+                    showDialogListView(upComingTripList.get(position).getId());
                 }
 
             }
@@ -163,7 +163,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 
     private void takeAction(final String tripName, final String status, final int position, final String TID) {
         final CharSequence[] options;
-        if(status.equalsIgnoreCase("upcoming")) {
+        if(status.equalsIgnoreCase("upcoming")||status.equalsIgnoreCase("repeated")) {
             options = new CharSequence[]{"Edit Trip", "Delete Trip", "Cancel Trip"};
         }
         else {

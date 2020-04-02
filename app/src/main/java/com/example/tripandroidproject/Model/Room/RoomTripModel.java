@@ -69,7 +69,7 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
 
     @Override
     public List<Trip> getOfflineFilteredTrip(String filter1,String filter2) {
-        return tripDAO.getOfflineFilteredTrips(filter1, filter2, FirebaseUserModel.getUserID());
+        return tripDAO.getOfflineFilteredTrips(filter1, filter2);
     }
 
     @Override

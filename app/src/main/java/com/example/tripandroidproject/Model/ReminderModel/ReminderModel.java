@@ -56,8 +56,6 @@ public class ReminderModel implements Reminder.IReminderModel {
     }
     @Override
     public void startTrip(String destinationPlaceName, String tripID,int requestCode) {
-        Intent intent1 = new Intent(context, TestReminder.class);
-        context.startActivity(intent1);
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                 Uri.parse("google.navigation:q=" + destinationPlaceName));
         context.startActivity(intent);
