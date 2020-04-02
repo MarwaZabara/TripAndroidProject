@@ -275,12 +275,17 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         StartLat = trip.getStartLatitude();
         StartLong = trip.getStartLongitude();
         RepeatEvery = (int) trip.getRepeatEvery();
+
         NameTxt.setText(TripName);
         DescTxt.setText(TripDesc);
         TripDateTxt.setText(TripDate);
         TripTimetxt.setText(TripTime);
         StartLocationTxt.setText(getRegionName(StartLat,StartLong));
         DestinationTxt.setText(getRegionName(EndLat,EndLong));
+        trip.setDate(TripDate);
+        trip.setTime(TripTime);
+        trip.setStatus(status);
+
         switch (RepeatEvery)
         {
             case 0:
@@ -619,6 +624,9 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     public void saveTrip(View view) {
         ReminderPresenter reminderPresenter = new ReminderPresenter(this);
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
+        if (ValidateName(NameTxt)&& ValidateName(DescTxt)&& ValidateName(TripDateTxt)&&
+        ValidateName(TripTimetxt)&& ValidateName(StartLocationTxt)&& ValidateName(DestinationTxt))
+        {
         if (RepeatEvery == 0)
         {
             status = "upcoming";
@@ -626,6 +634,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         else {
             status = "repeated";
         }
+
         TripName = NameTxt.getText().toString();
 
         TripDesc = DescTxt.getText().toString();
@@ -633,15 +642,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         trip.setName(TripName);
         trip.setDescription(TripDesc);
         //trip.setIsRound(isRound);
-        trip.setDate(TripDate);
-        trip.setTime(TripTime);
-        trip.setStatus(status);
-        ValidateName(NameTxt);
-        ValidateName(DescTxt);
-//        ValidateName(TripDateTxt);
-//        ValidateName(TripTimetxt);
-//        ValidateName(StartLocationTxt);
-//        ValidateName(DestinationTxt);
+
                 /*trip.setRoundDate(RoundDate);
                 trip.setRoundTime(RoundTime);
                 trip.setRoundRepeatEvery(String.valueOf(RepeatRound));*/
@@ -660,9 +661,6 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             note.setName(NotesAL.get(i));
             note.setStatus("unchecked");
             notes.add(note);
-//                    note.setTripID();
-            //note.setId();
-//                    Toast.makeText(getApplicationContext(),note.getName(),Toast.LENGTH_LONG).show();
         }
         trip.setNotes(notes);
         if(!isEdit) {
@@ -700,6 +698,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         }
         finish();
 
+    }
     }
     @Override
     public void setRequestCodeInSharedPreference(int requestCode) {

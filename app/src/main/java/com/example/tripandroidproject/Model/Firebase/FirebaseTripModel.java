@@ -143,7 +143,8 @@ public class FirebaseTripModel implements SaveTripContract.ISaveTripOnlineModel 
                 input.clear();
                 for (DataSnapshot tripSnapShot : dataSnapshot.getChildren()){
                     Trip trip = tripSnapShot.getValue(Trip.class);
-                    if (trip.getStatus().matches(filter1) | trip.getStatus().matches(filter2)){
+
+                    if (trip.getStatus() != null &&( trip.getStatus().matches(filter1) || trip.getStatus().matches(filter2))){
                         input.add(trip);
                     }
                 }
