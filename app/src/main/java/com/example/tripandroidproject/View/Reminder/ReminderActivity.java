@@ -64,10 +64,7 @@ public class ReminderActivity extends AppCompatActivity {
         final MediaPlayer mp = MediaPlayer.create(this, com.example.tripandroidproject.R.raw.remind);
         mp.start();
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage(trip.getName() + "\n"+ trip.getDescription() +  "\n"+ "From : " + getRegionName(trip.getStartLatitude(),trip.getStartLongitude()) + "To : " +  "\n"+ getRegionName(trip.getEndLatitude(),trip.getEndLongitude()));
-//        builder1.setMessage(trip.getDescription());
-//        builder1.setMessage("From : " + getRegionName(trip.getStartLatitude(),trip.getStartLongitude()));
-//        builder1.setMessage("To : " + getRegionName(trip.getEndLatitude(),trip.getEndLongitude()));
+        builder1.setMessage(trip.getName() + "\n \n"+ trip.getDescription() +  "\n \n"+ "From : " + getRegionName(trip.getStartLatitude(),trip.getStartLongitude()) +  "\n \n" + "To : " + getRegionName(trip.getEndLatitude(),trip.getEndLongitude()));
         builder1.setCancelable(false);
 
         builder1.setPositiveButton(

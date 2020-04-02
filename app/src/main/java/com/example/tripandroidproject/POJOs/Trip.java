@@ -199,4 +199,21 @@ public class Trip implements Serializable { // any attribute not need set it NUL
     public void setEndLatitude(double endLatitude) {
         this.endLatitude = endLatitude;
     }
+    public Trip(@NonNull String id, String userID, String name, String description, String status, String date, String time, long repeatEvery, int requestCodeHome, double startLongitude, double startLatitude, double endLongitude, double endLatitude, int isSync, List<Note> notes) {
+        this.id = id;
+        this.userID = userID;
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.date = date;
+        this.time = time;
+        this.repeatEvery = repeatEvery;
+        this.requestCodeHome = requestCodeHome;
+        this.startLongitude = startLongitude;
+        this.startLatitude = startLatitude;
+        this.endLongitude = endLongitude;
+        this.endLatitude = endLatitude;
+        this.isSync = isSync;
+        this.notes = notes;
+    }
 }

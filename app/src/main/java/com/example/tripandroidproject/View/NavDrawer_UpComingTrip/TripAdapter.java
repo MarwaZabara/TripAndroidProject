@@ -17,12 +17,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripandroidproject.Contract.Reminder.Reminder;
 import com.example.tripandroidproject.Contract.Trip.UpdateTripContract;
 import com.example.tripandroidproject.Contract.Trip.UpdateTripOfflineContract;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
+import com.example.tripandroidproject.Model.ReminderModel.ReminderModel;
 import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
+import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.Presenter.Trip.CancelTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.FinishTripPresenter;
@@ -42,7 +45,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
+public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> implements Reminder.IBaseReminder {
 
     private final Context context;
     private List<Trip> upComingTripList;
@@ -122,6 +125,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
                     Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();
                     showDialogListView(upComingTripList.get(position).getId());
                 }
+                else if (upComingTripList.get(position).getStatus().equals("start") || upComingTripList.get(position).getStatus().equals("repeated_Start")){
+//                    Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();
+//                    showDialogListView(upComingTripList.get(position).getId());
+                    ReminderPresenter reminderPresenter = new ReminderPresenter(context);
+                    reminderPresenter.openFloatIcon( upComingTripList.get(position).getId(),upComingTripList.get(position).getRequestCodeHome());
+                }
 
             }
         });
@@ -168,7 +177,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
         if(status.equalsIgnoreCase("upcoming")||status.equalsIgnoreCase("repeated")) {
             options = new CharSequence[]{"Edit Trip", "Delete Trip", "Cancel Trip"};
         }
-        else if(status.equalsIgnoreCase("start")){
+        else if(status.equalsIgnoreCase("start")||status.equalsIgnoreCase("repeated_Start")){
             options = new CharSequence[]{"Finish Trip"};
         }
         else {
@@ -200,8 +209,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder>  {
 //                    trip.setStatus("Cancel");     ///////change status of trip
                     cancelTripPresenter.cancelTrip(trip);
 //                    updateTripOfflinePresenter.updateTrip(trip);
-                    upComingTripList.remove(position);
-                    notifyItemRemoved(position);
+                    if(!status.equalsIgnoreCase("repeated")) {
+                        upComingTripList.remove(position);
+                        notifyItemRemoved(position);
+                    }
 //                  communicatorFrag.cancelTrip(trip);
 //                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
                 }

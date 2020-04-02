@@ -7,16 +7,20 @@ import com.example.tripandroidproject.Contract.Trip.ITripPresenter;
 import com.example.tripandroidproject.Model.Firebase.FirebaseNoteModel;
 import com.example.tripandroidproject.Model.Firebase.FirebaseTripModel;
 import com.example.tripandroidproject.Model.Room.RoomNoteModel;
+import com.example.tripandroidproject.Model.Room.RoomRepeatedTripHistoryModel;
 import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Note;
+import com.example.tripandroidproject.POJOs.RepeatedTripHistory;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Note.SaveNotePresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOfflineTripPresenter {
     Context context;
+    List<RepeatedTripHistory> repeatedTripHistories;
     public GetOfflineTripPresenter(Context context) {
         this.context = context;
     }
@@ -24,6 +28,7 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
     @Override
     public void getOfflineTrip() {
         RoomTripModel roomTripModel = new RoomTripModel(this,context);
+
         List<Trip> trips = roomTripModel.getOfflineTrip();
         FirebaseTripModel firebaseTripModel = new FirebaseTripModel(this);
         for (int i = 0; i < trips.size(); i++) {
@@ -85,7 +90,18 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
             firebaseTripModel.saveNote(notes.get(i));
         }
     }
+    public  List<Trip> getRepeatedHistory()
+    {
+        RoomRepeatedTripHistoryModel roomRepeatedTripHistoryModel = new RoomRepeatedTripHistoryModel(this,context);
+        repeatedTripHistories = roomRepeatedTripHistoryModel.getRepeatedHistory();
+        List<Trip> trips = new ArrayList<>();
+        for(int i = 0; i < repeatedTripHistories.size()  ; i++) {
 
+            Trip trip = setObject(repeatedTripHistories.get(i));
+            trips.add(trip);
+        }
+        return trips;
+    }
     @Override
     public void onSucess() {
 
@@ -94,5 +110,14 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
     @Override
     public void onFail() {
 
+    }
+    public Trip setObject(RepeatedTripHistory repeatedTripHistory) {
+
+        Trip trip = new Trip(repeatedTripHistory.getId(), repeatedTripHistory.getUserID(), repeatedTripHistory.getName(),
+                repeatedTripHistory.getDescription(), "finished", repeatedTripHistory.getDate(), repeatedTripHistory.getTime(),
+                repeatedTripHistory.getRepeatEvery(), repeatedTripHistory.getRequestCodeHome(), repeatedTripHistory.getStartLongitude(),
+                repeatedTripHistory.getStartLatitude(), repeatedTripHistory.getEndLongitude(), repeatedTripHistory.getEndLatitude(), repeatedTripHistory.getIsSync(),
+                repeatedTripHistory.getNotes());
+        return trip;
     }
 }

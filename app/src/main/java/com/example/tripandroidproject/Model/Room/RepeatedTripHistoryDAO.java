@@ -17,6 +17,6 @@ public interface RepeatedTripHistoryDAO {
     public void insert(RepeatedTripHistory repeatedTripHistorie);
     @Delete
     public void delete(RepeatedTripHistory repeatedTripHistorie);
-    @Query("SELECT * FROM RepeatedTripHistory WHERE userID = :userId")
-    public List<RepeatedTripHistory> getTrips(String userId);
+    @Query("SELECT * FROM RepeatedTripHistory")
+    public List<RepeatedTripHistory> getTrips();
 }

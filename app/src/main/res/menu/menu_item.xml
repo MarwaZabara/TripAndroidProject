@@ -21,10 +21,10 @@
                 android:icon="@drawable/ic_history_black_24dp"
                 android:title="History" />
 
-            <item
-                android:id="@+id/synch"
-                android:icon="@drawable/ic_share_black_24dp"
-                android:title="Synch" />
+<!--            <item-->
+<!--                android:id="@+id/synch"-->
+<!--                android:icon="@drawable/ic_share_black_24dp"-->
+<!--                android:title="Synch" />-->
         </menu>
     </item>
 

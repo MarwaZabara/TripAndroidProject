@@ -30,4 +30,9 @@ public class ReminderPresenter implements Reminder.IReminderPresenter {
     public void onFail() {
 
     }
+
+    public void openFloatIcon(String tripID, int requestCodeHome) {
+        ReminderModel reminderModel = new ReminderModel(this,context);
+        reminderModel.openFloatIcon(tripID,requestCodeHome);
+    }
 }

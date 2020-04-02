@@ -275,17 +275,12 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         StartLat = trip.getStartLatitude();
         StartLong = trip.getStartLongitude();
         RepeatEvery = (int) trip.getRepeatEvery();
-
         NameTxt.setText(TripName);
         DescTxt.setText(TripDesc);
         TripDateTxt.setText(TripDate);
         TripTimetxt.setText(TripTime);
         StartLocationTxt.setText(getRegionName(StartLat,StartLong));
         DestinationTxt.setText(getRegionName(EndLat,EndLong));
-        trip.setDate(TripDate);
-        trip.setTime(TripTime);
-        trip.setStatus(status);
-
         switch (RepeatEvery)
         {
             case 0:
@@ -625,80 +620,86 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         ReminderPresenter reminderPresenter = new ReminderPresenter(this);
         SaveTripPresenter saveTripPresenter = new SaveTripPresenter(this);
         if (ValidateName(NameTxt)&& ValidateName(DescTxt)&& ValidateName(TripDateTxt)&&
-        ValidateName(TripTimetxt)&& ValidateName(StartLocationTxt)&& ValidateName(DestinationTxt))
-        {
-        if (RepeatEvery == 0)
-        {
-            status = "upcoming";
-        }
-        else {
-            status = "repeated";
-        }
+                ValidateName(TripTimetxt)&& ValidateName(StartLocationTxt)&& ValidateName(DestinationTxt)) {
+            if (RepeatEvery == 0) {
+                status = "upcoming";
+            } else {
+                status = "repeated";
+            }
+            TripName = NameTxt.getText().toString();
 
-        TripName = NameTxt.getText().toString();
+            TripDesc = DescTxt.getText().toString();
 
-        TripDesc = DescTxt.getText().toString();
+            trip.setName(TripName);
+            trip.setDescription(TripDesc);
+            //trip.setIsRound(isRound);
+            trip.setDate(TripDate);
+            trip.setTime(TripTime);
+            trip.setStatus(status);
+            ValidateName(NameTxt);
+            ValidateName(DescTxt);
 
-        trip.setName(TripName);
-        trip.setDescription(TripDesc);
-        //trip.setIsRound(isRound);
-
+//        ValidateName(TripDateTxt);
+//        ValidateName(TripTimetxt);
+//        ValidateName(StartLocationTxt);
+//        ValidateName(DestinationTxt);
                 /*trip.setRoundDate(RoundDate);
                 trip.setRoundTime(RoundTime);
                 trip.setRoundRepeatEvery(String.valueOf(RepeatRound));*/
-        trip.setEndLatitude(EndLat);
-        trip.setEndLongitude(EndLong);
-        trip.setStartLatitude(StartLat);
-        trip.setStartLongitude(StartLong);
-        trip.setRepeatEvery(RepeatEvery);
-        trip.setRequestCodeHome(isEdit? requestCode: requestCode++);
-        calendarMain = GenerateCalendarObject.generateCalendar(TripDate,TripTime);
-        reminderPresenter.startReminderService(calendarMain,trip.getRequestCodeHome());
-        //trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
-        List<Note> notes = new ArrayList<>();
-        for (int i=0;i<NotesAL.size();i++){
-            Note note = new Note();
-            note.setName(NotesAL.get(i));
-            note.setStatus("unchecked");
-            notes.add(note);
-        }
-        trip.setNotes(notes);
-        if(!isEdit) {
-
-            saveTripPresenter.saveTrip(trip, false);
-            if (isRound == 1) {
-                if (RepeatEvery == 0)
-                    RepeatRound = 0;
-                else
-                    RepeatRound = daysBetween(calendarMain, calendarRound);
-                Trip tripRound = new Trip();
-                tripRound.setName(TripName + "- Round");
-                tripRound.setDescription(TripDesc);
-                //trip.setIsRound(isRound);
-                tripRound.setDate(RoundDate);
-                tripRound.setTime(RoundTime);
-                tripRound.setStatus(status);
-                tripRound.setEndLatitude(StartLat);
-                tripRound.setEndLongitude(StartLong);
-                tripRound.setStartLatitude(EndLat);
-                tripRound.setStartLongitude(EndLong);
-                tripRound.setRepeatEvery(RepeatRound);
-                tripRound.setRequestCodeHome(requestCode++);
-                reminderPresenter.startReminderService(calendarRound, tripRound.getRequestCodeHome());
-                tripRound.setNotes(notes);
-                saveTripPresenter.saveTrip(tripRound, false);
+            trip.setEndLatitude(EndLat);
+            trip.setEndLongitude(EndLong);
+            trip.setStartLatitude(StartLat);
+            trip.setStartLongitude(StartLong);
+            trip.setRepeatEvery(RepeatEvery);
+            trip.setRequestCodeHome(isEdit ? requestCode : requestCode++);
+            calendarMain = GenerateCalendarObject.generateCalendar(TripDate, TripTime);
+            reminderPresenter.startReminderService(calendarMain, trip.getRequestCodeHome());
+            //trip.setRoundRepeatEvery(String.valueOf(RepeatRound));
+            List<Note> notes = new ArrayList<>();
+            for (int i = 0; i < NotesAL.size(); i++) {
+                Note note = new Note();
+                note.setName(NotesAL.get(i));
+                note.setStatus("unchecked");
+                notes.add(note);
+//                    note.setTripID();
+                //note.setId();
+//                    Toast.makeText(getApplicationContext(),note.getName(),Toast.LENGTH_LONG).show();
             }
-            setRequestCodeInSharedPreference(requestCode);
-            if (Internetonnection.isNetworkAvailable(this))
-                requestCodePresenter.updateRequestCode(requestCode);
-        }
-        else {
-            UpdateTripPresenter updateTripPresenter = new UpdateTripPresenter(this);
-            updateTripPresenter.updateTrip(trip);
-        }
-        finish();
+            trip.setNotes(notes);
+            if (!isEdit) {
 
-    }
+                saveTripPresenter.saveTrip(trip, false);
+                if (isRound == 1) {
+                    if (RepeatEvery == 0)
+                        RepeatRound = 0;
+                    else
+                        RepeatRound = daysBetween(calendarMain, calendarRound);
+                    Trip tripRound = new Trip();
+                    tripRound.setName(TripName + "- Round");
+                    tripRound.setDescription(TripDesc);
+                    //trip.setIsRound(isRound);
+                    tripRound.setDate(RoundDate);
+                    tripRound.setTime(RoundTime);
+                    tripRound.setStatus(status);
+                    tripRound.setEndLatitude(StartLat);
+                    tripRound.setEndLongitude(StartLong);
+                    tripRound.setStartLatitude(EndLat);
+                    tripRound.setStartLongitude(EndLong);
+                    tripRound.setRepeatEvery(RepeatRound);
+                    tripRound.setRequestCodeHome(requestCode++);
+                    reminderPresenter.startReminderService(calendarRound, tripRound.getRequestCodeHome());
+                    tripRound.setNotes(notes);
+                    saveTripPresenter.saveTrip(tripRound, false);
+                }
+                setRequestCodeInSharedPreference(requestCode);
+                if (Internetonnection.isNetworkAvailable(this))
+                    requestCodePresenter.updateRequestCode(requestCode);
+            } else {
+                UpdateTripPresenter updateTripPresenter = new UpdateTripPresenter(this);
+                updateTripPresenter.updateTrip(trip);
+            }
+            finish();
+        }
     }
     @Override
     public void setRequestCodeInSharedPreference(int requestCode) {

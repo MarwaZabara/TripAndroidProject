@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.ControlNetworkChangeBroadcast;
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.Model.Room.RoomRepeatedTripHistoryModel;
+import com.example.tripandroidproject.POJOs.RepeatedTripHistory;
 import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Model.Room.RoomNoteModel;
@@ -202,10 +204,10 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 this.setTitle("History");
                 drawerLayout.closeDrawers();
                 break;
-            case R.id.synch:
-                Intent intent = new Intent(this, TestReminder.class);
-                startActivity(intent);
-                break;
+//            case R.id.synch:
+//                Intent intent = new Intent(this, TestReminder.class);
+//                startActivity(intent);
+//                break;
             case R.id.logout:
                 Toast.makeText(NavDrawer.this, "Logout Selected", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
@@ -234,6 +236,7 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 
         RoomTripModel roomTripModel = new RoomTripModel(this);
         RoomNoteModel roomNoteModel = new RoomNoteModel(this);
+        RoomRepeatedTripHistoryModel roomRepeatedTripHistoryModel = new RoomRepeatedTripHistoryModel(this);
         List<Trip> trips = roomTripModel.getAllOfflineTrip();
         for (int i = 0 ; i<trips.size();i++)
         {
@@ -242,6 +245,13 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
             for (int j=0;j<notes.size();j++) {
                 roomNoteModel.deleteNote(notes.get(j));
             }
+        }
+        List<RepeatedTripHistory> repeatedTripHistories = roomRepeatedTripHistoryModel.getRepeatedHistory();
+        for (int i = 0 ; i<repeatedTripHistories.size();i++)
+        {
+            roomRepeatedTripHistoryModel.deleteOfflineTrip(repeatedTripHistories.get(i));
+
+
         }
         userPresenter.deleteUser(person);
     }
@@ -255,6 +265,10 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.allTrips:
+                Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
+                setViewPager(0);
+                break;
             case R.id.repeated:
                 Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(2);

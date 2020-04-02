@@ -44,6 +44,7 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
                 repeatedTripHistory.setIsSync(1);
                 repeatedTripHistory.setId(firebaseRepeatedTripHistory.generateKey());
                 firebaseRepeatedTripHistory.saveTrip(repeatedTripHistory);
+                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory);
             }
             else {
                 trip.setIsSync(0);

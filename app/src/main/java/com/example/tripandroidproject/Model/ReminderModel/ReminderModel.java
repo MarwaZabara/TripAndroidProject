@@ -61,6 +61,12 @@ public class ReminderModel implements Reminder.IReminderModel {
         context.startActivity(intent);
         startFloatIcon(tripID,requestCode);
     }
+
+    public void openFloatIcon(String tripID,int requestCode) {
+        intent = new Intent(context, FloatingIconService.class);
+        context.stopService(intent);
+        startFloatIcon(tripID,requestCode);
+    }
     private void startFloatIcon(String tripID,int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(context)) {
 

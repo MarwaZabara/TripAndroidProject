@@ -40,13 +40,14 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
 
     RetrieveTripContract.IRetrieveTripPresenter retrieveTripPresenter;
     FloatingActionButton OpenMapBtn;
-
+    GetOfflineTripPresenter  getOfflineTripPresenter;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.historyfragment, container, false);
+        getOfflineTripPresenter = new GetOfflineTripPresenter(getContext());
         OpenMapBtn = (FloatingActionButton) view.findViewById(R.id.OpenMapBtn);
         OpenMapBtn.setOnClickListener(new View.OnClickListener() {
               @Override
@@ -65,8 +66,9 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
 
 //                  RoomTripModel roomTripModel = new RoomTripModel(,);
 //                  roomTripModel.getOfflineFilteredTrip("Cancel","Finish");
-                  GetOfflineTripPresenter  getOfflineTripPresenter = new GetOfflineTripPresenter(getContext());
+
                   trips = getOfflineTripPresenter.getOfflineFilteredTrip("Cancel","finished");
+                  trips.addAll( getOfflineTripPresenter.getRepeatedHistory());
                   //intent.putExtra("EndList",(Serializable)endList);
                   Intent intent = new Intent(getActivity(), HistoryMapActivity.class);
                   intent.putExtra("Trips",(Serializable)trips);
@@ -107,6 +109,7 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
     public void renderData(List<Trip> trips) {
         //////////get from table trips
         hTrips = trips;
+        hTrips.addAll(getOfflineTripPresenter.getRepeatedHistory());
         myAdapter = new TripAdapter(this.getContext(),hTrips);
         setAdapter(myAdapter);
 //        retrieveTripPresenter.retrieveRepeatedHistoryTrips();
