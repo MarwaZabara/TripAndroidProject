@@ -275,12 +275,22 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         StartLat = trip.getStartLatitude();
         StartLong = trip.getStartLongitude();
         RepeatEvery = (int) trip.getRepeatEvery();
+
         NameTxt.setText(TripName);
         DescTxt.setText(TripDesc);
         TripDateTxt.setText(TripDate);
         TripTimetxt.setText(TripTime);
         StartLocationTxt.setText(getRegionName(StartLat,StartLong));
         DestinationTxt.setText(getRegionName(EndLat,EndLong));
+        trip.setDate(TripDate);
+        trip.setTime(TripTime);
+        trip.setStatus(status);
+        ValidateName(NameTxt);
+        ValidateName(DescTxt);
+        ValidateName(TripDateTxt);
+        ValidateName(TripTimetxt);
+        ValidateName(StartLocationTxt);
+        ValidateName(DestinationTxt);
         switch (RepeatEvery)
         {
             case 0:
@@ -633,15 +643,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         trip.setName(TripName);
         trip.setDescription(TripDesc);
         //trip.setIsRound(isRound);
-        trip.setDate(TripDate);
-        trip.setTime(TripTime);
-        trip.setStatus(status);
-        ValidateName(NameTxt);
-        ValidateName(DescTxt);
-//        ValidateName(TripDateTxt);
-//        ValidateName(TripTimetxt);
-//        ValidateName(StartLocationTxt);
-//        ValidateName(DestinationTxt);
+
                 /*trip.setRoundDate(RoundDate);
                 trip.setRoundTime(RoundTime);
                 trip.setRoundRepeatEvery(String.valueOf(RepeatRound));*/
