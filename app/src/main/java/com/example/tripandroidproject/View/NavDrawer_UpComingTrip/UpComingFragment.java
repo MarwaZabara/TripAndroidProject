@@ -71,7 +71,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
                     return -1;
                 else if (calender1.after(calender2))
                     return 1;
-                else 
+                else
                     return 0;
             }
         });
