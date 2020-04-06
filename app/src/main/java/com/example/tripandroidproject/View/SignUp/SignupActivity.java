@@ -98,9 +98,9 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                 presenter.onSendData(userDetails);
                 uploadImage(userDetails.getFirebasePhotoPath());
 
-            }else {
-                new CustomToast().Show_Toast(this, view,"No Internet Connection.");
             }
+        }else {
+            new CustomToast().Show_Toast(this, view,"No Internet Connection.");
         }
     }
     private void selectImage(Context context) {

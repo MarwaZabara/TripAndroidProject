@@ -39,9 +39,9 @@ import com.google.android.gms.common.SignInButton;
 import java.util.regex.Pattern;
 
 
-public class LoginActivity extends AppCompatActivity implements LoginContract.ISignInView , RoomPersonContract.IRoomPersonView , FirebaseUserContract.IUserView {
+public class LoginActivity extends AppCompatActivity implements LoginContract.ISignInView, RoomPersonContract.IRoomPersonView, FirebaseUserContract.IUserView {
 
-    private EditText loginEmail,loginPassword;
+    private EditText loginEmail, loginPassword;
     private TextView forgetPass;
     private SignInButton signInButton;
     private Person person;
@@ -72,14 +72,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
 
         shakeAnimation = AnimationUtils.loadAnimation(this,
                 R.anim.shake_anim);
-        presenter = new LoginPresenter(this,this,this);
+        presenter = new LoginPresenter(this, this, this);
         userPresenter = new UserPresenter(this);
         checkInternetConnection = new CheckInternetConnection();
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
         forgetPass = findViewById(R.id.forgetPass);
-        forgetPass.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        forgetPass.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ForgetPassword.class);
                 startActivity(intent);
             }
@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     protected void onStart() {
         super.onStart();
         person = userPresenter.getUser();
-            if(person!= null){
+        if (person != null) {
             Intent intent = new Intent(this, NavDrawer.class);
             startActivity(intent);
         }
@@ -116,18 +116,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        presenter = new LoginPresenter(this,this,this);
+        presenter = new LoginPresenter(this, this, this);
         presenter.LogInByGoogle(requestCode, resultCode, data);
     }
 
     private void signInGoogle() {
-        if (checkInternetConnection.getConnectivityStatusString(this)){
+        if (checkInternetConnection.getConnectivityStatusString(this)) {
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
             startActivityForResult(signInIntent, RC_SIGN_IN);
-        }
-        else {
+        } else {
 //            Toast.makeText(this,"There is no internet connection",Toast.LENGTH_LONG).show();
-            new CustomToast().Show_Toast(this, this.getCurrentFocus(),"No Internet Connection.");
+            new CustomToast().Show_Toast(this, this.getCurrentFocus(), "No Internet Connection.");
         }
     }
 
@@ -138,17 +137,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
 
     public void LogIn_Btn(View view) {
         if (checkInternetConnection.getConnectivityStatusString(this)) {
-            String email =  loginEmail.getText().toString();
-            String pass =  loginPassword.getText().toString();
-            if (pass.isEmpty() || email.isEmpty()){
+            String email = loginEmail.getText().toString();
+            String pass = loginPassword.getText().toString();
+            if (pass.isEmpty() || email.isEmpty()) {
                 relativeLayout.startAnimation(shakeAnimation);
                 loginEmail.setError("Email field can't be empty");
                 loginPassword.setError("Password field can't be empty");
-                new CustomToast().Show_Toast(this, view,"Please enter both credentials.");
-            }else {
+                new CustomToast().Show_Toast(this, view, "Please enter both credentials.");
+            } else {
                 if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     loginEmail.setError("Please Enter valid email address");
-                }else {
+                } else {
                     loginPassword.setError(null);
                     loginEmail.setError(null);
                     person = new Person();
@@ -157,19 +156,19 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                     presenter = new LoginPresenter(this, this, this);
                     presenter.onSendData(person);
                 }
-                }
-            }else {
-            new CustomToast().Show_Toast(this, view,"No Internet Connection.");
+            }
+        } else {
+            new CustomToast().Show_Toast(this, view, "No Internet Connection.");
         }
     }
 
     @Override
     public void showMessage(Boolean result) {
-        if (result){
-            if (person.getName()==null){       ///////userData doesn't store in room
+        if (result) {
+            if (person.getName() == null) {       ///////userData doesn't store in room
 //                getUserData();
                 firebaseUserPresenter.getUserData();   //////get from firebase
-            }else  {
+            } else {
                 Intent intent = new Intent(this, NavDrawer.class);
                 intent.putExtra("Email", person.getEmail());
                 intent.putExtra("Name", person.getName());
@@ -177,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
                 intent.putExtra("password", person.getPassword());
                 startActivity(intent);
             }
-        } else{
+        } else {
             loginPassword.setError("Please Enter valid Password");
             loginEmail.setError("Please Enter valid email address");
         }
@@ -206,9 +205,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.IS
         firebaseUserPresenter = new FirebaseUserPresenter(this);
         firebaseUserPresenter.getUserData();
     }
+
     @Override
     public void successLoginGoogle() {
-        Intent intent = new Intent(this,NavDrawer.class);
+        Intent intent = new Intent(this, NavDrawer.class);
         startActivity(intent);
     }
 }
