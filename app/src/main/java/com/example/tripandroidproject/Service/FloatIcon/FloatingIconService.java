@@ -40,15 +40,7 @@ public class FloatingIconService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//super.onStartCommand()
-//        super.onCreate();
-        //Inflate the floating view layout we created
-        //mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_icon, null);
         int LAYOUT_FLAG;
-
-//        intent = null;
-//        intent = new Intent(FloatingIconService.this, NavDrawer.class);
-//        intent.putExtra("isFloatingService",true);
         mFloatingView = LayoutInflater.from(this).inflate(R.layout.layout_floating_icon, null);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
@@ -62,20 +54,6 @@ public class FloatingIconService extends Service {
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 //Add the view to the window.
-//        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-//                WindowManager.LayoutParams.WRAP_CONTENT,
-//                WindowManager.LayoutParams.WRAP_CONTENT,
-//                LAYOUT_FLAG,
-//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-//                PixelFormat.TRANSLUCENT);
-        //Add the view to the window.
-//        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-//                WindowManager.LayoutParams.WRAP_CONTENT,
-//                WindowManager.LayoutParams.WRAP_CONTENT,
-//                WindowManager.LayoutParams.TYPE_PHONE,
-//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-//                PixelFormat.TRANSLUCENT);
-
         //Specify the view position
         params.gravity = Gravity.TOP | Gravity.LEFT;        //Initially view will be added to top-left corner
         params.x = 0;
@@ -209,22 +187,6 @@ public class FloatingIconService extends Service {
             }
         });
 
-
-//Open the application on thi button click
-//        ImageView openButton = (ImageView) mFloatingView.findViewById(R.id.open_button);
-//        openButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //Open the application  click.
-//                Intent intent = new Intent(FloatingIconService.this, TestReminder.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//
-//
-//                //close the service and remove view from the view hierarchy
-//                stopSelf();
-//            }
-//        });
     }
 
     @Nullable

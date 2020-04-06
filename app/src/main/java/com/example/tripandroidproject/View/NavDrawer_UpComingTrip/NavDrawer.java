@@ -299,10 +299,28 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 //        String userImageUri = intent.getStringExtra("userImgUri");
 //        if (pass == null & imageUri!=null) {
         if(person.getFirebasePhotoPath() != null){
-            mStorageRef = FirebaseStorage.getInstance().getReference();
-            Uri uri = Uri.parse(person.getFirebasePhotoPath());
+            if(person.getPassword() != null) {
+                mStorageRef = FirebaseStorage.getInstance().getReference();
+                Uri uri = Uri.parse(person.getFirebasePhotoPath());
 //            StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/"+FirebaseAuth.getInstance().getUid() + '/'+ person.getFirebasePhotoPath());
-            StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/" + person.getFirebasePhotoPath());
+                StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/" + person.getFirebasePhotoPath());
+                final long ONE_MEGABYTE = 1024 * 1024;
+                ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytesPrm) {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytesPrm, 0, bytesPrm.length);
+                        imageView.setImageBitmap(bmp);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        imageView.setImageResource(R.mipmap.ic_launcher);
+                    }
+                });
+            }
+            else {
+                Picasso.get().load(person.getFirebasePhotoPath()).resize(120, 120).centerCrop().into(imageView);
+            }
             /*Glide.with(imageView.getContext())
                     .load(ref)
                     .into(imageView);*/
@@ -313,27 +331,16 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 //                    .into(imageView);
 //            StorageReference referenseLcl = FirebaseStorage.getInstance().getReference();
 //            StorageReference islandRefLcl = referenseLcl.child("images/"+FirebaseAuth.getInstance().getUid() + '/'+ person.getFirebasePhotoPath());
-            final long ONE_MEGABYTE = 1024 * 1024;
-            ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytesPrm) {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(bytesPrm, 0, bytesPrm.length);
-                    imageView.setImageBitmap(bmp);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    imageView.setImageResource(R.mipmap.ic_launcher);
-                }
-            });
+
 
             ///// it's image url
 //            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
-        }else if(imageUri != null) {
-            imageView.setImageURI(Uri.parse(imageUri));
-//            imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-//            imageView.setImageURI(Uri.parse(imgPath));
         }
+//        else if(imageUri != null) {
+//            imageView.setImageURI(Uri.parse(imageUri));
+////            imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+////            imageView.setImageURI(Uri.parse(imgPath));
+//        }
     }
 
 

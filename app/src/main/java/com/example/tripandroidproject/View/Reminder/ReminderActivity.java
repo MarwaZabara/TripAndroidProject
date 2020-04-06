@@ -124,7 +124,6 @@ public class ReminderActivity extends AppCompatActivity {
 
     private void StartTrip() {
         String destination = getRegionName(trip.getEndLatitude(),trip.getEndLongitude());
-//        String destination = "1+محمود+سلامة،+كوم+الدكة+غرب،+العطارين،+الإسكندرية";
         startTripPresenter = new StartTripPresenter(this);
         startTripPresenter.startTrip(destination,trip.getId(),tripRequestCode);
     }

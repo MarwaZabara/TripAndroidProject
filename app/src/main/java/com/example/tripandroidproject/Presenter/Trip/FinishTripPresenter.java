@@ -44,12 +44,12 @@ public class FinishTripPresenter implements ITripPresenter, com.example.tripandr
                 repeatedTripHistory.setIsSync(1);
                 repeatedTripHistory.setId(firebaseRepeatedTripHistory.generateKey());
                 firebaseRepeatedTripHistory.saveTrip(repeatedTripHistory);
-                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory);
+                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory); /// 8lt
             }
             else {
                 trip.setIsSync(0);
                 repeatedTripHistory.setIsSync(0);
-                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory);
+                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory);/// s7
             }
             Calendar calendarHome = GenerateCalendarObject.generateCalendar(trip.getDate(),"0-0");
 //            calendarHome.add(Calendar.DAY_OF_YEAR, (int) trip.getRepeatEvery());

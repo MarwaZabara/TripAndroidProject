@@ -28,12 +28,6 @@ public class BootBroadcastReeiver extends BroadcastReceiver {
                     Calendar calendar = GenerateCalendarObject.generateCalendar(trips.get(i).getDate(), trips.get(i).getTime());
                     reminderPresenter.startReminderService(calendar, trips.get(i).getRequestCodeHome());
                     Log.i("AfterReboot","Save"+trips.get(i).getName());
-                    /*if(trips.get(i).getIsRound() == 1) {
-                        calendar = GenerateCalendarObject.generateCalendar(trips.get(i).getRoundDate(), trips.get(i).getRoundTime());
-                        reminderPresenter.startReminderService(calendar, trips.get(i).getRequestCodeAway());
-                        Log.i("AfterReboot","Save Round "+trips.get(i).getName());
-                    }*/
-
                 }
 
             }

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -49,6 +50,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
     private EditText usrName,usrEmail,usrPass,usrConfirmPass;
     private ImageView usrImg;
     private String usrImgUri = "";
+    private Button signInBtn;
     private static final Pattern PASSWORD_PATTERN =
             Pattern.compile("^" +
                     "(?=.*[0-9])" +         //at least 1 digit
@@ -58,6 +60,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                     ".{6,}" +               //at least 6 characters
                     "$");
     private Uri selectedImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +70,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
         usrPass = findViewById(R.id.userPassword);
         usrConfirmPass = findViewById(R.id.userConfirmPass);
         usrImg = findViewById(R.id.userImage);
-
+        signInBtn = findViewById(R.id.signInBtn);
         userDetails = new Person();
         presenter = new SignUpPresenter(this,this);
         checkInternetConnection = new CheckInternetConnection();
@@ -273,5 +276,9 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                         }
                     });
         }
+    }
+
+    public void gotoLogin(View view) {
+        finish();
     }
 }

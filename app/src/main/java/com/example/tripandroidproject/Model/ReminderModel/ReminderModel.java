@@ -42,7 +42,6 @@ public class ReminderModel implements Reminder.IReminderModel {
              calendar.add(Calendar.DATE, 1);
          }
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-//        requestCode++;
     }
     public void stopAlarmService( int requestCode) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -52,7 +51,6 @@ public class ReminderModel implements Reminder.IReminderModel {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
         pendingIntent.cancel();
         alarmManager.cancel(pendingIntent);
-//        requestCode++;
     }
     @Override
     public void startTrip(String destinationPlaceName, String tripID,int requestCode) {

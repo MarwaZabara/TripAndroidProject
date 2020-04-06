@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
+import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
 import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
@@ -25,6 +26,9 @@ import com.example.tripandroidproject.Presenter.Trip.SaveTripPresenter;
 import com.example.tripandroidproject.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class UpComingFragment extends Fragment implements RetrieveTripContract.IRetrieveTripView {
@@ -56,8 +60,21 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
 /////////////////////////////////////////////////////////////////////////////////
         getOfflineTripPresenter = new GetOfflineTripPresenter(this.getContext());
 //        List<Trip> trips = getOfflineTripPresenter.getTrips();
-        List<Trip> trips = getOfflineTripPresenter.getOfflineFilteredTrip("upcoming","repeated");
-        trips.addAll(getOfflineTripPresenter.getOfflineFilteredTrip("start","repeated_Start"));
+        List<Trip> trips = getOfflineTripPresenter.getOfflineFilteredTrip("start","repeated_Start");
+
+        trips.addAll(getOfflineTripPresenter.getOfflineFilteredTrip("upcoming","repeated"));
+        Collections.sort(trips, new Comparator<Trip>() {
+            public int compare(Trip trip1, Trip trip2) {
+                Calendar calender1 = GenerateCalendarObject.generateCalendar(trip1.getDate(),trip1.getTime());
+                Calendar calender2 = GenerateCalendarObject.generateCalendar(trip2.getDate(),trip2.getTime());
+                if (calender1.before(calender2))
+                    return -1;
+                else if (calender1.after(calender2))
+                    return 1;
+                else 
+                    return 0;
+            }
+        });
         if(trips.size() == 0){
             saveTripOfflinePresenter = new SaveTripPresenter(this.getContext());
             retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);
@@ -73,6 +90,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         renderData(trips);
         return view;
     }
+
 
     public void setAdapter(RecyclerView.Adapter myAdapter) {
         this.myAdapter = myAdapter;
@@ -90,5 +108,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
 //    public void returnAllHistory(List<Trip> historyTrips) {
 //        ///for history only
 //    }
+
+
 
 }

@@ -316,7 +316,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
             if (lat>0 & lon>0) {
                 addresses = geocoder.getFromLocation(lat, lon, 1);
                 String address = addresses.get(0).getAddressLine(0);
-                region = addresses.get(0).getLocality();
+                    region = addresses.get(0).getLocality();
             }
         } catch (IOException e) {
             e.printStackTrace();

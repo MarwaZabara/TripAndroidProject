@@ -47,8 +47,6 @@
 
 
                 <androidx.cardview.widget.CardView
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     style="@style/loginCard"
                     app:cardCornerRadius="@dimen/loginCardRadius"
                     android:elevation="5dp"
@@ -151,13 +149,16 @@
                             android:textAlignment="center"
                             android:text="@string/signup_login_hint"
                             android:gravity="center_horizontal" />
+
                         <Button
+                            android:id="@+id/signInBtn"
                             style="@style/viewParent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/primaryTextColor"
+                            android:background="@null"
+                            android:onClick="gotoLogin"
                             android:text="@string/d_signin"
-                            android:background="@null"/>
+                            android:textColor="@color/primaryTextColor" />
 
                     </LinearLayout>
 

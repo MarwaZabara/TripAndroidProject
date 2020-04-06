@@ -47,7 +47,7 @@ public class CancelTripPresenter implements ITripPresenter, UpdateTripContract.I
                 repeatedTripHistory.setIsSync(1);
                 repeatedTripHistory.setId(firebaseRepeatedTripHistory.generateKey());
                 firebaseRepeatedTripHistory.saveTrip(repeatedTripHistory);
-                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory);
+                roomRepeatedTripHistoryModel.saveTrip(repeatedTripHistory); //8lt
             }
             else {
                 trip.setIsSync(0);

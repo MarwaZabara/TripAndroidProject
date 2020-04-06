@@ -9,6 +9,7 @@ import com.example.tripandroidproject.Contract.RequestCode.RequestCodeContract;
 import com.example.tripandroidproject.Model.InternetConnection.Internetonnection;
 import com.example.tripandroidproject.Presenter.RequestCode.RequestCodePresenter;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
+import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 import com.example.tripandroidproject.View.UnderTest.TestReminder;
 
 public class NetworkChangeBroadcastReceiver extends BroadcastReceiver implements RequestCodeContract.IRequestCodeView {
@@ -17,10 +18,10 @@ public class NetworkChangeBroadcastReceiver extends BroadcastReceiver implements
 
         if(Internetonnection.isNetworkAvailable(context))
         {
-            if(TestReminder.requestCode > 0) {
+            if(AddTripActivity.requestCode > 0) {
                 RequestCodePresenter requestCodePresenter;
                 requestCodePresenter = new RequestCodePresenter(this);
-                requestCodePresenter.updateRequestCode(TestReminder.requestCode);
+                requestCodePresenter.updateRequestCode(AddTripActivity.requestCode);
             }
             GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(context);
             getOfflineTripPresenter.getOfflineTrip();
