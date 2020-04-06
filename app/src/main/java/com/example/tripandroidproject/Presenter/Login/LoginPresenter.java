@@ -26,7 +26,7 @@ public class LoginPresenter implements LoginContract.ISignInPresenter, RoomPerso
         this.context = context;
         this.personView = personView;
         view = newView;
-        model = new LoginModel(context,this,this);
+        model = new LoginModel(context,this);
     }
 
     @Override

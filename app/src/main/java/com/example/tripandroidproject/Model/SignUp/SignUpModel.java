@@ -39,7 +39,7 @@ public class SignUpModel implements SignUpContract.ISignUpModel {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
-                    mAuth = FirebaseAuth.getInstance();
+//                    mAuth = FirebaseAuth.getInstance();
                     roomPersonModel.savePerson(userDetails);
                     FirebaseUserModel firebaseUserModel = new FirebaseUserModel();
                     firebaseUserModel.saveUserData(userDetails);

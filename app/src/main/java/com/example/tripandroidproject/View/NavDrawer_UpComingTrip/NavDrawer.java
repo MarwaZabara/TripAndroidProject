@@ -192,11 +192,13 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 Toast.makeText(NavDrawer.this, "Profile Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(4);
                 drawerLayout.closeDrawers();
+                this.setTitle("");
                 break;
             case R.id.upComingTrip:
                 Toast.makeText(NavDrawer.this, "UpComingTrip us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(0);
                 drawerLayout.closeDrawers();
+                this.setTitle("UpComing Trip");
                 break;
             case R.id.history:
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
@@ -268,14 +270,17 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
             case R.id.allTrips:
                 Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(0);
+                this.setTitle("All Trips");
                 break;
             case R.id.repeated:
                 Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(2);
+                this.setTitle("Repeated Trip");
                 break;
             case R.id.unrepeated:
                 Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(3);
+                this.setTitle("UnRepeated Trip");
                 break;
             default:
                 break;
@@ -326,9 +331,10 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                     imageView.setImageResource(R.mipmap.ic_launcher);
                 }
             });
-
-            ///// it's image url
-//            Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+            if (pass == null & imageUri!=null) {
+                ///// it's image url
+                Picasso.get().load(imageUri).resize(120, 120).centerCrop().into(imageView);
+            }
         }else if(imageUri != null) {
             imageView.setImageURI(Uri.parse(imageUri));
 //            imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));

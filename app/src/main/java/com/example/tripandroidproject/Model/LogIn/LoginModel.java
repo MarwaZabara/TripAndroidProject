@@ -26,14 +26,14 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 
 public class LoginModel implements LoginContract.ISignInModel {
-    private static final String TAG = "State" ;
+    private static final String TAG = "State";
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 9001;
     private Context context;
     private LoginContract.ISignInPresenter presenter;
     private RoomPersonModel roomPersonModel;
 
-    public LoginModel(Context context, LoginContract.ISignInPresenter presenter,RoomPersonContract.IRoomPersonPresenter personPresenter){
+    public LoginModel(Context context, LoginContract.ISignInPresenter presenter) {
         mAuth = FirebaseAuth.getInstance();
         this.context = context;
         this.presenter = presenter;
@@ -43,22 +43,22 @@ public class LoginModel implements LoginContract.ISignInModel {
     @Override
     public void signIn(final Person userDetails) {
         if (userDetails.getEmail().matches("") | userDetails.getPassword().matches("")) {
-            Log.d(TAG,"error from sign in");
+            Log.d(TAG, "error from sign in");
             return;
         }
 
         mAuth.signInWithEmailAndPassword(userDetails.getEmail(), userDetails.getPassword())
-                    .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                presenter.onSucessLogin();
-                            } else {
-                                Log.d("TAG", "signInWithEmail:failure", task.getException());
-                                presenter.onFail();
-                            }
+                .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            presenter.onSucessLogin();
+                        } else {
+                            Log.d("TAG", "signInWithEmail:failure", task.getException());
+                            presenter.onFail();
                         }
-                    });
+                    }
+                });
 
     }
 
@@ -75,7 +75,7 @@ public class LoginModel implements LoginContract.ISignInModel {
                             userDetails.setName(acct.getGivenName());
                             userDetails.setImgUri(acct.getPhotoUrl().toString());
                             userDetails.setFirebasePhotoPath(acct.getPhotoUrl().toString());
-                            if(roomPersonModel.getUser() == null) {
+                            if (roomPersonModel.getUser() == null) {
                                 roomPersonModel.savePerson(userDetails);
                             }
                             presenter.onSucess();
@@ -89,7 +89,7 @@ public class LoginModel implements LoginContract.ISignInModel {
     }
 
     @Override
-    public void LogInByGoogle(int requestCode, int resultCode, Intent data){
+    public void LogInByGoogle(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {

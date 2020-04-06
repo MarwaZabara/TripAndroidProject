@@ -18,7 +18,6 @@ public class SignUpPresenter implements SignUpContract.ISignUpPresenter {
     public SignUpPresenter(SignUpContract.ISignUpView newView, Context context){
         this.context = context;
         view = newView;
-
     }
     @Override
     public void onSendData(Person userDetails) {
