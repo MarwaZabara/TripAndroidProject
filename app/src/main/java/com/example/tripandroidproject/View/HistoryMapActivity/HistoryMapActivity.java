@@ -1,5 +1,6 @@
 package com.example.tripandroidproject.View.HistoryMapActivity;
 
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.List;
 
@@ -72,14 +75,16 @@ public class HistoryMapActivity extends AppCompatActivity implements OnMapReadyC
                 originMarker = map.addMarker(originMO);
                 originMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 destMarker = map.addMarker(destMO);
+//                map.addPolyline(new Polyline().setColor(Color.RED));
                 destMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
                 drawRouteMaps.draw(origin, destination, map);
+
                 bounds = bounds.builder()
                         .include(origin)
                         .include(destination).build();
                 Point displaySize = new Point();
                 getWindowManager().getDefaultDisplay().getSize(displaySize);
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, displaySize.y, 30));
 
             }
         }

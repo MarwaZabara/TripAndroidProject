@@ -18,8 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.POJOs.Note;
+import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
 import com.example.tripandroidproject.Presenter.Trip.FinishTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.FloatIcon.FloatAdapter;
 import com.example.tripandroidproject.View.NavDrawer_UpComingTrip.NavDrawer;
@@ -75,7 +77,9 @@ public class FloatingIconService extends Service {
         recyclerView.setLayoutManager(layoutManager);
         tripID = intent.getStringExtra("tripID");
         List<Note> notes = getNotes(tripID);
-        FloatAdapter floatAdapter = new FloatAdapter(this,notes);
+        GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(this);
+        Trip trip =  getOfflineTripPresenter.getTripInfoWithId(tripID);
+        FloatAdapter floatAdapter = new FloatAdapter(this,notes,trip.getRepeatEvery());
         recyclerView.setAdapter(floatAdapter);
 
 

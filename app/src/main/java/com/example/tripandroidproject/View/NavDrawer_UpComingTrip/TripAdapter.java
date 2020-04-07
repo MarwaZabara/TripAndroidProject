@@ -23,6 +23,7 @@ import com.example.tripandroidproject.Contract.Trip.UpdateTripOfflineContract;
 import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
 import com.example.tripandroidproject.Model.ReminderModel.ReminderModel;
+import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
@@ -30,6 +31,7 @@ import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.Presenter.Trip.CancelTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.FinishTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.Service.FloatIcon.FloatingIconService;
@@ -73,18 +75,20 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
     }
 
     private void sortArray(List<Trip> upComingTripList) {
-        Collections.sort(upComingTripList, new Comparator<Trip>() {
-            public int compare(Trip trip1, Trip trip2) {
-                Calendar calender1 = GenerateCalendarObject.generateCalendar(trip1.getDate(),trip1.getTime());
-                Calendar calender2 = GenerateCalendarObject.generateCalendar(trip2.getDate(),trip2.getTime());
-                if (calender1.before(calender2))
-                    return -1;
-                else if (calender1.after(calender2))
-                    return 1;
-                else
-                    return 0;
-            }
-        });
+        if(upComingTripList.size() > 0) {
+            Collections.sort(upComingTripList, new Comparator<Trip>() {
+                public int compare(Trip trip1, Trip trip2) {
+                    Calendar calender1 = GenerateCalendarObject.generateCalendar(trip1.getDate(), trip1.getTime());
+                    Calendar calender2 = GenerateCalendarObject.generateCalendar(trip2.getDate(), trip2.getTime());
+                    if (calender1.before(calender2))
+                        return -1;
+                    else if (calender1.after(calender2))
+                        return 1;
+                    else
+                        return 0;
+                }
+            });
+        }
     }
 
     @NonNull
@@ -227,6 +231,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
                     if(!status.equalsIgnoreCase("repeated")) {
                         upComingTripList.remove(position);
                         notifyItemRemoved(position);
+                    }
+                    else {
+                        GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(context);
+                        trip = getOfflineTripPresenter.getTripInfo(trip.getRequestCodeHome());
+                        upComingTripList.remove(position);
+                        upComingTripList.add(position,trip);
+                        sortArray(upComingTripList);
+                        notifyDataSetChanged();
                     }
                 }
                 else if (options[item].equals("Finish Trip")) {

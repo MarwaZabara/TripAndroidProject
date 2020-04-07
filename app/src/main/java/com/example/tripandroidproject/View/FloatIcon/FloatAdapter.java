@@ -19,10 +19,12 @@ public class FloatAdapter extends RecyclerView.Adapter<FloatAdapter.ViewHolder> 
     private View view;
     List<Note> notes;
     Context context;
+    long repeatedEvery;
     UpdateNotePresenter updateNotePresenter;
-    public FloatAdapter(Context context, List<Note> notes) {
+    public FloatAdapter(Context context, List<Note> notes, long repeatedEvery) {
         this.context = context;
         this.notes = notes;
+        this.repeatedEvery = repeatedEvery;
         updateNotePresenter = new UpdateNotePresenter(context);
     }
     @NonNull
@@ -43,15 +45,17 @@ public class FloatAdapter extends RecyclerView.Adapter<FloatAdapter.ViewHolder> 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(repeatedEvery > 0){
 
-                if (holder.checkBox.isChecked())
-                {
-                    notes.get(position).setStatus("checked");
+                    if (holder.checkBox.isChecked())
+                    {
+                        notes.get(position).setStatus("checked");
+                    }
+                    else {
+                        notes.get(position).setStatus("unchecked");
+                    }
+                    updateNotePresenter.updateNote(notes.get(position));
                 }
-                else {
-                    notes.get(position).setStatus("unchecked");
-                }
-                updateNotePresenter.updateNote(notes.get(position));
             }
         });
     }
