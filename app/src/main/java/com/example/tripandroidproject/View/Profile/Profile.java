@@ -91,6 +91,13 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
         firebaseUserPresenter = new FirebaseUserPresenter();
         getUserLogIn = new SaveUserLogIn(this.getContext());
 
+
+        ////////////////////////////// to ignore edit btn
+        edit.setVisibility(View.GONE);
+
+
+
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +114,28 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
                 Person user = new Person();
                 user.setName(name.getText().toString());
                 user.setEmail(email.getText().toString());
+                if(user.getFirebasePhotoPath() != null) {
+                    if (user.getPassword() != null) {
+                        mStorageRef = FirebaseStorage.getInstance().getReference();
+                        Uri uri = Uri.parse(user.getFirebasePhotoPath());
+                        StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/" + user.getFirebasePhotoPath());
+                        final long ONE_MEGABYTE = 1024 * 1024;
+                        ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytesPrm) {
+                                Bitmap bmp = BitmapFactory.decodeByteArray(bytesPrm, 0, bytesPrm.length);
+                                imageView.setImageBitmap(bmp);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                imageView.setImageResource(R.mipmap.ic_launcher);
+                            }
+                        });
+                    } else {
+                        Picasso.get().load(user.getFirebasePhotoPath()).resize(120, 120).centerCrop().into(imageView);
+                    }
+                }
 //                setImageInView();
                 UserPresenter userPresenter = new UserPresenter(context);
                 userPresenter.updateUserInRoom(user);
