@@ -19,4 +19,6 @@ public interface RepeatedTripHistoryDAO {
     public void delete(RepeatedTripHistory repeatedTripHistorie);
     @Query("SELECT * FROM RepeatedTripHistory")
     public List<RepeatedTripHistory> getTrips();
+    @Query("SELECT * FROM RepeatedTripHistory WHERE isSync = 0")
+    public List<RepeatedTripHistory> getRepeatedHistoryNotSync();
 }

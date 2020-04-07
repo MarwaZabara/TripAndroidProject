@@ -45,7 +45,7 @@ public class FloatAdapter extends RecyclerView.Adapter<FloatAdapter.ViewHolder> 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(repeatedEvery > 0){
+                if(repeatedEvery == 0){
 
                     if (holder.checkBox.isChecked())
                     {

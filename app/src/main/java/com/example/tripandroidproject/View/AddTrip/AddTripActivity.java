@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -100,6 +101,8 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
     private boolean isEdit;
     private String tripID = null;
     Switch IsRound;
+    private LinearLayout roundLinearlay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +125,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         DescTxt = findViewById(R.id.DescTxt);
         Next = findViewById(R.id.NextBtn);
         Repeatspinner = findViewById(R.id.Repeatspinner);
+        roundLinearlay = findViewById(R.id.roundLinearlay);
         calendarMain = Calendar.getInstance();
         calendarRound = Calendar.getInstance();
         Repeatspinner.setSelection(3);
@@ -299,6 +303,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
         RoundTimeTxt.setVisibility(View.GONE);
         RoundDateTxt.setVisibility(View.GONE);
         IsRound.setVisibility(View.GONE);
+        roundLinearlay.setVisibility(View.GONE);
         calendarMain = GenerateCalendarObject.generateCalendar(TripDate,TripTime);
         GetNotePresenter getNotePresenter = new GetNotePresenter(this,false);
         trip.setNotes(getNotePresenter.getNotes(trip.getId()));

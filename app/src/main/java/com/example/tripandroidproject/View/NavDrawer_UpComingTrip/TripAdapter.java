@@ -144,6 +144,8 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
                     StartTripPresenter startTripPresenter = new StartTripPresenter(context);
                     String destination = location2;
                     startTripPresenter.startTrip(destination, upComingTripList.get(position).getId(), upComingTripList.get(position).getRequestCodeHome());
+                     upComingTripList.get(position).setStatus(upComingTripList.get(position).getStatus().equals("upcoming") ? "start": "repeated_Start");
+                    notifyDataSetChanged();
                 }
                 else if (upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel")){
                     Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();
@@ -158,7 +160,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
 
             }
         });
-        if(upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel") )
+        if(upComingTripList.get(position).getStatus().equals("finished") || upComingTripList.get(position).getStatus().equals("Cancel") ||  upComingTripList.get(position).getStatus().equals("repeated_Cancelled"))
         {
 //            holder.startTrip.setVisibility(View.INVISIBLE);
             holder.startTrip.setText("Show Notes");
@@ -166,6 +168,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
         else if(upComingTripList.get(position).getStatus().equals("start") || upComingTripList.get(position).getStatus().equals("repeated_Start"))
         {
             holder.startTrip.setText("Show Details");
+        }
+        else {
+            holder.startTrip.setText("Start");
         }
     }
 
@@ -246,11 +251,18 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
 //                    trip.setStatus("Cancel");     ///////change status of trip
                     FinishTripPresenter finishTripPresenter = new FinishTripPresenter(context);
                     finishTripPresenter.finishTrip(trip.getId());
-//                    updateTripOfflinePresenter.updateTrip(trip);
-                    upComingTripList.remove(position);
-                    notifyItemRemoved(position);
-//                  communicatorFrag.cancelTrip(trip);
-//                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
+                    if(!status.equalsIgnoreCase("repeated_Start")) {
+                        upComingTripList.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                    else {
+                        GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(context);
+                        trip = getOfflineTripPresenter.getTripInfo(trip.getRequestCodeHome());
+                        upComingTripList.remove(position);
+                        upComingTripList.add(position,trip);
+                        sortArray(upComingTripList);
+                        notifyDataSetChanged();
+                    }
                 }
 //                else if (options[item].equals("Notes")) {
 //                    Toast.makeText(context, "in notes", Toast.LENGTH_SHORT).show();

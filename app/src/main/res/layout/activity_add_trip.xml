@@ -177,17 +177,21 @@
                                 android:layout_height="28dp" />
 
                         </LinearLayout>
+
                         <LinearLayout
+                            android:id="@+id/roundLinearlay"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 style="@style/viewParent"
+                                android:layout_marginTop="10dp"
+                                android:gravity="start"
                                 android:text="@string/Round"
                                 android:textColor="@color/primaryTextColor"
-                                android:textSize="@dimen/newsMoreTextSize"
-                                android:gravity="start"
-                                android:layout_marginTop="10dp"/>
+                                android:textSize="@dimen/newsMoreTextSize" />
+
                             <Switch
                                 android:id="@+id/RoundSwitch"
                                 android:layout_width="135dp"
