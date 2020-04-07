@@ -69,9 +69,11 @@ public class HistoryFragment extends Fragment implements RetrieveTripContract.IR
                   List<Trip> historytrips = getOfflineTripPresenter.getOfflineFilteredTrip("finished");
                   historytrips.addAll( getOfflineTripPresenter.getRepeatedHistory());
                   //intent.putExtra("EndList",(Serializable)endList);
-                  Intent intent = new Intent(getActivity(), HistoryMapActivity.class);
-                  intent.putExtra("Trips",(Serializable)historytrips);
-                  startActivity(intent);
+                  if(historytrips.size()>0) {
+                      Intent intent = new Intent(getActivity(), HistoryMapActivity.class);
+                      intent.putExtra("Trips", (Serializable) historytrips);
+                      startActivity(intent);
+                  }
 
               }
 

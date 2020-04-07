@@ -47,11 +47,18 @@ public class SaveNotePresenter implements SaveNoteContract.ISaveNotePresenter {
             if(generateKey != null) { // if not null this means that function above called it
                 notes.get(i).setId(generateKey);
                 notes.get(i).setTripID(tripid);
+                roomNoteModel.saveNote(notes.get(i));
             }
-            roomNoteModel.saveNote(notes.get(i));
+
         }
     }
-
+    public void deleteNotesFromRoom(String tripID)
+    {
+        List<Note> notes = roomNoteModel.getNotes(tripID);
+        for (int i = 0 ; i < notes.size() ; i++){
+            roomNoteModel.deleteNote(notes.get(i));
+        }
+    }
     @Override
     public void onSucess() {
 

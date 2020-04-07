@@ -31,15 +31,16 @@ public class UpdateTripPresenter implements ITripPresenter, INotePresenter {
             trip.setIsSync(0);
             roomTripModel.updateTrip(trip);
         }
-        if (trip.getNotes().size() > 0)
-        {
+
             if(Internetonnection.isNetworkAvailable(context))
             {
                 FirebaseNoteModel firebaseNoteModel = new FirebaseNoteModel(this,trip.getId());
                 firebaseNoteModel.deleteNote();
             }
+
             SaveNotePresenter saveNotePresenter = new SaveNotePresenter(context);
+            saveNotePresenter.deleteNotesFromRoom(trip.getId());
             saveNotePresenter.saveNote(trip.getNotes(),trip.getId());
-        }
+
     }
 }

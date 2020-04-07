@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.tripandroidproject.Contract.Trip.GetOfflineTripContract;
 import com.example.tripandroidproject.Contract.Trip.ITripPresenter;
 import com.example.tripandroidproject.Model.Firebase.FirebaseNoteModel;
+import com.example.tripandroidproject.Model.Firebase.FirebaseRepeatedTripHistory;
 import com.example.tripandroidproject.Model.Firebase.FirebaseTripModel;
 import com.example.tripandroidproject.Model.Room.RoomNoteModel;
 import com.example.tripandroidproject.Model.Room.RoomRepeatedTripHistoryModel;
@@ -35,6 +36,18 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
             trips.get(i).setIsSync(1);
             firebaseTripModel.saveTrip(trips.get(i));
             getOfflineNoteWithSpecificTrip(trips.get(i).getId());
+        }
+
+    }
+    public void getNotSyncRepeatedHistoryTrip() {
+        RoomRepeatedTripHistoryModel roomRepeatedTripHistoryModel = new RoomRepeatedTripHistoryModel(this,context);
+
+        List<RepeatedTripHistory> repeatedTripHistories = roomRepeatedTripHistoryModel.getRepeatedHistoryNotSync();
+        FirebaseRepeatedTripHistory firebaseRepeatedTripHistory = new FirebaseRepeatedTripHistory();
+        for (int i = 0; i < repeatedTripHistories.size(); i++) {
+            repeatedTripHistories.get(i).setIsSync(1);
+            firebaseRepeatedTripHistory.saveTrip(repeatedTripHistories.get(i));
+            getOfflineNoteWithSpecificTrip(repeatedTripHistories.get(i).getId());
         }
 
     }
@@ -114,7 +127,7 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
     public Trip setObject(RepeatedTripHistory repeatedTripHistory) {
 
         Trip trip = new Trip(repeatedTripHistory.getId(), repeatedTripHistory.getUserID(), repeatedTripHistory.getName(),
-                repeatedTripHistory.getDescription(), "finished", repeatedTripHistory.getDate(), repeatedTripHistory.getTime(),
+                repeatedTripHistory.getDescription(), repeatedTripHistory.getStatus(), repeatedTripHistory.getDate(), repeatedTripHistory.getTime(),
                 repeatedTripHistory.getRepeatEvery(), repeatedTripHistory.getRequestCodeHome(), repeatedTripHistory.getStartLongitude(),
                 repeatedTripHistory.getStartLatitude(), repeatedTripHistory.getEndLongitude(), repeatedTripHistory.getEndLatitude(), repeatedTripHistory.getIsSync(),
                 repeatedTripHistory.getNotes());

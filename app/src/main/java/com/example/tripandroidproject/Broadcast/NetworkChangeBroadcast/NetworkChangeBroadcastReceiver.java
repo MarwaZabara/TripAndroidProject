@@ -25,6 +25,7 @@ public class NetworkChangeBroadcastReceiver extends BroadcastReceiver implements
             }
             GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(context);
             getOfflineTripPresenter.getOfflineTrip();
+            getOfflineTripPresenter.getNotSyncRepeatedHistoryTrip();
         }
     }
 

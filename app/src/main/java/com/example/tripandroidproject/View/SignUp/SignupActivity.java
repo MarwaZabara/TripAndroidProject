@@ -95,7 +95,7 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                 userDetails.setPassword(usrPass.getText().toString());
                 userDetails.setName(usrName.getText().toString());
                 userDetails.setImgUri(usrImgUri);
-                presenter.onSendData(userDetails);
+//                presenter.onSendData(userDetails);
                 uploadImage(userDetails.getFirebasePhotoPath());
 
             }
@@ -257,14 +257,13 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(SignupActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            presenter.onSendData(userDetails);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(SignupActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -275,6 +274,9 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
+        }
+        else {
+            presenter.onSendData(userDetails);
         }
     }
 

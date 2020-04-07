@@ -43,4 +43,8 @@ public class RoomRepeatedTripHistoryModel {
     public void deleteOfflineTrip(RepeatedTripHistory repeatedTripHistory) {
         repeatedTripHistoryDAO.delete(repeatedTripHistory);
     }
+
+    public List<RepeatedTripHistory> getRepeatedHistoryNotSync() {
+        return repeatedTripHistoryDAO.getRepeatedHistoryNotSync();
+    }
 }
