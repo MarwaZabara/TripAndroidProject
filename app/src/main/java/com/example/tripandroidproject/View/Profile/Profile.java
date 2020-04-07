@@ -1,15 +1,18 @@
 package com.example.tripandroidproject.View.Profile;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -65,6 +68,7 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
     FirebaseStorage storage;
     StorageReference storageReference;
     private String usrImgUri = "";
+    Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,6 +81,7 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
         save = view.findViewById(R.id.proSave);
         edit = view.findViewById(R.id.proEdit);
         editImg = view.findViewById(R.id.editImg);
+        context = this.getContext();
 //        presenter = new SignUpPresenter(this.getContext());
         beforeEdit();
         checkInternetConnection = new CheckInternetConnection();
@@ -103,8 +108,8 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
                 user.setName(name.getText().toString());
                 user.setEmail(email.getText().toString());
 //                setImageInView();
-//                user.setImgUri(" ");
-//                getUserLogIn.storeUserData(user);
+                UserPresenter userPresenter = new UserPresenter(context);
+                userPresenter.updateUserInRoom(user);
                 firebaseUserPresenter.updateUser(user);
                 edit.setVisibility(View.VISIBLE);
                 beforeEdit();
@@ -113,7 +118,7 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
         editImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /////choose Img
+//               chooseImage();
 //                selectImage();
 
             }
@@ -125,8 +130,6 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
         email.setText(user.getEmail());
         if(user.getFirebasePhotoPath() != null) {
             if (user.getPassword() != null) {
-                mStorageRef = FirebaseStorage.getInstance().getReference();
-//                Uri uri = Uri.parse(user.getFirebasePhotoPath());
                 StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/" + user.getFirebasePhotoPath());
                 final long ONE_MEGABYTE = 1024 * 1024;
                 ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -160,7 +163,7 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
     }
 
 
-//    private void selectImage() {
+//     private void selectImage() {
 //        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 //
 //        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
@@ -175,10 +178,9 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
 //                    startActivityForResult(takePicture, 0);
 //
 //                } else if (options[item].equals("Choose from Gallery")) {
-//                    Intent pickPhoto = new Intent(Intent.ACTION_GET_CONTENT);
+//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //                    pickPhoto.setType("image/*");
 //                    startActivityForResult(pickPhoto , 1);
-//
 //                } else if (options[item].equals("Cancel")) {
 //                    dialog.dismiss();
 //                }
@@ -196,7 +198,6 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
 //                    UserPresenter userPresenter = new UserPresenter(this.getContext());
 //                    userPresenter.updateUserInRoom(user);
 //                }
-//
 //                user.setImgUri(usrImgUri);
 //                presenter.onSendData(user);
 //                uploadImage(user.getFirebasePhotoPath());
@@ -252,14 +253,12 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
 //                        @Override
 //                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 //                            progressDialog.dismiss();
-////                            Toast.makeText(this, "Uploaded", Toast.LENGTH_SHORT).show();
 //                        }
 //                    })
 //                    .addOnFailureListener(new OnFailureListener() {
 //                        @Override
 //                        public void onFailure(@NonNull Exception e) {
 //                            progressDialog.dismiss();
-////                            Toast.makeText(SignupActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
 //                        }
 //                    })
 //                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
