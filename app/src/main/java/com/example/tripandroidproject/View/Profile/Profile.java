@@ -1,15 +1,18 @@
 package com.example.tripandroidproject.View.Profile;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -102,9 +105,7 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
                 Person user = new Person();
                 user.setName(name.getText().toString());
                 user.setEmail(email.getText().toString());
-//                setImageInView();
-//                user.setImgUri(" ");
-//                getUserLogIn.storeUserData(user);
+                setImageInView();
                 firebaseUserPresenter.updateUser(user);
                 edit.setVisibility(View.VISIBLE);
                 beforeEdit();
@@ -113,8 +114,8 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
         editImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /////choose Img
-//                selectImage();
+//               chooseImage();
+                selectImage();
 
             }
         });
@@ -125,8 +126,6 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
         email.setText(user.getEmail());
         if(user.getFirebasePhotoPath() != null) {
             if (user.getPassword() != null) {
-                mStorageRef = FirebaseStorage.getInstance().getReference();
-//                Uri uri = Uri.parse(user.getFirebasePhotoPath());
                 StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/" + user.getFirebasePhotoPath());
                 final long ONE_MEGABYTE = 1024 * 1024;
                 ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -160,117 +159,113 @@ public class Profile extends Fragment implements FirebaseUserContract.IUserView 
     }
 
 
-//    private void selectImage() {
-//        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
-//        builder.setTitle("Choose your profile picture");
-//
-//        builder.setItems(options, new DialogInterface.OnClickListener() {
-//
-//            @Override
-//            public void onClick(DialogInterface dialog, int item) {
-//                if (options[item].equals("Take Photo")) {
-//                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                    startActivityForResult(takePicture, 0);
-//
-//                } else if (options[item].equals("Choose from Gallery")) {
-//                    Intent pickPhoto = new Intent(Intent.ACTION_GET_CONTENT);
-//                    pickPhoto.setType("image/*");
-//                    startActivityForResult(pickPhoto , 1);
-//
-//                } else if (options[item].equals("Cancel")) {
-//                    dialog.dismiss();
-//                }
-//            }
-//        });
-//        builder.show();
-//    }
-//
-//    public void setImageInView() {
-//        if (checkInternetConnection.getConnectivityStatusString(this.getContext())) {
-//
-//                if(selectedImage != null) {
-//                    String imageUrl = UUID.randomUUID().toString();
-//                    user.setFirebasePhotoPath(imageUrl);
-//                    UserPresenter userPresenter = new UserPresenter(this.getContext());
-//                    userPresenter.updateUserInRoom(user);
-//                }
-//
-//                user.setImgUri(usrImgUri);
-//                presenter.onSendData(user);
-//                uploadImage(user.getFirebasePhotoPath());
-//
-//            }
-//
-//    }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode != RESULT_CANCELED) {
-//            switch (requestCode) {
-//                case 0:
-//                    if (resultCode == RESULT_OK && data != null) {
-//                        Bitmap selectedImage1 = (Bitmap) data.getExtras().get("data");
-//                        imageView.setImageBitmap(selectedImage1);
-//                    }
-//                    break;
-//                case 1:
-//                    if (resultCode == RESULT_OK && data != null && data.getData()!=null) {
-//                        selectedImage = data.getData();
-//                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//                        if (selectedImage != null) {
-//                            usrImgUri = selectedImage.toString();
-//                            try {
-//                                usrImgUri = selectedImage.toString();
-//                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), selectedImage);
-//                                imageView.setImageBitmap(bitmap.createScaledBitmap(bitmap, 120, 120, false));
-//                            } catch (FileNotFoundException e) {
-//                                e.printStackTrace();
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-//                    break;
-//            }
-//        }
-//    }
-//
-//    private void uploadImage(String url) {
-//
-//        if(selectedImage != null)
-//        {
-//            final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
-//            progressDialog.setTitle("Uploading...");
-//            progressDialog.show();
-//
-//            StorageReference ref = storageReference.child("images/"+ url);
-//            ref.putFile(selectedImage)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            progressDialog.dismiss();
-////                            Toast.makeText(this, "Uploaded", Toast.LENGTH_SHORT).show();
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            progressDialog.dismiss();
-////                            Toast.makeText(SignupActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    })
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-//                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-//                                    .getTotalByteCount());
-//                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-//                        }
-//                    });
-//        }
-//    }
+     private void selectImage() {
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+        builder.setTitle("Choose your profile picture");
+
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take Photo")) {
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    pickPhoto.setType("image/*");
+                    startActivityForResult(pickPhoto , 1);
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    public void setImageInView() {
+        if (checkInternetConnection.getConnectivityStatusString(this.getContext())) {
+
+                if(selectedImage != null) {
+                    String imageUrl = UUID.randomUUID().toString();
+                    user.setFirebasePhotoPath(imageUrl);
+                    UserPresenter userPresenter = new UserPresenter(this.getContext());
+                    userPresenter.updateUserInRoom(user);
+                }
+                user.setImgUri(usrImgUri);
+                presenter.onSendData(user);
+                uploadImage(user.getFirebasePhotoPath());
+
+            }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Bitmap selectedImage1 = (Bitmap) data.getExtras().get("data");
+                        imageView.setImageBitmap(selectedImage1);
+                    }
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null && data.getData()!=null) {
+                        selectedImage = data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            usrImgUri = selectedImage.toString();
+                            try {
+                                usrImgUri = selectedImage.toString();
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContext().getContentResolver(), selectedImage);
+                                imageView.setImageBitmap(bitmap.createScaledBitmap(bitmap, 120, 120, false));
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void uploadImage(String url) {
+
+        if(selectedImage != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this.getContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("images/"+ url);
+            ref.putFile(selectedImage)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
+    }
 
 }

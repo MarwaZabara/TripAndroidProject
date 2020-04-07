@@ -118,8 +118,8 @@ public class SignupActivity extends AppCompatActivity implements SignUpContract.
                     startActivityForResult(takePicture, 0);
 
                 } else if (options[item].equals("Choose from Gallery")) {
-//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    Intent pickPhoto = new Intent(Intent.ACTION_GET_CONTENT);
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    Intent pickPhoto = new Intent(Intent.ACTION_GET_CONTENT);
                     pickPhoto.setType("image/*");
                     startActivityForResult(pickPhoto , 1);
 

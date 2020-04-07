@@ -73,12 +73,10 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         fragTitle = findViewById(R.id.frag_title);
 //////////////////////////////////////////////////////////////////
         viewPager = (CustomViewPager) findViewById(R.id.container);
-//        setupViewPager(viewPager);
         viewPager.setPagingEnabled(false);
-//        setTitle("Hello");
+        fragTitle.setText("UpComing Trip");
 /////////////////////////////////////////////////////////////////
         mAuth = FirebaseAuth.getInstance();
-//        saveUserLogIn = new SaveUserLogIn(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -109,30 +107,21 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.profile:
-//                Toast.makeText(NavDrawer.this, "Profile Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(4);
                 drawerLayout.closeDrawers();
-//                this.setTitle("");
                 fragTitle.setText("");
                 break;
             case R.id.upComingTrip:
-//                Toast.makeText(NavDrawer.this, "UpComingTrip us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(0);
                 drawerLayout.closeDrawers();
                 fragTitle.setText("UpComing Trip");
-//                this.setTitle("UpComing Trip");
                 break;
             case R.id.history:
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(1);
-//                this.setTitle("History");
                 fragTitle.setText("History");
                 drawerLayout.closeDrawers();
                 break;
-//            case R.id.synch:
-//                Intent intent = new Intent(this, TestReminder.class);
-//                startActivity(intent);
-//                break;
             case R.id.logout:
                 Toast.makeText(NavDrawer.this, "Logout Selected", Toast.LENGTH_SHORT).show();
                 mAuth.signOut();
@@ -175,8 +164,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         for (int i = 0 ; i<repeatedTripHistories.size();i++)
         {
             roomRepeatedTripHistoryModel.deleteOfflineTrip(repeatedTripHistories.get(i));
-
-
         }
         userPresenter.deleteUser(person);
     }
@@ -191,21 +178,15 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.allTrips:
-             //   Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(0);
-                fragTitle.setText("All Trips");
-//                this.setTitle("All Trips");
+                fragTitle.setText("UpComing Trip");
                 break;
             case R.id.repeated:
-           //     Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(2);
                 fragTitle.setText("Repeated Trip");
-//                this.setTitle("Repeated Trip");
                 break;
             case R.id.unrepeated:
-             //   Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(3);
-//                this.setTitle("UnRepeated Trip");
                 fragTitle.setText("UnRepeated Trip");
                 break;
             default:
@@ -227,13 +208,10 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         name.setText(person.getName());
         String imageUri = person.getImgUri();
         String imgPath = intent.getStringExtra("imgPath");
-//        String userImageUri = intent.getStringExtra("userImgUri");
-//        if (pass == null & imageUri!=null) {
         if(person.getFirebasePhotoPath() != null) {
             if (person.getPassword() != null) {
                 mStorageRef = FirebaseStorage.getInstance().getReference();
                 Uri uri = Uri.parse(person.getFirebasePhotoPath());
-//            StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/"+FirebaseAuth.getInstance().getUid() + '/'+ person.getFirebasePhotoPath());
                 StorageReference ref = FirebaseStorage.getInstance().getReference().child("images/" + person.getFirebasePhotoPath());
                 final long ONE_MEGABYTE = 1024 * 1024;
                 ref.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -262,11 +240,11 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 
     private void setupViewPager(ViewPager viewPager1){
         AppAdapter adapter = new AppAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UpComingFragment());   //// fragmentNum --> 0
-        adapter.addFragment(new HistoryFragment());          //// fragmentNum --> 1
-        adapter.addFragment(new RepeatedFragment());   //// fragmentNum --> 2
-        adapter.addFragment(new Non_RepeatedFragment());          //// fragmentNum --> 3
-        adapter.addFragment(new Profile());           //// fragmentNum --> 4
+        adapter.addFragment(new UpComingFragment());            //// fragmentNum --> 0
+        adapter.addFragment(new HistoryFragment());            //// fragmentNum --> 1
+        adapter.addFragment(new RepeatedFragment());          //// fragmentNum --> 2
+        adapter.addFragment(new Non_RepeatedFragment());    //// fragmentNum --> 3
+        adapter.addFragment(new Profile());                //// fragmentNum --> 4
 
         viewPager1.setAdapter(adapter);
     }
