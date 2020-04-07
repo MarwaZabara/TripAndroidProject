@@ -238,12 +238,11 @@
                     android:id="@+id/ShowAddNoteDialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginBottom="25dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_gravity="end"
-                    android:clickable="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
                     android:background="@color/primaryTextColor"
+                    android:clickable="true"
                     app:srcCompat="@drawable/add2" />
             </LinearLayout>
         </RelativeLayout>

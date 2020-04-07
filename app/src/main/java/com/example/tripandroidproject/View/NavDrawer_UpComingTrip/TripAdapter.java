@@ -339,10 +339,10 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
 
     public void removeItem(int position) {
         Trip trip = upComingTripList.get(position);
-        if(trip.getRepeatEvery() == 0) {
+        if(trip.getRepeatEvery() == 0 || trip.getStatus().equals("repeated")) {
             deleteTripPresenter.deleteTrip(trip);
         }
-        else {
+        else{
             deleteTripPresenter.deleteRepeatedHistoryTrip(trip);
         }
         upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
