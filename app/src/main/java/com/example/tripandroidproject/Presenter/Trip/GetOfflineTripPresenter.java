@@ -120,4 +120,10 @@ public class GetOfflineTripPresenter implements GetOfflineTripContract.IGetOffli
                 repeatedTripHistory.getNotes());
         return trip;
     }
+
+    public Trip getTripInfoWithId(String tripID) {
+        RoomTripModel roomTripModel = new RoomTripModel(this,context);
+        Trip trip = roomTripModel.getTripInfoWithId(tripID);
+        return trip;
+    }
 }

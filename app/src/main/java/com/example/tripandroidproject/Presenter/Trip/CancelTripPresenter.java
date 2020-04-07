@@ -77,7 +77,7 @@ public class CancelTripPresenter implements ITripPresenter, UpdateTripContract.I
     }
     private RepeatedTripHistory setObject(Trip trip) {
         RepeatedTripHistory repeatedTripHistory = new RepeatedTripHistory(trip.getId(), trip.getUserID(), trip.getName(),
-                trip.getDescription(), "finished", trip.getDate(), trip.getTime(),
+                trip.getDescription(), "repeated_Cancelled", trip.getDate(), trip.getTime(),
                 trip.getRepeatEvery(), trip.getRequestCodeHome(), trip.getStartLongitude(),
                 trip.getStartLatitude(), trip.getEndLongitude(), trip.getEndLatitude(), trip.getIsSync(),
                 trip.getNotes());

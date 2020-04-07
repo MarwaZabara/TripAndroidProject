@@ -23,6 +23,7 @@ import com.example.tripandroidproject.Contract.Trip.UpdateTripOfflineContract;
 import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
 import com.example.tripandroidproject.Model.ReminderModel.ReminderModel;
+import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Note;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Note.GetNotePresenter;
@@ -30,6 +31,7 @@ import com.example.tripandroidproject.Presenter.Reminder.ReminderPresenter;
 import com.example.tripandroidproject.Presenter.Trip.CancelTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.FinishTripPresenter;
+import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.Service.FloatIcon.FloatingIconService;
@@ -73,18 +75,20 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
     }
 
     private void sortArray(List<Trip> upComingTripList) {
-        Collections.sort(upComingTripList, new Comparator<Trip>() {
-            public int compare(Trip trip1, Trip trip2) {
-                Calendar calender1 = GenerateCalendarObject.generateCalendar(trip1.getDate(),trip1.getTime());
-                Calendar calender2 = GenerateCalendarObject.generateCalendar(trip2.getDate(),trip2.getTime());
-                if (calender1.before(calender2))
-                    return -1;
-                else if (calender1.after(calender2))
-                    return 1;
-                else
-                    return 0;
-            }
-        });
+        if(upComingTripList.size() > 0) {
+            Collections.sort(upComingTripList, new Comparator<Trip>() {
+                public int compare(Trip trip1, Trip trip2) {
+                    Calendar calender1 = GenerateCalendarObject.generateCalendar(trip1.getDate(), trip1.getTime());
+                    Calendar calender2 = GenerateCalendarObject.generateCalendar(trip2.getDate(), trip2.getTime());
+                    if (calender1.before(calender2))
+                        return -1;
+                    else if (calender1.after(calender2))
+                        return 1;
+                    else
+                        return 0;
+                }
+            });
+        }
     }
 
     @NonNull
@@ -228,6 +232,14 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
                         upComingTripList.remove(position);
                         notifyItemRemoved(position);
                     }
+                    else {
+                        GetOfflineTripPresenter getOfflineTripPresenter = new GetOfflineTripPresenter(context);
+                        trip = getOfflineTripPresenter.getTripInfo(trip.getRequestCodeHome());
+                        upComingTripList.remove(position);
+                        upComingTripList.add(position,trip);
+                        sortArray(upComingTripList);
+                        notifyDataSetChanged();
+                    }
                 }
                 else if (options[item].equals("Finish Trip")) {
                     Trip trip = upComingTripList.get(position);
@@ -301,6 +313,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
         view1.findViewById(R.id.buttonYes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 removeItem(position);    //// function to remove trip from arrayInRecycleView and room
                 alertDialog.dismiss();
                 Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
@@ -314,27 +327,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
 
     public void removeItem(int position) {
         Trip trip = upComingTripList.get(position);
-        deleteTripPresenter.deleteTrip(trip);
-//        if (checkInternetConnection.getConnectivityStatusString(context)) {
-//            presenter.deleteTrip(trip);    ///////////delete from firebase
-//            deleteOfflineTripPresenter.deleteOfflineTrip(trip); /////delete from room
-//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-//        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==1){
-//            //////// isSync = 1 mean it stored in firebase allready and need to delete it from firebase & room
-//            trip.setIsSync(0);
-//            trip.setStatus("delete");
-//            updateTripPresenter.updateTrip(trip);
-//            /////// -> here send trip to Hassan
-//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-//
-//        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==0){
-//            //////// isSync = 0 mean it didn't store in firebase so need to delete it from room only
-////            trip.setIsSync(1);
-////            updateTripPresenter.updateTrip(trip);
-//            deleteOfflineTripPresenter.deleteOfflineTrip(trip); /////delete from room
-//            /////// -> here send trip to Hassan
-//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-//        }
+        if(trip.getRepeatEvery() == 0) {
+            deleteTripPresenter.deleteTrip(trip);
+        }
+        else {
+            deleteTripPresenter.deleteRepeatedHistoryTrip(trip);
+        }
         upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
         notifyItemRemoved(position);
     }

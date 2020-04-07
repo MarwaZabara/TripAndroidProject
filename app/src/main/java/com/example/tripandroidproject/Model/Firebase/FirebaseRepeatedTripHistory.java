@@ -1,5 +1,7 @@
 package com.example.tripandroidproject.Model.Firebase;
 
+import android.util.Log;
+
 import com.example.tripandroidproject.Contract.Trip.ITripPresenter;
 import com.example.tripandroidproject.POJOs.RepeatedTripHistory;
 import com.example.tripandroidproject.POJOs.Trip;
@@ -20,6 +22,10 @@ public class FirebaseRepeatedTripHistory {
     public void saveTrip(RepeatedTripHistory repeatedTripHistory) {
         repeatedTripHistory.setUserID(FirebaseUserModel.getUserID());
         myRef.child(repeatedTripHistory.getId()).setValue(repeatedTripHistory);
+    }
+    public void deleteTrip(RepeatedTripHistory repeatedTripHistory) {
+        DatabaseReference databaseReference = myRef.child(repeatedTripHistory.getId());
+        databaseReference.removeValue();
     }
     public String generateKey() {
         return myRef.push().getKey();

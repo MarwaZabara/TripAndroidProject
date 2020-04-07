@@ -96,4 +96,8 @@ public class RoomTripModel implements SaveTripContract.ISaveTripOfflineModel , G
     public void deleteOfflineTrip(Trip trip) {
         tripDAO.delete(trip);
     }
+
+    public Trip getTripInfoWithId(String tripID) {
+        return tripDAO.getTripForID(tripID);
+    }
 }

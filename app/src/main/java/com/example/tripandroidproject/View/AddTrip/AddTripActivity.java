@@ -538,7 +538,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                         fillCalenderObj(calendarMain,semiCalendarHome);
                         chosenTripDate = calendarMain.getTimeInMillis();
                     }
-                    TripDate = String.valueOf(semiCalendarHome.dayOfMonth) + "-" + String.valueOf(semiCalendarHome.month + 1) + "-" + String.valueOf(semiCalendarHome.year);
+                    TripDate =  String.valueOf(semiCalendarHome.dayOfMonth) + "-" + String.valueOf(semiCalendarHome.month + 1) + "-" + String.valueOf(semiCalendarHome.year);
                     Txt.setText(TripDate);
 
 //                    TripDate = simpleDateFormat.format(chosenTripDate);
@@ -586,7 +586,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
 //
             semiCalendarHome.hourOfDay = hourOfDay;
             semiCalendarHome.minute = minute;
-            if(semiCalendarHome.month > 0) {
+            if(semiCalendarHome.dayOfMonth > 0) {
                 fillCalenderObj(calendarMain,semiCalendarHome);
                 chosenTripDate = calendarMain.getTimeInMillis();
             }
@@ -598,7 +598,7 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
 //            RoundTimeTxt.setText(RoundTime);
             semiCalendarRound.hourOfDay = hourOfDay;
             semiCalendarRound.minute = minute;
-            if(semiCalendarRound.month > 0) {
+            if(semiCalendarRound.dayOfMonth > 0) {
                 fillCalenderObj(calendarRound,semiCalendarRound);
             }
             RoundTime = String.valueOf(semiCalendarRound.hourOfDay) + "-" + String.valueOf(semiCalendarRound.minute);
@@ -691,13 +691,14 @@ public class AddTripActivity extends AppCompatActivity implements TimePickerDial
                     tripRound.setNotes(notes);
                     saveTripPresenter.saveTrip(tripRound, false);
                 }
-                setRequestCodeInSharedPreference(requestCode);
-                if (Internetonnection.isNetworkAvailable(this))
-                    requestCodePresenter.updateRequestCode(requestCode);
+
             } else {
                 UpdateTripPresenter updateTripPresenter = new UpdateTripPresenter(this);
                 updateTripPresenter.updateTrip(trip);
             }
+            setRequestCodeInSharedPreference(requestCode);
+            if (Internetonnection.isNetworkAvailable(this))
+                requestCodePresenter.updateRequestCode(requestCode);
             finish();
         }
     }
