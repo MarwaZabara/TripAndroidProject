@@ -69,21 +69,13 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     Toolbar toolbar;
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
-    TextView name,email;
+    TextView name,email,fragTitle;
     private FirebaseAuth mAuth;
-    private SaveUserLogIn saveUserLogIn;
     private GoogleSignInClient mGoogleSignInClient;
 
     private CustomViewPager viewPager;
-    private NetworkChangeBroadcastReceiver networkChangeBroadcastReceiver;
     Person person;
     UserPresenter userPresenter;
-
-    TextView mItemSelected;
-
-    String[] listItems =  {"Item1","Item2"};
-    boolean[] checkedItems;
-    ArrayList<Integer> mUserItems = new ArrayList<>();
     private StorageReference mStorageRef;
 
     @Override
@@ -91,14 +83,15 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         ControlNetworkChangeBroadcast.registerBroadcast(this);
         setContentView(R.layout.activity_nav_drawer);
+        fragTitle = findViewById(R.id.frag_title);
 //////////////////////////////////////////////////////////////////
         viewPager = (CustomViewPager) findViewById(R.id.container);
 //        setupViewPager(viewPager);
         viewPager.setPagingEnabled(false);
-
+//        setTitle("Hello");
 /////////////////////////////////////////////////////////////////
         mAuth = FirebaseAuth.getInstance();
-        saveUserLogIn = new SaveUserLogIn(this);
+//        saveUserLogIn = new SaveUserLogIn(this);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -117,66 +110,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
         navigationView.setNavigationItemSelectedListener(this);
         userPresenter = new UserPresenter(this);
         person = userPresenter.getUser();
-
-        if(getIntent().getBooleanExtra("isFloatingService",false)){
-            checkedItems  = new boolean[listItems.length];
-            AlertDialog.Builder mBuilder = new AlertDialog.Builder(NavDrawer.this);
-            mBuilder.setTitle("Notes");
-            mBuilder.setMultiChoiceItems(listItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
-//                        if (isChecked) {
-//                            if (!mUserItems.contains(position)) {
-//                                mUserItems.add(position);
-//                            }
-//                        } else if (mUserItems.contains(position)) {
-//                            mUserItems.remove(position);
-//                        }
-                    if(isChecked){
-                        mUserItems.add(position);
-                    }else{
-                        mUserItems.remove((Integer.valueOf(position)));
-                    }
-                }
-            });
-
-            mBuilder.setCancelable(false);
-            mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int which) {
-                    String item = "";
-                    for (int i = 0; i < mUserItems.size(); i++) {
-                        item = item + listItems[mUserItems.get(i)];
-                        if (i != mUserItems.size() - 1) {
-                            item = item + ", ";
-                        }
-                    }
-                    mItemSelected.setText(item);
-                }
-            });
-
-            mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-
-            mBuilder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int which) {
-                    for (int i = 0; i < checkedItems.length; i++) {
-                        checkedItems[i] = false;
-                        mUserItems.clear();
-                        mItemSelected.setText("");
-                    }
-                }
-            });
-
-            AlertDialog mDialog = mBuilder.create();
-            mDialog.show();
-        }
-
     }
 
     @Override
@@ -189,21 +122,24 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.profile:
-                Toast.makeText(NavDrawer.this, "Profile Selected", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(NavDrawer.this, "Profile Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(4);
                 drawerLayout.closeDrawers();
-                this.setTitle("");
+//                this.setTitle("");
+                fragTitle.setText("");
                 break;
             case R.id.upComingTrip:
-                Toast.makeText(NavDrawer.this, "UpComingTrip us Selected", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(NavDrawer.this, "UpComingTrip us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(0);
                 drawerLayout.closeDrawers();
-                this.setTitle("UpComing Trip");
+                fragTitle.setText("UpComing Trip");
+//                this.setTitle("UpComing Trip");
                 break;
             case R.id.history:
                 Toast.makeText(NavDrawer.this, "History us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(1);
-                this.setTitle("History");
+//                this.setTitle("History");
+                fragTitle.setText("History");
                 drawerLayout.closeDrawers();
                 break;
 //            case R.id.synch:
@@ -268,19 +204,22 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.allTrips:
-                Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(0);
-                this.setTitle("All Trips");
+                fragTitle.setText("All Trips");
+//                this.setTitle("All Trips");
                 break;
             case R.id.repeated:
-                Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
+           //     Toast.makeText(NavDrawer.this, "Repeated Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(2);
-                this.setTitle("Repeated Trip");
+                fragTitle.setText("Repeated Trip");
+//                this.setTitle("Repeated Trip");
                 break;
             case R.id.unrepeated:
-                Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(NavDrawer.this, "UnRepeated us Selected", Toast.LENGTH_SHORT).show();
                 setViewPager(3);
-                this.setTitle("UnRepeated Trip");
+//                this.setTitle("UnRepeated Trip");
+                fragTitle.setText("UnRepeated Trip");
                 break;
             default:
                 break;
@@ -352,11 +291,11 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
 
     private void setupViewPager(ViewPager viewPager1){
         AppAdapter adapter = new AppAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UpComingFragment(),"UpComingTrips");   //// fragmentNum --> 0
-        adapter.addFragment(new HistoryFragment(),"History");          //// fragmentNum --> 1
-        adapter.addFragment(new RepeatedFragment(),"RepeatedTrips");   //// fragmentNum --> 2
-        adapter.addFragment(new Non_RepeatedFragment(),"NonRepeatedTrips");          //// fragmentNum --> 3
-        adapter.addFragment(new Profile(),"Profile");           //// fragmentNum --> 4
+        adapter.addFragment(new UpComingFragment());   //// fragmentNum --> 0
+        adapter.addFragment(new HistoryFragment());          //// fragmentNum --> 1
+        adapter.addFragment(new RepeatedFragment());   //// fragmentNum --> 2
+        adapter.addFragment(new Non_RepeatedFragment());          //// fragmentNum --> 3
+        adapter.addFragment(new Profile());           //// fragmentNum --> 4
 
         viewPager1.setAdapter(adapter);
     }

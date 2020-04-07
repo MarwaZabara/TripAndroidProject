@@ -24,12 +24,20 @@
                 android:layout_height="match_parent"
                 android:background="@color/quantum_lightblueA700" />
 
+            <TextView
+                android:id="@+id/frag_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="20dp" />
+
         </RelativeLayout>
+
         <com.example.tripandroidproject.View.NavDrawer_UpComingTrip.CustomViewPager
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/container"></com.example.tripandroidproject.View.NavDrawer_UpComingTrip.CustomViewPager>
-        
+            android:layout_height="match_parent"></com.example.tripandroidproject.View.NavDrawer_UpComingTrip.CustomViewPager>
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

@@ -20,11 +20,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripandroidproject.Contract.Trip.DeleteTripContract;
+import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.StartTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.DeleteTripPresenter;
 import com.example.tripandroidproject.R;
 
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -39,10 +43,24 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     public HistoryAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
         values = myDataSet;
+        sortArray(values);
         this.context = context;
         presenter = new DeleteTripPresenter(context);
     }
-
+    private void sortArray(List<Trip> values) {
+        Collections.sort(values, new Comparator<Trip>() {
+            public int compare(Trip trip1, Trip trip2) {
+                Calendar calender1 = GenerateCalendarObject.generateCalendar(trip1.getDate(),trip1.getTime());
+                Calendar calender2 = GenerateCalendarObject.generateCalendar(trip2.getDate(),trip2.getTime());
+                if (calender1.before(calender2))
+                    return -1;
+                else if (calender1.after(calender2))
+                    return 1;
+                else
+                    return 0;
+            }
+        });
+    }
     @NonNull
     @Override
     public HistoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup recycleView, int viewType) {

@@ -39,7 +39,6 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
     private GetOfflineTripPresenter getOfflineTripPresenter;
     private SaveTripPresenter saveTripOfflinePresenter;
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -63,18 +62,7 @@ public class UpComingFragment extends Fragment implements RetrieveTripContract.I
         List<Trip> trips = getOfflineTripPresenter.getOfflineFilteredTrip("start","repeated_Start");
 
         trips.addAll(getOfflineTripPresenter.getOfflineFilteredTrip("upcoming","repeated"));
-        Collections.sort(trips, new Comparator<Trip>() {
-            public int compare(Trip trip1, Trip trip2) {
-                Calendar calender1 = GenerateCalendarObject.generateCalendar(trip1.getDate(),trip1.getTime());
-                Calendar calender2 = GenerateCalendarObject.generateCalendar(trip2.getDate(),trip2.getTime());
-                if (calender1.before(calender2))
-                    return -1;
-                else if (calender1.after(calender2))
-                    return 1;
-                else
-                    return 0;
-            }
-        });
+
         if(trips.size() == 0){
             saveTripOfflinePresenter = new SaveTripPresenter(this.getContext());
             retrieveTripPresenter = new RetrieveTripPresenter(this.getContext(),this);

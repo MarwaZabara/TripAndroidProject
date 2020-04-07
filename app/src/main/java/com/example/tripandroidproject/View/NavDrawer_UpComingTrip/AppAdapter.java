@@ -16,15 +16,13 @@ import java.util.List;
 public class AppAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> fragments = new ArrayList<>();
-    private final List<String> fragmentsTitle = new ArrayList<>();
 
     public AppAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 
-    public void addFragment (Fragment fragment,String title){
+    public void addFragment (Fragment fragment){
         fragments.add(fragment);
-        fragmentsTitle.add(title);
     }
 
     @NonNull

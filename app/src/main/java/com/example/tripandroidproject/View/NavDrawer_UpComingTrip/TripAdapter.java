@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.tripandroidproject.Contract.Reminder.Reminder;
 import com.example.tripandroidproject.Contract.Trip.UpdateTripContract;
 import com.example.tripandroidproject.Contract.Trip.UpdateTripOfflineContract;
+import com.example.tripandroidproject.Custom.Calendar.GenerateCalendarObject;
 import com.example.tripandroidproject.InternetConnection.CheckInternetConnection;
 import com.example.tripandroidproject.Model.ReminderModel.ReminderModel;
 import com.example.tripandroidproject.POJOs.Note;
@@ -35,6 +36,9 @@ import com.example.tripandroidproject.Service.FloatIcon.FloatingIconService;
 import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,10 +65,26 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
     String location2;
     public TripAdapter(@NonNull Context context, @NonNull List<Trip> myDataSet) {
         upComingTripList = myDataSet;
+        sortArray(upComingTripList);
         this.context = context;
         deleteTripPresenter = new DeleteTripPresenter(context);
         cancelTripPresenter = new CancelTripPresenter(context);
         checkInternetConnection = new CheckInternetConnection();
+    }
+
+    private void sortArray(List<Trip> upComingTripList) {
+        Collections.sort(upComingTripList, new Comparator<Trip>() {
+            public int compare(Trip trip1, Trip trip2) {
+                Calendar calender1 = GenerateCalendarObject.generateCalendar(trip1.getDate(),trip1.getTime());
+                Calendar calender2 = GenerateCalendarObject.generateCalendar(trip2.getDate(),trip2.getTime());
+                if (calender1.before(calender2))
+                    return -1;
+                else if (calender1.after(calender2))
+                    return 1;
+                else
+                    return 0;
+            }
+        });
     }
 
     @NonNull
@@ -198,12 +218,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
                     context.startActivity(editIntent);
 
                 } else if (options[item].equals("Delete Trip")) {
-//                    Trip trip = upComingTripList.get(position);
-//                    trip.setStatus("delete");     ///////change status of trip
-//                    updateTripOfflinePresenter.updateTrip(trip);
-//                    notifyItemRemoved(position);
                     confirmation(position);
-
                 } else if (options[item].equals("Cancel Trip")) {
                     Trip trip = upComingTripList.get(position);
 //                    trip.setStatus("Cancel");     ///////change status of trip
@@ -213,8 +228,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
                         upComingTripList.remove(position);
                         notifyItemRemoved(position);
                     }
-//                  communicatorFrag.cancelTrip(trip);
-//                    removeItem(position);               //// function to remove trip from arrayInRecycleView and room
                 }
                 else if (options[item].equals("Finish Trip")) {
                     Trip trip = upComingTripList.get(position);
