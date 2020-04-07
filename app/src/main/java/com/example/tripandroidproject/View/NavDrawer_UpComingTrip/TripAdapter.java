@@ -313,6 +313,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
         view1.findViewById(R.id.buttonYes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 removeItem(position);    //// function to remove trip from arrayInRecycleView and room
                 alertDialog.dismiss();
                 Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
@@ -326,27 +327,12 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> im
 
     public void removeItem(int position) {
         Trip trip = upComingTripList.get(position);
-        deleteTripPresenter.deleteTrip(trip);
-//        if (checkInternetConnection.getConnectivityStatusString(context)) {
-//            presenter.deleteTrip(trip);    ///////////delete from firebase
-//            deleteOfflineTripPresenter.deleteOfflineTrip(trip); /////delete from room
-//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-//        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==1){
-//            //////// isSync = 1 mean it stored in firebase allready and need to delete it from firebase & room
-//            trip.setIsSync(0);
-//            trip.setStatus("delete");
-//            updateTripPresenter.updateTrip(trip);
-//            /////// -> here send trip to Hassan
-//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-//
-//        } else if (!checkInternetConnection.getConnectivityStatusString(context) && trip.getIsSync()==0){
-//            //////// isSync = 0 mean it didn't store in firebase so need to delete it from room only
-////            trip.setIsSync(1);
-////            updateTripPresenter.updateTrip(trip);
-//            deleteOfflineTripPresenter.deleteOfflineTrip(trip); /////delete from room
-//            /////// -> here send trip to Hassan
-//            upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
-//        }
+        if(trip.getRepeatEvery() == 0) {
+            deleteTripPresenter.deleteTrip(trip);
+        }
+        else {
+            deleteTripPresenter.deleteRepeatedHistoryTrip(trip);
+        }
         upComingTripList.remove(position);   /////remove trip from arrayInRecycleView
         notifyItemRemoved(position);
     }

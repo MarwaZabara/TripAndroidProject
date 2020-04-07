@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
-import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Trip;
 import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;

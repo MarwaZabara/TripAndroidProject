@@ -6,30 +6,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.ControlNetworkChangeBroadcast;
-import com.example.tripandroidproject.Broadcast.NetworkChangeBroadcast.NetworkChangeBroadcastReceiver;
-import com.example.tripandroidproject.Contract.Trip.RetrieveTripContract;
 import com.example.tripandroidproject.Model.Room.RoomRepeatedTripHistoryModel;
 import com.example.tripandroidproject.POJOs.RepeatedTripHistory;
-import com.example.tripandroidproject.Presenter.Trip.DeleteOfflineTripPresenter;
-import com.example.tripandroidproject.Presenter.Trip.GetOfflineTripPresenter;
 import com.example.tripandroidproject.Model.Room.RoomNoteModel;
 import com.example.tripandroidproject.Model.Room.RoomTripModel;
 import com.example.tripandroidproject.POJOs.Note;
@@ -37,7 +28,6 @@ import com.example.tripandroidproject.POJOs.Person;
 import com.example.tripandroidproject.Presenter.User.UserPresenter;
 import com.example.tripandroidproject.View.AddTrip.AddTripActivity;
 import com.example.tripandroidproject.POJOs.Trip;
-import com.example.tripandroidproject.Presenter.Trip.RetrieveTripPresenter;
 
 import com.example.tripandroidproject.R;
 import com.example.tripandroidproject.View.History.HistoryFragment;
@@ -45,8 +35,6 @@ import com.example.tripandroidproject.View.Login.LoginActivity;
 import com.example.tripandroidproject.View.Profile.Profile;
 import com.example.tripandroidproject.View.Repeated_NonRepeated.Non_RepeatedFragment;
 import com.example.tripandroidproject.View.Repeated_NonRepeated.RepeatedFragment;
-import com.example.tripandroidproject.View.SaveUserLogIn;
-import com.example.tripandroidproject.View.UnderTest.TestReminder;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -60,7 +48,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NavDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -265,22 +252,6 @@ public class NavDrawer extends AppCompatActivity implements NavigationView.OnNav
                 Picasso.get().load(person.getFirebasePhotoPath()).resize(120, 120).centerCrop().into(imageView);
             }
         }
-            /*Glide.with(imageView.getContext())
-                    .load(ref)
-                    .into(imageView);*/
-//            Glide.with(this)
-//                    .using(new FirebaseImageLoader())
-//                    .load(mStorageRef + "/imager/" + person.getFirebasePhotoPath())
-//                    .error(R.drawable.close)
-//                    .into(imageView);
-//            StorageReference referenseLcl = FirebaseStorage.getInstance().getReference();
-//            StorageReference islandRefLcl = referenseLcl.child("images/"+FirebaseAuth.getInstance().getUid() + '/'+ person.getFirebasePhotoPath());
-
-//        else if(imageUri != null) {
-//            imageView.setImageURI(Uri.parse(imageUri));
-////            imageView.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-////            imageView.setImageURI(Uri.parse(imgPath));
-//        }
     }
 
 
