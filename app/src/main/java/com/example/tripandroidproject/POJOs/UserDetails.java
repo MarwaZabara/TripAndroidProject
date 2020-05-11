@@ -13,6 +13,7 @@ public class UserDetails {
         return imgUri;
     }
 
+
     public void setImgUri(String imgUri) {
         this.imgUri = imgUri;
     }
